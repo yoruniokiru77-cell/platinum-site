@@ -7,6 +7,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Noto+Serif+JP:wght@200;300;400;500&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <style>
 /* ===== RESET ===== */
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
@@ -18,7 +19,14 @@
   --serif:'Cormorant Garamond',Georgia,serif;--ja:'Noto Serif JP','Yu Mincho',serif;
 }
 html{scroll-behavior:smooth}
-body{background:var(--bg);color:var(--dark);font-family:var(--ja);overflow-x:hidden;cursor:none}
+body{background:var(--bg);color:var(--dark);font-family:var(--ja);overflow-x:hidden;cursor:none;padding-bottom:60px}
+
+/* BOTTOM BAR */
+.bottom-bar{position:fixed;bottom:0;left:0;right:0;z-index:900;display:grid;grid-template-columns:1fr 1fr;height:60px}
+.bottom-bar-call{background:var(--dark);display:flex;align-items:center;justify-content:center;gap:10px;text-decoration:none;color:var(--gold3);font-size:12px;letter-spacing:.25em;font-family:var(--ja);font-weight:300;transition:background .3s;border-right:1px solid rgba(196,152,72,.2)}
+.bottom-bar-call:hover{background:#2a2018}
+.bottom-bar-web{background:var(--gold2);display:flex;align-items:center;justify-content:center;gap:10px;text-decoration:none;color:var(--dark);font-size:12px;letter-spacing:.25em;font-family:var(--ja);font-weight:500;transition:background .3s}
+.bottom-bar-web:hover{background:var(--gold3)}
 
 /* CURSOR */
 .cursor{position:fixed;width:8px;height:8px;background:var(--gold2);border-radius:50%;pointer-events:none;z-index:9999;transform:translate(-50%,-50%);mix-blend-mode:multiply}
@@ -270,7 +278,7 @@ footer::before{content:'';display:block;height:1px;background:linear-gradient(to
   nav{padding:0 24px}.nav-center{display:none}.hamburger{display:flex}
   .container{padding:0 24px}section{padding:80px 0}
   .pickup-wrap{grid-template-columns:1fr}.pickup-detail{padding:36px 28px}
-  .staff-grid{grid-template-columns:repeat(2,1fr)}
+  .staff-grid{grid-template-columns:repeat(3,1fr)!important}
   .course-grid{grid-template-columns:repeat(2,1fr)}
   .notice-grid{grid-template-columns:1fr}.access-split{grid-template-columns:1fr}
   .footer-grid{grid-template-columns:1fr}
@@ -278,7 +286,7 @@ footer::before{content:'';display:block;height:1px;background:linear-gradient(to
 }
 @media(max-width:580px){
   .hero-title{font-size:clamp(52px,14vw,80px)}
-  .staff-grid{grid-template-columns:repeat(2,1fr);gap:12px}
+  .staff-grid{grid-template-columns:repeat(2,1fr)!important;gap:12px}
   .course-grid{grid-template-columns:1fr 1fr}
   .opt-grid{grid-template-columns:1fr}
   .hero-cta{flex-direction:column;align-items:center}
@@ -394,12 +402,11 @@ footer::before{content:'';display:block;height:1px;background:linear-gradient(to
 <!-- DRAWER -->
 <div class="drawer" id="drawer">
   <button class="drawer-close" id="drawerClose">✕</button>
-  <a href="#home">Home</a>
-  <a href="#concept">Concept</a>
-  <a href="#price">System</a>
-  <a href="#therapist">Therapist</a>
-  <a href="#schedule">Schedule</a>
-  <a href="#access">Access</a>
+  <a href="index.html">Home</a>
+  <a href="price.html">System</a>
+  <a href="staff.html">Therapist</a>
+  <a href="schedule.html">Schedule</a>
+  <a href="access.html">Access</a>
 </div>
 
 <!-- NAV -->
@@ -412,11 +419,11 @@ footer::before{content:'';display:block;height:1px;background:linear-gradient(to
     </div>
   </a>
   <ul class="nav-center">
-    <li><a href="#concept"><span class="en-sm">Concept</span>コンセプト</a></li>
-    <li><a href="#price"><span class="en-sm">System</span>料金システム</a></li>
-    <li><a href="#therapist"><span class="en-sm">Therapist</span>セラピスト</a></li>
-    <li><a href="#schedule"><span class="en-sm">Schedule</span>スケジュール</a></li>
-    <li><a href="#access"><span class="en-sm">Access</span>アクセス</a></li>
+    <li><a href="index.html"><span class="en-sm">Home</span>トップページ</a></li>
+    <li><a href="price.html"><span class="en-sm">System</span>料金システム</a></li>
+    <li><a href="staff.html"><span class="en-sm">Therapist</span>セラピスト</a></li>
+    <li><a href="schedule.html"><span class="en-sm">Schedule</span>スケジュール</a></li>
+    <li><a href="access.html"><span class="en-sm">Access</span>アクセス</a></li>
   </ul>
   <div class="nav-right">
     <span class="nav-hours" id="navHours">12:00 — 26:00</span>
@@ -448,7 +455,7 @@ footer::before{content:'';display:block;height:1px;background:linear-gradient(to
     <div class="hero-divider"></div>
     <p class="hero-sub">一度体験したら、もう元には戻れない<br>究極のドキドキ体験を、あなたへ</p>
     <div class="hero-cta">
-      <a href="tel:070-9094-9709" class="btn-primary" id="heroPhone"><span>今すぐご予約</span></a>
+      <a href="https://estama.jp/shop/35702/reserve/" class="btn-primary" target="_blank" rel="noopener" id="heroPhone"><span>今すぐご予約</span></a>
       <a href="#concept" class="btn-outline">About</a>
     </div>
   </div>
@@ -496,23 +503,9 @@ footer::before{content:'';display:block;height:1px;background:linear-gradient(to
         <div class="s-title">注目セラピスト</div>
         <div class="s-rule"></div>
       </div>
-      <a href="#therapist" class="more-link">セラピスト一覧 →</a>
+      <a href="staff.html" class="more-link">セラピスト一覧 →</a>
     </div>
     <div id="pickupContainer" class="fade-in"></div>
-  </div>
-</section>
-
-<!-- STAFF -->
-<section class="staff-section" id="therapist">
-  <div class="container">
-    <div class="flex-head fade-in">
-      <div class="s-head" style="margin-bottom:0">
-        <span class="s-label">NEW FACE</span>
-        <div class="s-title">新人セラピスト</div>
-        <div class="s-rule"></div>
-      </div>
-    </div>
-    <div class="staff-grid" id="staffGrid"></div>
   </div>
 </section>
 
@@ -615,6 +608,7 @@ footer::before{content:'';display:block;height:1px;background:linear-gradient(to
           <a href="tel:070-9094-9709" class="access-cta-num" id="accessPhone">070-9094-9709</a>
           <span class="access-cta-hrs" id="accessHours2">12:00 — 26:00</span>
           <a href="tel:070-9094-9709" class="access-cta-btn" id="accessPhoneBtn">お電話で予約する</a>
+          <a href="https://estama.jp/shop/35702/reserve/" class="access-cta-btn" target="_blank" rel="noopener" style="margin-top:8px;background:transparent;color:var(--gold2);border-color:var(--gold2);">Webから予約する</a>
         </div>
       </div>
     </div>
@@ -630,12 +624,11 @@ footer::before{content:'';display:block;height:1px;background:linear-gradient(to
       <div class="tagline">神栖の地で、究極の<br>プレミアム体験を</div>
     </div>
     <nav class="footer-nav-grid">
-      <a href="#home">トップページ</a>
-      <a href="#concept">コンセプト</a>
-      <a href="#price">料金システム</a>
-      <a href="#therapist">セラピスト</a>
-      <a href="#schedule">スケジュール</a>
-      <a href="#access">アクセス</a>
+      <a href="index.html">トップページ</a>
+      <a href="price.html">料金システム</a>
+      <a href="staff.html">セラピスト</a>
+      <a href="schedule.html">スケジュール</a>
+      <a href="access.html">アクセス</a>
       <a href="#linksSection">相互リンク</a>
     </nav>
     <div class="footer-contact">
@@ -650,11 +643,16 @@ footer::before{content:'';display:block;height:1px;background:linear-gradient(to
   </div>
 </footer>
 
-<div class="float-call">
-  <a href="tel:070-9094-9709" class="float-btn" id="floatPhone">
-    <svg viewBox="0 0 24 24"><path d="M6.6 10.8c1.4 2.8 3.8 5.1 6.6 6.6l2.2-2.2c.3-.3.7-.4 1-.2 1.1.4 2.3.6 3.6.6.6 0 1 .4 1 1V20c0 .6-.4 1-1 1C10.6 21 3 13.4 3 4c0-.6.4-1 1-1h3.5c.6 0 1 .4 1 1 0 1.3.2 2.5.6 3.6.1.3 0 .7-.2 1L6.6 10.8z"/></svg>
+<!-- BOTTOM BAR -->
+<div class="bottom-bar">
+  <a href="tel:070-9094-9709" class="bottom-bar-call" id="floatPhone">
+    <svg viewBox="0 0 24 24" width="18" height="18" fill="var(--gold3)"><path d="M6.6 10.8c1.4 2.8 3.8 5.1 6.6 6.6l2.2-2.2c.3-.3.7-.4 1-.2 1.1.4 2.3.6 3.6.6.6 0 1 .4 1 1V20c0 .6-.4 1-1 1C10.6 21 3 13.4 3 4c0-.6.4-1 1-1h3.5c.6 0 1 .4 1 1 0 1.3.2 2.5.6 3.6.1.3 0 .7-.2 1L6.6 10.8z"/></svg>
+    <span>お電話で予約</span>
   </a>
-  <span class="float-label">CALL</span>
+  <a href="https://estama.jp/shop/35702/reserve/" class="bottom-bar-web" target="_blank" rel="noopener">
+    <svg viewBox="0 0 24 24" width="18" height="18" fill="var(--dark)"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 17.93c-3.95-.49-7-3.85-7-7.93 0-.62.08-1.21.21-1.79L9 15v1c0 1.1.9 2 2 2v1.93zm6.9-2.54c-.26-.81-1-1.39-1.9-1.39h-1v-3c0-.55-.45-1-1-1H8v-2h2c.55 0 1-.45 1-1V7h2c1.1 0 2-.9 2-2v-.41c2.93 1.19 5 4.06 5 7.41 0 2.08-.8 3.97-2.1 5.39z"/></svg>
+    <span>Webから予約</span>
+  </a>
 </div>
 
 <!-- ===== ADMIN PANEL ===== -->
@@ -748,18 +746,13 @@ footer::before{content:'';display:block;height:1px;background:linear-gradient(to
         <!-- SCHEDULE PANEL -->
         <div class="admin-panel" id="panel-schedule">
           <div class="a-section">
-            <div class="a-section-head"><span class="a-section-title">本日の出勤状況</span></div>
+            <div class="a-section-head">
+              <span class="a-section-title">本日の出勤（Supabase 承認済みシフト）</span>
+              <button class="a-btn-sm primary" onclick="loadSchedPanel()">🔄 再読み込み</button>
+            </div>
             <div class="a-section-body">
-              <div style="margin-bottom:20px">
-                <label class="a-label">表示ステータス</label>
-                <select class="a-select" id="schedStatus" style="max-width:300px">
-                  <option value="調整中">スケジュール調整中</option>
-                  <option value="出勤あり">出勤あり（下記リストを表示）</option>
-                  <option value="本日休業">本日休業</option>
-                </select>
-              </div>
-              <div class="a-card-list" id="schedList"></div>
-              <button class="a-add-btn" onclick="openSchedModal()">＋ 出勤セラピストを追加</button>
+              <div id="schedAdminList"><p style="color:rgba(196,152,72,.4);font-size:11px;letter-spacing:.3em">読み込み中...</p></div>
+              <p style="margin-top:20px;font-size:9px;letter-spacing:.3em;color:rgba(196,152,72,.3)">※ シフトの追加・変更はシフト管理システムから行ってください。このパネルは表示確認用です。</p>
             </div>
           </div>
         </div>
@@ -879,6 +872,12 @@ footer::before{content:'';display:block;height:1px;background:linear-gradient(to
 <div class="a-toast" id="toast"></div>
 
 <script>
+// ===== SUPABASE =====
+const SUPABASE_URL  = 'https://rzfprialypdoyklfwpyg.supabase.co';
+const SUPABASE_KEY  = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InJ6ZnByaWFseXBkb3lrbGZ3cHlnIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzUzMzQ3NzAsImV4cCI6MjA5MDkxMDc3MH0.qRzCmMetxe3tvSlIJx-HX_SHRG5Evos4D9KOEnarNfE';
+const STORE_ID      = '33333333-0000-0000-0000-000000000003';
+const sb = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
 // ===== DATA =====
 const STAR_SVG = '<svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 2l2.4 7.4H22l-6.2 4.5 2.4 7.4L12 17l-6.2 4.3 2.4-7.4L2 9.4h7.6z"/></svg>';
 const DEFAULT = {
@@ -887,11 +886,46 @@ const DEFAULT = {
   news: [{date:'2025.01.01',cat:'お知らせ',body:'現在お知らせはございません。最新情報はお電話にてご確認くださいませ。'}],
   pickup: {idx:0, nameEn:'Rui', quote:'100年に1人の美女', comment:'誰もが認める、いい女。\n整った顔立ちに峰不二子ばりのスタイル —\nまさに理想の女性です。\n\n長い手足からくる圧倒的な密着感。\n海よりも深い、ディープリンパ。\nドキドキそして完璧な時間を、堪能ください。', photo:''},
   therapists: [
-    {name:'るい',nameEn:'Rui',age:27,special:true,isNew:false,active:true,photo:'',url:'https://www.mens-premium.com/profile/_uid/2402/'},
-    {name:'ゆき',nameEn:'Yuki',age:23,special:true,isNew:true,active:true,photo:'',url:'https://www.mens-premium.com/profile/_uid/1247/'},
-    {name:'るな',nameEn:'Luna',age:21,special:false,isNew:true,active:true,photo:'',url:'https://www.mens-premium.com/profile/_uid/1805/'},
-    {name:'ばんび',nameEn:'Bambi',age:28,special:false,isNew:true,active:true,photo:'',url:'https://www.mens-premium.com/profile/_uid/2802/'},
-    {name:'このみ',nameEn:'Konomi',age:25,special:false,isNew:true,active:true,photo:'',url:'https://www.mens-premium.com/profile/_uid/2908/'}
+    {name:'ななせ',nameEn:'Nanase',age:21,special:false,isNew:false,active:true,photo:'',url:'https://www.mens-premium.com/profile/_uid/460/'},
+    {name:'ひな',  nameEn:'Hina',  age:20,special:false,isNew:false,active:true,photo:'',url:'https://www.mens-premium.com/profile/_uid/624/'},
+    {name:'ゆい',  nameEn:'Yui',   age:22,special:false,isNew:false,active:true,photo:'',url:'https://www.mens-premium.com/profile/_uid/734/'},
+    {name:'あられ',nameEn:'Arare', age:24,special:false,isNew:false,active:true,photo:'',url:'https://www.mens-premium.com/profile/_uid/1103/'},
+    {name:'ゆき',  nameEn:'Yuki',  age:23,special:true, isNew:false,active:true,photo:'',url:'https://www.mens-premium.com/profile/_uid/1247/'},
+    {name:'ゆあ',  nameEn:'Yua',   age:22,special:false,isNew:false,active:true,photo:'',url:'https://www.mens-premium.com/profile/_uid/1411/'},
+    {name:'のぞみ',nameEn:'Nozomi',age:23,special:false,isNew:false,active:true,photo:'',url:'https://www.mens-premium.com/profile/_uid/1505/'},
+    {name:'もあ',  nameEn:'Moa',   age:22,special:false,isNew:false,active:true,photo:'',url:'https://www.mens-premium.com/profile/_uid/1523/'},
+    {name:'もえ',  nameEn:'Moe',   age:24,special:false,isNew:false,active:true,photo:'',url:'https://www.mens-premium.com/profile/_uid/1570/'},
+    {name:'かれん',nameEn:'Karen', age:23,special:false,isNew:false,active:true,photo:'',url:'https://www.mens-premium.com/profile/_uid/1589/'},
+    {name:'まゆ',  nameEn:'Mayu',  age:23,special:false,isNew:false,active:true,photo:'',url:'https://www.mens-premium.com/profile/_uid/1768/'},
+    {name:'えな',  nameEn:'Ena',   age:22,special:false,isNew:false,active:true,photo:'',url:'https://www.mens-premium.com/profile/_uid/1786/'},
+    {name:'めい',  nameEn:'Mei',   age:23,special:false,isNew:false,active:true,photo:'',url:'https://www.mens-premium.com/profile/_uid/1787/'},
+    {name:'るな',  nameEn:'Luna',  age:21,special:false,isNew:false,active:true,photo:'',url:'https://www.mens-premium.com/profile/_uid/1805/'},
+    {name:'ましろ',nameEn:'Mashiro',age:24,special:false,isNew:false,active:true,photo:'',url:'https://www.mens-premium.com/profile/_uid/2122/'},
+    {name:'るみ',  nameEn:'Rumi',  age:0, special:false,isNew:false,active:true,photo:'',url:'https://www.mens-premium.com/profile/_uid/2155/'},
+    {name:'みやび',nameEn:'Miyabi',age:0, special:false,isNew:false,active:true,photo:'',url:'https://www.mens-premium.com/profile/_uid/2156/'},
+    {name:'えみり',nameEn:'Emiri', age:22,special:false,isNew:false,active:true,photo:'',url:'https://www.mens-premium.com/profile/_uid/2203/'},
+    {name:'あんな',nameEn:'Anna',  age:28,special:false,isNew:false,active:true,photo:'',url:'https://www.mens-premium.com/profile/_uid/2220/'},
+    {name:'なの',  nameEn:'Nano',  age:24,special:false,isNew:false,active:true,photo:'',url:'https://www.mens-premium.com/profile/_uid/2331/'},
+    {name:'りん',  nameEn:'Rin',   age:23,special:false,isNew:false,active:true,photo:'',url:'https://www.mens-premium.com/profile/_uid/2341/'},
+    {name:'みらい',nameEn:'Mirai', age:21,special:false,isNew:false,active:true,photo:'',url:'https://www.mens-premium.com/profile/_uid/2350/'},
+    {name:'おとね',nameEn:'Otone', age:22,special:false,isNew:false,active:true,photo:'',url:'https://www.mens-premium.com/profile/_uid/2389/'},
+    {name:'みずは',nameEn:'Mizuha',age:25,special:false,isNew:false,active:true,photo:'',url:'https://www.mens-premium.com/profile/_uid/2394/'},
+    {name:'るい',  nameEn:'Rui',   age:27,special:true, isNew:false,active:true,photo:'',url:'https://www.mens-premium.com/profile/_uid/2402/'},
+    {name:'えれな',nameEn:'Elena', age:25,special:false,isNew:true, active:true,photo:'',url:'https://www.mens-premium.com/profile/_uid/2534/'},
+    {name:'しいな',nameEn:'Shiina',age:19,special:false,isNew:true, active:true,photo:'',url:'https://www.mens-premium.com/profile/_uid/2596/'},
+    {name:'ねいろ',nameEn:'Neiro', age:25,special:false,isNew:true, active:true,photo:'',url:'https://www.mens-premium.com/profile/_uid/2626/'},
+    {name:'もえか',nameEn:'Moeka', age:22,special:false,isNew:true, active:true,photo:'',url:'https://www.mens-premium.com/profile/_uid/2654/'},
+    {name:'こはね',nameEn:'Kohane',age:23,special:false,isNew:true, active:true,photo:'',url:'https://www.mens-premium.com/profile/_uid/2698/'},
+    {name:'ななみ',nameEn:'Nanami',age:26,special:false,isNew:true, active:true,photo:'',url:'https://www.mens-premium.com/profile/_uid/2753/'},
+    {name:'くろえ',nameEn:'Kuroe', age:19,special:false,isNew:true, active:true,photo:'',url:'https://www.mens-premium.com/profile/_uid/2756/'},
+    {name:'まなか',nameEn:'Manaka',age:26,special:false,isNew:true, active:true,photo:'',url:'https://www.mens-premium.com/profile/_uid/2776/'},
+    {name:'ひめか',nameEn:'Himeka',age:25,special:false,isNew:true, active:true,photo:'',url:'https://www.mens-premium.com/profile/_uid/2787/'},
+    {name:'にか',  nameEn:'Nika',  age:21,special:false,isNew:true, active:true,photo:'',url:'https://www.mens-premium.com/profile/_uid/2794/'},
+    {name:'ばんび',nameEn:'Bambi', age:28,special:false,isNew:true, active:true,photo:'',url:'https://www.mens-premium.com/profile/_uid/2802/'},
+    {name:'じゅり',nameEn:'Juri',  age:28,special:false,isNew:true, active:true,photo:'',url:'https://www.mens-premium.com/profile/_uid/2805/'},
+    {name:'らん',  nameEn:'Ran',   age:23,special:false,isNew:true, active:true,photo:'',url:'https://www.mens-premium.com/profile/_uid/2815/'},
+    {name:'このみ',nameEn:'Konomi',age:25,special:false,isNew:true, active:true,photo:'',url:'https://www.mens-premium.com/profile/_uid/2908/'},
+    {name:'つむぎ',nameEn:'Tsumugi',age:23,special:false,isNew:true,active:true,photo:'',url:'https://www.mens-premium.com/profile/_uid/2980/'}
   ],
   schedule: {status:'調整中', entries:[]},
   links: [
@@ -902,9 +936,9 @@ const DEFAULT = {
 
 let D = JSON.parse(localStorage.getItem('platinum_data') || 'null') || JSON.parse(JSON.stringify(DEFAULT));
 
-// ===== RENDER FRONT-END =====
 function renderAll(){
-  renderShop();renderNews();renderPickup();renderStaff();renderSchedule();renderLinks();
+  renderShop();renderNews();renderPickup();renderLinks();
+  renderSchedule();
 }
 function renderShop(){
   const s = D.shop;
@@ -968,51 +1002,88 @@ function renderPickup(){
   reObserve();
 }
 function renderStaff(){
-  const active = D.therapists.filter(t=>t.active && t.isNew);
+  // 全アクティブセラピストを表示（NEW / SPECIAL バッジ付き）
+  const active = D.therapists.filter(t=>t.active);
   document.getElementById('staffGrid').innerHTML = active.map((t,i)=>{
     const badge = t.special
       ? `<div class="special-badge">${STAR_SVG}SPECIAL</div>`
-      : `<span class="staff-new">NEW</span>`;
+      : t.isNew ? `<span class="staff-new">NEW</span>` : '';
     const imgHtml = t.photo
       ? `<img src="${t.photo}" alt="${t.name}" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover">`
       : `<div class="staff-ph"><svg viewBox="0 0 60 60" fill="none" width="52" height="52"><circle cx="30" cy="22" r="13" stroke="rgba(26,21,16,.6)" stroke-width="1.2"/><path d="M6 54c0-13.3 10.7-24 24-24s24 10.7 24 24" stroke="rgba(26,21,16,.6)" stroke-width="1.2"/></svg></div>`;
+    const ageTxt = t.age > 0 ? `${t.age} 歳` : '';
     return `
-      <div class="staff-card fade-in" style="transition-delay:${i*0.08}s">
+      <div class="staff-card fade-in" style="transition-delay:${(i%5)*0.06}s">
         <div class="staff-inner">
           <div class="staff-overlay"></div>
           ${imgHtml}${badge}
           <div class="staff-bottom">
             <div class="staff-name">${t.name}</div>
-            <div class="staff-age">${t.age} 歳</div>
+            <div class="staff-age">${ageTxt}</div>
           </div>
         </div>
-        <a href="${t.url||'#'}" class="staff-detail">プロフィールを見る</a>
+        <a href="${t.url||'#'}" class="staff-detail" target="_blank" rel="noopener">プロフィールを見る</a>
       </div>`;
   }).join('');
   reObserve();
 }
-function renderSchedule(){
-  const sc = D.schedule;
+async function renderSchedule(){
   const ph = D.shop.phone;
-  let inner = '';
-  if(sc.status==='出勤あり' && sc.entries.length>0){
-    const rows = sc.entries.map(e=>`
-      <div class="sched-entry">
-        <span class="sched-entry-name">${e.name}</span>
-        <span class="sched-entry-time">${e.time}</span>
-      </div>`).join('');
-    inner = `<div class="sched-entries">${rows}</div>`;
-  } else {
-    const msg = sc.status==='本日休業' ? '本日は休業日です' : 'スケジュール調整中です';
-    inner = `<div class="sched-status">${msg}</div>
-      <div class="sched-note">最新のスケジュールはお電話にてご確認ください</div>`;
-  }
-  document.getElementById('scheduleBox').innerHTML = `
+  const box = document.getElementById('scheduleBox');
+
+  // ローディング表示
+  box.innerHTML = `
     <div class="sched-icon"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="var(--gold2)" stroke-width="1.2"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg></div>
-    ${inner}
-    <div class="sched-orn"><div class="orn-line"></div><div class="orn-gem"></div><div class="orn-line"></div></div>
-    <a href="tel:${ph}" class="sched-phone">${ph}</a>
-    <a href="#" class="sched-link">スケジュール詳細はこちら</a>`;
+    <div class="sched-status" style="font-size:14px;letter-spacing:.2em">読み込み中...</div>`;
+
+  // 今日の日付 (JST)
+  const today = new Date(Date.now() + 9*60*60*1000).toISOString().slice(0,10);
+
+  try {
+    const { data, error } = await sb
+      .from('shifts')
+      .select('therapist_name, start_time, end_time')
+      .eq('store_id', STORE_ID)
+      .eq('status', 'approved')
+      .eq('date', today)
+      .order('start_time', { ascending: true });
+
+    if(error) throw error;
+
+    let inner = '';
+    if(data && data.length > 0){
+      const rows = data.map(s => {
+        const fmt = t => t ? t.slice(0,5) : '';
+        return `
+          <div class="sched-entry">
+            <span class="sched-entry-name">${s.therapist_name || '—'}</span>
+            <span class="sched-entry-time">${fmt(s.start_time)} 〜 ${fmt(s.end_time)}</span>
+          </div>`;
+      }).join('');
+      inner = `<div class="sched-entries">${rows}</div>`;
+    } else {
+      inner = `
+        <div class="sched-status">本日のシフトはまだ登録されていません</div>
+        <div class="sched-note">最新のスケジュールはお電話にてご確認ください</div>`;
+    }
+
+    box.innerHTML = `
+      <div class="sched-icon"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="var(--gold2)" stroke-width="1.2"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg></div>
+      ${inner}
+      <div class="sched-orn"><div class="orn-line"></div><div class="orn-gem"></div><div class="orn-line"></div></div>
+      <a href="tel:${ph}" class="sched-phone">${ph}</a>
+      <a href="#" class="sched-link">スケジュール詳細はこちら</a>`;
+
+  } catch(err) {
+    console.error('Supabase fetch error:', err);
+    box.innerHTML = `
+      <div class="sched-icon"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="var(--gold2)" stroke-width="1.2"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg></div>
+      <div class="sched-status">スケジュール調整中です</div>
+      <div class="sched-note">最新のスケジュールはお電話にてご確認ください</div>
+      <div class="sched-orn"><div class="orn-line"></div><div class="orn-gem"></div><div class="orn-line"></div></div>
+      <a href="tel:${ph}" class="sched-phone">${ph}</a>
+      <a href="#" class="sched-link">スケジュール詳細はこちら</a>`;
+  }
 }
 function renderLinks(){
   const sec = document.getElementById('linksSection');
@@ -1062,8 +1133,7 @@ function saveAll(){
   D.pickup.comment=document.getElementById('pickupComment').value||D.pickup.comment;
   D.pickup.photo=document.getElementById('pickupPhoto').value;
   D.pickup.idx=parseInt(document.getElementById('pickupSelect').value)||0;
-  // schedule
-  D.schedule.status=document.getElementById('schedStatus').value;
+  // schedule は Supabase から取得するため保存不要
   localStorage.setItem('platinum_data',JSON.stringify(D));
   renderAll();showToast('✓ 保存して反映しました');
 }
@@ -1149,30 +1219,38 @@ function saveStaff(){
 }
 function deleteStaff(i){if(confirm('削除しますか？')){D.therapists.splice(i,1);loadStaffList();}}
 
-// ===== SCHEDULE =====
-function loadSchedPanel(){
-  document.getElementById('schedStatus').value=D.schedule.status;
-  const sel=document.getElementById('scStaff');
-  sel.innerHTML=D.therapists.filter(t=>t.active).map(t=>`<option value="${t.name}">${t.name}</option>`).join('');
-  document.getElementById('schedList').innerHTML=D.schedule.entries.map((e,i)=>`
-    <div class="a-card">
-      <div class="a-card-info"><div class="a-card-title">${e.name}</div><div class="a-card-sub">${e.time}</div></div>
-      <div class="a-card-actions"><button class="a-btn-sm danger" onclick="deleteSchedEntry(${i})">削除</button></div>
-    </div>`).join('')||'<p style="color:rgba(196,152,72,.3);font-size:11px;letter-spacing:.3em">出勤者がいません</p>';
+// ===== SCHEDULE (Supabase read-only) =====
+async function loadSchedPanel(){
+  const el = document.getElementById('schedAdminList');
+  el.innerHTML = '<p style="color:rgba(196,152,72,.4);font-size:11px;letter-spacing:.3em">読み込み中...</p>';
+  const today = new Date(Date.now()+9*60*60*1000).toISOString().slice(0,10);
+  const { data, error } = await sb
+    .from('shifts')
+    .select('therapist_name, start_time, end_time, status, room_name')
+    .eq('store_id', STORE_ID)
+    .eq('status', 'approved')
+    .eq('date', today)
+    .order('start_time', { ascending: true });
+  if(error){
+    el.innerHTML = `<p style="color:#c0504a;font-size:11px;letter-spacing:.2em">取得エラー: ${error.message}</p>`;
+    return;
+  }
+  if(!data||!data.length){
+    el.innerHTML = '<p style="color:rgba(196,152,72,.35);font-size:11px;letter-spacing:.3em">本日の承認済みシフトはありません</p>';
+    return;
+  }
+  el.innerHTML = data.map(s=>{
+    const fmt = t=>t?t.slice(0,5):'—';
+    return `
+      <div class="a-card">
+        <div class="a-card-info">
+          <div class="a-card-title">${s.therapist_name||'名前なし'}</div>
+          <div class="a-card-sub">${fmt(s.start_time)} 〜 ${fmt(s.end_time)}${s.room_name?' · '+s.room_name:''}</div>
+          <div class="a-card-tags"><span class="a-tag special">承認済み</span></div>
+        </div>
+      </div>`;
+  }).join('');
 }
-function openSchedModal(){
-  document.getElementById('scIdx').value=-1;
-  document.getElementById('scTime').value='';
-  openModal('modalSched');
-}
-function saveSched(){
-  const name=document.getElementById('scStaff').value;
-  const time=document.getElementById('scTime').value;
-  if(!name||!time){showToast('全項目を入力してください');return;}
-  D.schedule.entries.push({name,time});
-  closeModal('modalSched');loadSchedPanel();showToast('追加しました');
-}
-function deleteSchedEntry(i){D.schedule.entries.splice(i,1);loadSchedPanel();}
 
 // ===== LINKS =====
 function loadLinksList(){

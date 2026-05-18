@@ -277,8 +277,11 @@ const therapistList=(saved&&saved.therapists)?saved.therapists:[];
 const specialNames=therapistList.filter(t=>t.special).map(t=>t.name);
 if(!specialNames.length) specialNames.push('るい','ゆき');
 
-// 名前→プロフィールidx マップ
-const nameToIdx={};
+// デフォルト名前→idxマップ（LocalStorage未保存時のフォールバック）
+const DEFAULT_NAME_IDX={'ななせ':0,'ひな':1,'ゆい':2,'あられ':3,'ゆき':4,'ゆあ':5,'のぞみ':6,'もあ':7,'もえ':8,'かれん':9,'まゆ':10,'えな':11,'めい':12,'るな':13,'ましろ':14,'るみ':15,'みやび':16,'えみり':17,'あんな':18,'なの':19,'りん':20,'みらい':21,'おとね':22,'みずは':23,'るい':24,'えれな':25,'しいな':26,'ねいろ':27,'もえか':28,'こはね':29,'ななみ':30,'くろえ':31,'まなか':32,'ひめか':33,'にか':34,'ばんび':35,'じゅり':36,'らん':37,'このみ':38,'つむぎ':39};
+
+// 名前→プロフィールidx マップ（LocalStorageが優先）
+const nameToIdx={...DEFAULT_NAME_IDX};
 therapistList.forEach((t,i)=>{ nameToIdx[t.name]=i; });
 
 async function loadDate(dateStr){

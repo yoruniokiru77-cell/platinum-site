@@ -117,24 +117,27 @@ section{padding:112px 0;position:relative;z-index:2}
 
 /* PICKUP */
 .pickup-section{background:var(--bg2)}
-.pickup-wrap{display:grid;grid-template-columns:5fr 4fr;gap:0;border:1px solid var(--line)}
-.pickup-img-wrap{position:relative;overflow:hidden;background:var(--bg3);aspect-ratio:4/5}
-.pickup-img-wrap img{width:100%;height:100%;object-fit:cover}
-.pickup-img-wrap::after{content:'';position:absolute;inset:0;background:linear-gradient(to bottom,transparent 55%,rgba(26,21,16,.7))}
-.pickup-placeholder{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;flex-direction:column;opacity:.2}
-.pickup-img-label{position:absolute;bottom:0;left:0;right:0;padding:32px;z-index:2}
-.pickup-img-name{font-family:var(--serif);font-size:56px;font-weight:300;letter-spacing:.12em;color:#FAF7F2;line-height:1}
-.pickup-img-age{font-size:10px;letter-spacing:.4em;color:rgba(232,192,96,.9);margin-top:4px}
-.pickup-detail{padding:56px 52px;display:flex;flex-direction:column;justify-content:center;background:var(--cream)}
-.pickup-special{display:inline-flex;align-items:center;gap:8px;background:linear-gradient(135deg,#E8C060 0%,#C49848 40%,#E8C060 65%,#B08030 100%);background-size:200% 200%;animation:shimmerBadge 3s ease-in-out infinite;color:var(--dark);font-size:8px;letter-spacing:.5em;font-weight:500;padding:6px 18px 6px 14px;margin-bottom:14px}
-.pickup-special svg{width:11px;height:11px;fill:var(--dark)}
-.pickup-em{font-size:9px;letter-spacing:.55em;color:var(--gold);border:1px solid var(--line2);padding:6px 18px;display:inline-block;margin-bottom:28px}
-.pickup-quote{font-family:var(--serif);font-size:30px;font-style:italic;font-weight:300;letter-spacing:.06em;color:var(--dark);line-height:1.2;margin-bottom:28px}
-.pickup-body{font-size:11.5px;font-weight:200;line-height:2.5;color:var(--muted);margin-bottom:36px;padding-left:16px;border-left:2px solid var(--gold-lt)}
-.pickup-action{display:flex;align-items:center;gap:14px;font-family:var(--serif);font-size:12px;letter-spacing:.3em;color:var(--gold);text-decoration:none;transition:gap .3s}
-.pickup-action .arr{width:40px;height:1px;background:var(--gold);position:relative;transition:width .3s}
-.pickup-action .arr::after{content:'';position:absolute;right:0;top:-3px;width:6px;height:6px;border-top:1px solid var(--gold);border-right:1px solid var(--gold);transform:rotate(45deg)}
-.pickup-action:hover .arr{width:60px}
+.pickup-grid{display:grid;gap:2px}
+.pickup-grid.count-1{grid-template-columns:1fr;max-width:700px;margin:0 auto}
+.pickup-grid.count-2{grid-template-columns:repeat(2,1fr)}
+.pickup-grid.count-3{grid-template-columns:repeat(3,1fr)}
+.pickup-card{background:var(--cream);border:1px solid var(--line);overflow:hidden;display:flex;flex-direction:column}
+.pickup-card-img{position:relative;aspect-ratio:3/4;background:var(--bg3);overflow:hidden;flex-shrink:0}
+.pickup-card-img img{width:100%;height:100%;object-fit:cover;transition:transform .6s cubic-bezier(.25,.46,.45,.94)}
+.pickup-card:hover .pickup-card-img img{transform:scale(1.04)}
+.pickup-card-img::after{content:'';position:absolute;inset:0;background:linear-gradient(to bottom,transparent 55%,rgba(26,21,16,.7))}
+.pickup-card-img-label{position:absolute;bottom:0;left:0;right:0;padding:24px 28px;z-index:2}
+.pickup-card-name{font-family:var(--serif);font-size:clamp(32px,4vw,52px);font-weight:300;letter-spacing:.12em;color:#FAF7F2;line-height:1}
+.pickup-card-nameja{font-size:10px;letter-spacing:.4em;color:rgba(232,192,96,.9);margin-top:4px}
+.pickup-card-body{padding:36px 32px;display:flex;flex-direction:column;gap:16px;flex:1}
+.pickup-card-special{display:inline-flex;align-items:center;gap:7px;background:linear-gradient(135deg,#E8C060,#C49848,#E8C060);background-size:200% 200%;animation:shimmerBadge 3s ease-in-out infinite;color:var(--dark);font-size:8px;letter-spacing:.5em;font-weight:500;padding:5px 16px 5px 12px;align-self:flex-start}
+.pickup-card-special svg{width:10px;height:10px;fill:var(--dark)}
+.pickup-card-comment{font-size:11.5px;font-weight:200;line-height:2.4;color:var(--muted);border-left:2px solid var(--gold-lt);padding-left:16px;overflow:hidden;display:-webkit-box;-webkit-line-clamp:6;-webkit-box-orient:vertical}
+.pickup-card-link{display:inline-flex;align-items:center;gap:12px;font-family:var(--serif);font-size:12px;letter-spacing:.3em;color:var(--gold);text-decoration:none;transition:gap .3s;margin-top:auto}
+.pickup-card-link .arr{width:36px;height:1px;background:var(--gold);position:relative;transition:width .3s;flex-shrink:0}
+.pickup-card-link .arr::after{content:'';position:absolute;right:0;top:-3px;width:6px;height:6px;border-top:1px solid var(--gold);border-right:1px solid var(--gold);transform:rotate(45deg)}
+.pickup-card-link:hover .arr{width:56px}
+.pickup-card-ph{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;flex-direction:column;opacity:.2}
 
 /* STAFF */
 .staff-section{background:var(--bg)}
@@ -294,7 +297,8 @@ footer::before{content:'';display:block;height:1px;background:linear-gradient(to
   .nav-right{display:none!important}
   .hamburger{display:flex!important}
   .container{padding:0 24px}section{padding:80px 0}
-  .pickup-wrap{grid-template-columns:1fr}.pickup-detail{padding:36px 28px}
+  .pickup-grid.count-2,.pickup-grid.count-3{grid-template-columns:1fr}
+  .pickup-detail{padding:36px 28px}
   .staff-grid{grid-template-columns:repeat(3,1fr)!important}
   .course-grid{grid-template-columns:repeat(2,1fr)}
   .notice-grid{grid-template-columns:1fr}.access-split{grid-template-columns:1fr}
@@ -819,15 +823,18 @@ footer::before{content:'';display:block;height:1px;background:linear-gradient(to
         <!-- PICKUP PANEL -->
         <div class="admin-panel" id="panel-pickup">
           <div class="a-section">
-            <div class="a-section-head"><span class="a-section-title">ピックアップセラピスト設定</span></div>
+            <div class="a-section-head"><span class="a-section-title">ピックアップセラピスト設定（最大3名）</span></div>
             <div class="a-section-body">
+              <p style="font-size:11px;letter-spacing:.2em;color:rgba(196,152,72,.5);margin-bottom:20px;line-height:2">紹介文はプロフィールのコメントが自動で使用されます。<br>「なし」に設定するとその枠は非表示になります。</p>
               <div class="a-form-row">
-                <div><label class="a-label">セラピスト選択</label><select class="a-select" id="pickupSelect"></select></div>
-                <div><label class="a-label">英字名（カード表示用）</label><input class="a-input" id="pickupNameEn" placeholder="例: Rui"></div>
+                <div><label class="a-label">1人目</label><select class="a-select" id="pickupSel0"></select></div>
+                <div><label class="a-label">2人目</label><select class="a-select" id="pickupSel1"></select></div>
               </div>
-              <div class="a-form-row full"><div><label class="a-label">引用文（大見出し）</label><input class="a-input" id="pickupQuote" placeholder="例: 100年に1人の美女"></div></div>
-              <div class="a-form-row full"><div><label class="a-label">紹介コメント</label><textarea class="a-textarea" id="pickupComment" rows="5"></textarea></div></div>
-              <div class="a-form-row full"><div><label class="a-label">写真URL（空欄の場合はプレースホルダー表示）</label><input class="a-input" id="pickupPhoto" placeholder="https://..."></div></div>
+              <div class="a-form-row">
+                <div><label class="a-label">3人目</label><select class="a-select" id="pickupSel2"></select></div>
+                <div></div>
+              </div>
+              <button class="a-btn-sm primary" style="margin-top:8px" onclick="savePickupNew()">保存して反映</button>
             </div>
           </div>
         </div>
@@ -1099,7 +1106,7 @@ const DEFAULT = {
   password: 'admin1234',
   shop: {phone:'070-9094-9709', hours:'12:00 — 26:00', area:'茨城県 神栖市', off:'なし'},
   news: [{date:'2025.01.01',cat:'お知らせ',body:'現在お知らせはございません。最新情報はお電話にてご確認くださいませ。'}],
-  pickup: {idx:0, nameEn:'Rui', quote:'100年に1人の美女', comment:'誰もが認める、いい女。\n整った顔立ちに峰不二子ばりのスタイル —\nまさに理想の女性です。\n\n長い手足からくる圧倒的な密着感。\n海よりも深い、ディープリンパ。\nドキドキそして完璧な時間を、堪能ください。', photo:''},
+  pickup: {idxList:[0,4,24]},
   therapists: [
     {name:"ななせ",nameEn:"Nanase",age:21,special:false,isNew:false,active:true,photo:"https://www.mens-premium.com/images/mc_1_1_460.jpeg",url:"profile.html?idx=0",comment:"【当店ランクセラピスト】\nこの機会にぜひご指名ください！\n美しいプロポーションに胸が高鳴ります！\n【現役女子大生】人気グラドルのようなメリハリボディがエロい美少女「ななせ」ちゃんです\n引き込まれるような大きな瞳が印象的な整ったお顔立ち♪\n引き締まったウエストに、ふんわり綺麗なFカップが織りなすセクシーなボディライン！\n漢の夢がつまったもち肌美乳のゼロ距離密着マッサージ\n愛嬌満点な性格もとっても魅力的♪\nぜひご予約オススメ致します!!",photos:["https://www.mens-premium.com/images/mc_1_1_460.jpeg", "https://www.mens-premium.com/images/mc_1_2_460.jpeg", "https://www.mens-premium.com/images/mc_1_3_460.jpeg"]},
     {name:"ひな",nameEn:"Hina",age:20,special:false,isNew:false,active:true,photo:"https://www.mens-premium.com/images/mc_1_1_624.jpeg",url:"profile.html?idx=1",comment:"【圧倒的彼女感】\n癒し系の超絶最強美人あらわる！\n容姿端麗でスレンダーでありながら目のやり場に困るほどのセクシーさ♡\n性格はとても穏やかで優しくて女神様のような雰囲気で、あなたを寄り添い癒し尽くしてくれます。\nエステは濃厚超絶技巧。\nゆったりと深く気持ちよすぎるリンパはまさに夢見心地。",photos:["https://www.mens-premium.com/images/mc_1_1_624.jpeg", "https://www.mens-premium.com/images/mc_1_2_624.jpeg"]},
@@ -1190,31 +1197,41 @@ function renderNews(){
   reObserve();
 }
 function renderPickup(){
-  const p = D.pickup;
-  const th = D.therapists[p.idx] || D.therapists[0];
-  if(!th) return;
-  const imgHtml = p.photo
-    ? `<img src="${p.photo}" alt="${th.name}">`
-    : `<div class="pickup-placeholder"><svg viewBox="0 0 80 80" fill="none" width="72" height="72"><circle cx="40" cy="28" r="18" stroke="rgba(26,21,16,.5)" stroke-width="1.2"/><path d="M8 72c0-17.7 14.3-32 32-32s32 14.3 32 32" stroke="rgba(26,21,16,.5)" stroke-width="1.2"/></svg></div>`;
-  const specialBadge = th.special
-    ? `<div class="pickup-special">${STAR_SVG}SPECIAL THERAPIST</div>` : '';
-  const commentHtml = p.comment.replace(/\n/g,'<br>');
-  document.getElementById('pickupContainer').innerHTML = `
-    <div class="pickup-wrap">
-      <div class="pickup-img-wrap">${imgHtml}
-        <div class="pickup-img-label">
-          <div class="pickup-img-name">${p.nameEn}</div>
-          <div class="pickup-img-age">${th.name} · ${th.age} 歳</div>
+  // idxListがない旧データ互換
+  const idxList = D.pickup.idxList
+    || (D.pickup.idx !== undefined ? [D.pickup.idx] : [0]);
+  const validIdxs = idxList.filter(i => i !== -1 && D.therapists[i]);
+  if(!validIdxs.length){ document.getElementById('pickupContainer').innerHTML=''; return; }
+  const count = validIdxs.length;
+  const cards = validIdxs.map(idx => {
+    const t = D.therapists[idx];
+    const mainPhoto = t.photo || (t.photos && t.photos[0]) || '';
+    const imgHtml = mainPhoto
+      ? `<img src="${mainPhoto}" alt="${t.name}">`
+      : `<div class="pickup-card-ph"><svg viewBox="0 0 80 80" fill="none" width="60" height="60"><circle cx="40" cy="28" r="18" stroke="rgba(26,21,16,.5)" stroke-width="1.2"/><path d="M8 72c0-17.7 14.3-32 32-32s32 14.3 32 32" stroke="rgba(26,21,16,.5)" stroke-width="1.2"/></svg></div>`;
+    const badge = t.special ? `<div class="pickup-card-special">${STAR_SVG}SPECIAL</div>` : '';
+    const ageTxt = t.age > 0 ? ` · ${t.age} 歳` : '';
+    const comment = t.comment || '';
+    const commentHtml = comment ? `<p class="pickup-card-comment">${comment.replace(/\n/g,'<br>')}</p>` : '';
+    const url = `profile.html?idx=${idx}`;
+    return `
+      <div class="pickup-card">
+        <div class="pickup-card-img">${imgHtml}
+          <div class="pickup-card-img-label">
+            <div class="pickup-card-name">${t.nameEn}</div>
+            <div class="pickup-card-nameja">${t.name}${ageTxt}</div>
+          </div>
         </div>
-      </div>
-      <div class="pickup-detail">
-        ${specialBadge}
-        <span class="pickup-em">✦ PICK UP THERAPIST</span>
-        <div class="pickup-quote">"${p.quote}"</div>
-        <p class="pickup-body">${commentHtml}</p>
-        <a href="${th.url||'#'}" class="pickup-action">詳しくはこちら<span class="arr"></span></a>
-      </div>
-    </div>`;
+        <div class="pickup-card-body">
+          ${badge}
+          <span style="font-size:9px;letter-spacing:.55em;color:var(--gold);border:1px solid var(--line2);padding:5px 16px;display:inline-block;align-self:flex-start">✦ PICK UP THERAPIST</span>
+          ${commentHtml}
+          <a href="${url}" class="pickup-card-link">詳しくはこちら<span class="arr"></span></a>
+        </div>
+      </div>`;
+  }).join('');
+  document.getElementById('pickupContainer').innerHTML =
+    `<div class="pickup-grid count-${count}">${cards}</div>`;
   reObserve();
 }
 function renderStaff(){
@@ -1353,12 +1370,6 @@ function saveAll(){
   sp.hours=document.getElementById('shopHours').value||sp.hours;
   sp.area=document.getElementById('shopArea').value||sp.area;
   sp.off=document.getElementById('shopOff').value||sp.off;
-  // collect pickup text fields
-  D.pickup.nameEn=document.getElementById('pickupNameEn').value||D.pickup.nameEn;
-  D.pickup.quote=document.getElementById('pickupQuote').value||D.pickup.quote;
-  D.pickup.comment=document.getElementById('pickupComment').value||D.pickup.comment;
-  D.pickup.photo=document.getElementById('pickupPhoto').value;
-  D.pickup.idx=parseInt(document.getElementById('pickupSelect').value)||0;
   // schedule は Supabase から取得するため保存不要
   saveBanner();
   localStorage.setItem('platinum_data',JSON.stringify(D));
@@ -1396,12 +1407,21 @@ function deleteNews(i){if(confirm('削除しますか？')){D.news.splice(i,1);l
 
 // ===== PICKUP =====
 function loadPickupPanel(){
-  const sel=document.getElementById('pickupSelect');
-  sel.innerHTML=D.therapists.map((t,i)=>`<option value="${i}" ${D.pickup.idx===i?'selected':''}>${t.name}（${t.age}歳）</option>`).join('');
-  document.getElementById('pickupNameEn').value=D.pickup.nameEn;
-  document.getElementById('pickupQuote').value=D.pickup.quote;
-  document.getElementById('pickupComment').value=D.pickup.comment;
-  document.getElementById('pickupPhoto').value=D.pickup.photo||'';
+  const idxList = D.pickup.idxList || [D.pickup.idx||0, -1, -1];
+  const opts = [['なし',-1],...D.therapists.map((t,i)=>[`${t.name}（${t.nameEn}）`,i])];
+  [0,1,2].forEach(slot=>{
+    const sel = document.getElementById('pickupSel'+slot);
+    sel.innerHTML = opts.map(([label,val])=>
+      `<option value="${val}" ${idxList[slot]===val?'selected':''}>${label}</option>`
+    ).join('');
+  });
+}
+function savePickupNew(){
+  const idxList = [0,1,2].map(s=>parseInt(document.getElementById('pickupSel'+s).value));
+  D.pickup = {idxList};
+  localStorage.setItem('platinum_data',JSON.stringify(D));
+  renderPickup();
+  showToast('✓ ピックアップを保存しました');
 }
 
 // ===== STAFF =====

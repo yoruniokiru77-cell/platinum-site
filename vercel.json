@@ -1,14 +1,3 @@
 {
-  "version": 2,
-  "builds": [
-    { "src": "*.html", "use": "@vercel/static" },
-    { "src": "*.json", "use": "@vercel/static" }
-  ],
-  "routes": [
-    { "src": "/price", "dest": "/price.html" },
-    { "src": "/staff", "dest": "/staff.html" },
-    { "src": "/schedule", "dest": "/schedule.html" },
-    { "src": "/access", "dest": "/access.html" },
-    { "src": "/(.*)", "dest": "/$1" }
-  ]
+  "version": 2
 }

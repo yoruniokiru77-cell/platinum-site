@@ -28,13 +28,25 @@ body{background:var(--bg);color:var(--dark);font-family:var(--ja);overflow-x:hid
 .bottom-bar-web{background:var(--gold2);display:flex;align-items:center;justify-content:center;gap:10px;text-decoration:none;color:var(--dark);font-size:12px;letter-spacing:.25em;font-family:var(--ja);font-weight:500;transition:background .3s}
 .bottom-bar-web:hover{background:var(--gold3)}
 
-/* CURSOR */
+/* BANNER */
+.top-banner{width:100%;position:relative;z-index:2;margin-top:80px;overflow:hidden;display:none}
+.top-banner.active{display:block}
+.top-banner-img{width:100%;display:block;max-height:400px;object-fit:cover;cursor:pointer}
+.top-banner-text{width:100%;background:var(--dark);padding:20px 24px;text-align:center;cursor:pointer}
+.top-banner-text-main{font-family:var(--serif);font-size:clamp(18px,4vw,28px);font-weight:300;letter-spacing:.15em;color:var(--gold-lt)}
+.top-banner-text-sub{font-size:10px;letter-spacing:.4em;color:rgba(196,152,72,.55);margin-top:8px}
+.top-banner-close{position:absolute;top:8px;right:12px;background:rgba(26,21,16,.6);border:none;color:rgba(250,247,242,.8);width:28px;height:28px;border-radius:50%;cursor:pointer;font-size:14px;display:flex;align-items:center;justify-content:center;z-index:3}
+
+/* BANNER ADMIN */
+.banner-preview{width:100%;aspect-ratio:16/5;background:rgba(255,255,255,.04);border:1px solid rgba(196,152,72,.15);overflow:hidden;position:relative;margin-bottom:12px}
+.banner-preview img{width:100%;height:100%;object-fit:cover}
+.banner-preview-ph{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:10px;letter-spacing:.3em;color:rgba(196,152,72,.3)}
 .cursor{position:fixed;width:8px;height:8px;background:var(--gold2);border-radius:50%;pointer-events:none;z-index:9999;transform:translate(-50%,-50%);mix-blend-mode:multiply}
 .cursor-ring{position:fixed;width:34px;height:34px;border:1px solid rgba(154,114,48,0.45);border-radius:50%;pointer-events:none;z-index:9998;transform:translate(-50%,-50%);transition:width .3s cubic-bezier(.25,.46,.45,.94),height .3s cubic-bezier(.25,.46,.45,.94)}
 .cursor-ring.expand{width:52px;height:52px;opacity:.5}
 
 /* NAV */
-nav{position:fixed;top:0;left:0;width:100%;z-index:1000;padding:0 56px;display:flex;align-items:center;justify-content:space-between;height:80px;background:rgba(250,247,242,0.93);backdrop-filter:blur(12px);border-bottom:1px solid var(--line);transition:box-shadow .4s}
+nav{position:fixed;top:0;left:0;width:100%;z-index:1000;padding:0 56px;display:flex;align-items:center;justify-content:space-between;height:80px;background:rgba(250,247,242,0.97);backdrop-filter:blur(12px);border-bottom:1px solid var(--line);transition:box-shadow .4s;overflow:hidden}
 nav.scrolled{box-shadow:0 2px 40px rgba(154,114,48,0.08)}
 .nav-logo{display:flex;align-items:center;gap:16px;text-decoration:none}
 .nav-logo-mark{width:42px;height:42px;border:1.5px solid var(--gold2);border-radius:50%;display:flex;align-items:center;justify-content:center;background:var(--dark);flex-shrink:0}
@@ -275,7 +287,10 @@ footer::before{content:'';display:block;height:1px;background:linear-gradient(to
 
 /* MOBILE */
 @media(max-width:960px){
-  nav{padding:0 24px}.nav-center{display:none}.hamburger{display:flex}
+  nav{padding:0 16px;overflow:hidden}
+  .nav-center{display:none!important}
+  .nav-right{display:none!important}
+  .hamburger{display:flex!important}
   .container{padding:0 24px}section{padding:80px 0}
   .pickup-wrap{grid-template-columns:1fr}.pickup-detail{padding:36px 28px}
   .staff-grid{grid-template-columns:repeat(3,1fr)!important}
@@ -488,6 +503,12 @@ footer::before{content:'';display:block;height:1px;background:linear-gradient(to
     <span></span><span></span><span></span>
   </button>
 </nav>
+
+<!-- TOP BANNER -->
+<div class="top-banner" id="topBanner">
+  <button class="top-banner-close" id="bannerClose" onclick="closeBannerTemp()">✕</button>
+  <div id="bannerInner"></div>
+</div>
 
 <!-- HERO -->
 <section class="hero" id="home">
@@ -753,6 +774,9 @@ footer::before{content:'';display:block;height:1px;background:linear-gradient(to
         <div class="admin-nav-item" data-panel="staff" onclick="switchPanel('staff',this)">
           <svg viewBox="0 0 24 24"><path d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z"/></svg>セラピスト
         </div>
+        <div class="admin-nav-item" data-panel="banner" onclick="switchPanel('banner',this)">
+          <svg viewBox="0 0 24 24"><rect x="2" y="5" width="20" height="14" rx="2"/><line x1="2" y1="10" x2="22" y2="10"/></svg>バナー管理
+        </div>
         <div class="admin-nav-item" data-panel="reception" onclick="switchPanel('reception',this)">
           <svg viewBox="0 0 24 24"><path d="M18.364 18.364A9 9 0 005.636 5.636m12.728 12.728A9 9 0 015.636 5.636m12.728 12.728L5.636 5.636"/></svg>受付状態
         </div>
@@ -812,6 +836,59 @@ footer::before{content:'';display:block;height:1px;background:linear-gradient(to
             <div class="a-section-body">
               <div class="a-card-list" id="staffList"></div>
               <button class="a-add-btn" onclick="openStaffModal()">＋ セラピストを追加</button>
+            </div>
+          </div>
+        </div>
+        <!-- BANNER PANEL -->
+        <div class="admin-panel" id="panel-banner">
+          <div class="a-section">
+            <div class="a-section-head"><span class="a-section-title">トップバナー管理</span></div>
+            <div class="a-section-body">
+              <div class="a-checkbox-row" style="margin-bottom:20px">
+                <input type="checkbox" class="a-checkbox" id="bannerActive">
+                <label class="a-checkbox-label" for="bannerActive">バナーを表示する</label>
+              </div>
+              <label class="a-label">バナータイプ</label>
+              <select class="a-select" id="bannerType" style="max-width:300px;margin-bottom:20px" onchange="updateBannerTypeUI()">
+                <option value="image">画像バナー</option>
+                <option value="text">テキストバナー（画像なし）</option>
+              </select>
+              <div id="bannerImageSection">
+                <div class="banner-preview" id="bannerPreview">
+                  <div class="banner-preview-ph" id="bannerPreviewPh">画像プレビュー</div>
+                  <img id="bannerPreviewImg" src="" alt="" style="display:none">
+                </div>
+                <div style="display:flex;gap:8px;margin-bottom:16px;flex-wrap:wrap">
+                  <label class="img-upload-btn" for="bannerFileInput">
+                    <svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4M17 8l-5-5-5 5M12 3v12"/></svg>
+                    画像をアップロード
+                  </label>
+                  <input type="file" id="bannerFileInput" accept="image/*" style="display:none" onchange="handleBannerUpload(this)">
+                  <button class="img-clear-btn" onclick="clearBannerImage()">削除</button>
+                </div>
+                <div class="a-form-row full">
+                  <div><label class="a-label">または画像URL</label>
+                  <input class="a-input" id="bannerImgUrl" placeholder="https://..." oninput="previewBannerUrl(this.value)"></div>
+                </div>
+                <div class="a-form-row full">
+                  <div><label class="a-label">バナークリック時のリンク先（空欄可）</label>
+                  <input class="a-input" id="bannerLink" placeholder="https://..."></div>
+                </div>
+              </div>
+              <div id="bannerTextSection" style="display:none">
+                <div class="a-form-row full">
+                  <div><label class="a-label">メインテキスト</label>
+                  <input class="a-input" id="bannerTextMain" placeholder="例: 期間限定キャンペーン開催中"></div>
+                </div>
+                <div class="a-form-row full">
+                  <div><label class="a-label">サブテキスト</label>
+                  <input class="a-input" id="bannerTextSub" placeholder="例: 詳しくはお電話にてご確認ください"></div>
+                </div>
+                <div class="a-form-row full">
+                  <div><label class="a-label">クリック時のリンク先（空欄可）</label>
+                  <input class="a-input" id="bannerTextLink" placeholder="https://..."></div>
+                </div>
+              </div>
             </div>
           </div>
         </div>
@@ -1022,46 +1099,238 @@ const DEFAULT = {
   news: [{date:'2025.01.01',cat:'お知らせ',body:'現在お知らせはございません。最新情報はお電話にてご確認くださいませ。'}],
   pickup: {idx:0, nameEn:'Rui', quote:'100年に1人の美女', comment:'誰もが認める、いい女。\n整った顔立ちに峰不二子ばりのスタイル —\nまさに理想の女性です。\n\n長い手足からくる圧倒的な密着感。\n海よりも深い、ディープリンパ。\nドキドキそして完璧な時間を、堪能ください。', photo:''},
   therapists: [
-    {name:'ななせ',nameEn:'Nanase',age:21,special:false,isNew:false,active:true,photo:'',url:'profile.html?idx=0',comment:'',photos:[]},
+    {name:'ななせ',nameEn:'Nanase',age:21,special:false,isNew:false,active:true,photo:'https://www.mens-premium.com/images/mc_1_1_460.jpeg',url:'profile.html?idx=0',comment:'【当店ランクセラピスト】
+
+この機会にぜひご指名ください‼︎
+
+美しいプロポーションに胸が高鳴ります！！
+【現役女子大生】人気グラドルのようなメリハリボディがエロい美少女『ななせ』ちゃんです💛
+
+引き込まれるような大きな瞳が印象的な整ったお顔立ち♪
+そして"男"を惑わす、若く健康的なハリのあるぴちぴちエッチボディが堪らない！
+引き締まったウエストに、ふんわり綺麗なＦカップが織りなすセクシーなボディライン！
+漢の夢がつまったもち肌美乳のゼロ距離密着マッサージ、、、お客様が羨ましい限りでございます！！
+
+愛嬌満点な性格もとっても魅力的♪
+時折見せる屈託のない笑顔に加え、コミュニケーション能力の高さからプレイ以外の接客にも期待大です！！
+
+ぜひご予約オススメ致します!!',photos:["https://www.mens-premium.com/images/mc_1_1_460.jpeg", "https://www.mens-premium.com/images/mc_1_2_460.jpeg", "https://www.mens-premium.com/images/mc_1_3_460.jpeg"]},
     {name:'ひな',  nameEn:'Hina',  age:20,special:false,isNew:false,active:true,photo:'',url:'profile.html?idx=1',comment:'',photos:[]},
     {name:'ゆい',  nameEn:'Yui',   age:22,special:false,isNew:false,active:true,photo:'',url:'profile.html?idx=2',comment:'',photos:[]},
-    {name:'あられ',nameEn:'Arare', age:24,special:false,isNew:false,active:true,photo:'',url:'profile.html?idx=3',comment:'',photos:[]},
+    {name:'あられ',nameEn:'Arare', age:24,special:false,isNew:false,active:true,photo:'https://www.mens-premium.com/images/mc_1_1_1103.jpeg',url:'profile.html?idx=3',comment:'素人系どエロセラピスト♡
+
+こんな可愛い子にあんなことやこんなことまで♡
+
+メンエス界ではなかなかお目にかかれない逸材です‼︎
+
+すべすべ白肌からくる濃厚施術、、
+そんなギャップにイチコロです♡
+
+極めつけは「脳トロボイス」
+施術中脳死すること間違いなし‼︎
+
+ご予約はお早めに‼︎',photos:["https://www.mens-premium.com/images/mc_1_1_1103.jpeg"]},
     {name:'ゆき',  nameEn:'Yuki',  age:23,special:true, isNew:false,active:true,photo:'',url:'profile.html?idx=4',comment:'',photos:[]},
     {name:'ゆあ',  nameEn:'Yua',   age:22,special:false,isNew:false,active:true,photo:'',url:'profile.html?idx=5',comment:'',photos:[]},
-    {name:'のぞみ',nameEn:'Nozomi',age:23,special:false,isNew:false,active:true,photo:'',url:'profile.html?idx=6',comment:'',photos:[]},
+    {name:'のぞみ',nameEn:'Nozomi',age:23,special:false,isNew:false,active:true,photo:'https://www.mens-premium.com/images/mc_1_1_1505.jpeg',url:'profile.html?idx=6',comment:'',photos:["https://www.mens-premium.com/images/mc_1_1_1505.jpeg", "https://www.mens-premium.com/images/mc_1_2_1505.jpeg"]},
     {name:'もあ',  nameEn:'Moa',   age:22,special:false,isNew:false,active:true,photo:'',url:'profile.html?idx=7',comment:'',photos:[]},
     {name:'もえ',  nameEn:'Moe',   age:24,special:false,isNew:false,active:true,photo:'',url:'profile.html?idx=8',comment:'',photos:[]},
-    {name:'かれん',nameEn:'Karen', age:23,special:false,isNew:false,active:true,photo:'',url:'profile.html?idx=9',comment:'',photos:[]},
+    {name:'かれん',nameEn:'Karen', age:23,special:false,isNew:false,active:true,photo:'https://www.mens-premium.com/images/mc_1_1_1589.jpeg',url:'profile.html?idx=9',comment:'超SS級美少女♡
+
+坂グループに居てもおかしくないようなアイドルフェイスの超S級美女の入店です！！
+
+見た目通りのおっとりした優しい性格の女の子☆
+きっと癒しのお仕事は天職だろうと思わせる女性です
+
+最上級ルックスで施術は濃厚密着♡
+深めのディープリンパでドキドキ感MAX‼︎
+
+早めのご予約お待ちしております♡',photos:["https://www.mens-premium.com/images/mc_1_1_1589.jpeg", "https://www.mens-premium.com/images/mc_1_2_1589.jpeg"]},
     {name:'まゆ',  nameEn:'Mayu',  age:23,special:false,isNew:false,active:true,photo:'',url:'profile.html?idx=10',comment:'',photos:[]},
     {name:'えな',  nameEn:'Ena',   age:22,special:false,isNew:false,active:true,photo:'',url:'profile.html?idx=11',comment:'',photos:[]},
     {name:'めい',  nameEn:'Mei',   age:23,special:false,isNew:false,active:true,photo:'',url:'profile.html?idx=12',comment:'',photos:[]},
     {name:'るな',  nameEn:'Luna',  age:21,special:false,isNew:false,active:true,photo:'',url:'profile.html?idx=13',comment:'',photos:[]},
-    {name:'ましろ',nameEn:'Mashiro',age:24,special:false,isNew:false,active:true,photo:'',url:'profile.html?idx=14',comment:'',photos:[]},
+    {name:'ましろ',nameEn:'Mashiro',age:24,special:false,isNew:false,active:true,photo:'https://www.mens-premium.com/images/mc_1_1_2122.jpeg',url:'profile.html?idx=14',comment:'白い透明感のある清楚な雰囲気と大胆な施術を兼ね備えたセラピストさんのご紹介です♬
+
+彼女の透明感あふれる柔らかな笑顔に心奪われること間違いなし✨
+しかし、その清楚な外見とは裏腹に、施術になると一変大胆不敵な手技で貴方の疲れた体を根こそぎ癒してくれます！！
+
+彼女の優雅な指使いはまるで魔法のようです🪄
+繊細かつ大胆なタッチで、貴方の隅々に潜む疲れを解きほぐし心地良い安らぎをもたらしてくれることでしょう🩷
+
+特別な雰囲気と技術は、他では決して味わえない至福のひとときを約束します✨',photos:["https://www.mens-premium.com/images/mc_1_1_2122.jpeg", "https://www.mens-premium.com/images/mc_1_2_2122.jpeg", "https://www.mens-premium.com/images/mc_1_3_2122.jpeg"]},
     {name:'るみ',  nameEn:'Rumi',  age:0, special:false,isNew:false,active:true,photo:'',url:'profile.html?idx=15',comment:'',photos:[]},
-    {name:'みやび',nameEn:'Miyabi',age:0, special:false,isNew:false,active:true,photo:'',url:'profile.html?idx=16',comment:'',photos:[]},
-    {name:'えみり',nameEn:'Emiri', age:22,special:false,isNew:false,active:true,photo:'',url:'profile.html?idx=17',comment:'',photos:[]},
-    {name:'あんな',nameEn:'Anna',  age:28,special:false,isNew:false,active:true,photo:'',url:'profile.html?idx=18',comment:'',photos:[]},
+    {name:'みやび',nameEn:'Miyabi',age:0, special:false,isNew:false,active:true,photo:'https://www.mens-premium.com/images/mc_1_1_2156.jpeg',url:'profile.html?idx=16',comment:'レベチな美女セラピスト♡
+
+美人な見た目で大人しい空気感。
+一見するとクールな印象を持ちますが、実は明るく人懐っこい性格な彼女♡
+
+容姿の美しさとパーフェクトにバランスの取れたきめ細かく絹のような肌質。
+
+スレンダーながらそそられるEカップ♡
+
+そしてなんといっても圧巻な存在感を持つその美尻はずっと見ていたくなることでしょう♡
+
+施術では超超超密着タイム…
+最初から最後まで離れることのない密着度はアナコンダ級♡
+
+王道的なハイクオリティさと徐々に感じられるエロス
+
+一度入られてみては…？',photos:["https://www.mens-premium.com/images/mc_1_1_2156.jpeg", "https://www.mens-premium.com/images/mc_1_2_2156.jpeg", "https://www.mens-premium.com/images/mc_1_3_2156.jpeg", "https://www.mens-premium.com/images/mc_1_4_2156.jpeg"]},
+    {name:'えみり',nameEn:'Emiri', age:22,special:false,isNew:false,active:true,photo:'https://www.mens-premium.com/images/mc_1_1_2203.jpeg',url:'profile.html?idx=17',comment:'ただ誰がみても一目惚れしてしまう程の顔面偏差値😍
+
+現役グラビアアイドルの入店です！！！
+
+もちもちすべすべ肌に、施術中は雰囲気作りまで徹底するお客様を第一に考える素敵なセラピスト😳💓
+
+このレベルの女の子と2人きりの空間はまるで夢の様です✨
+
+ご予約はお早めに🔥',photos:["https://www.mens-premium.com/images/mc_1_1_2203.jpeg", "https://www.mens-premium.com/images/mc_1_2_2203.jpeg", "https://www.mens-premium.com/images/mc_1_3_2203.jpeg"]},
+    {name:'あんな',nameEn:'Anna',  age:28,special:false,isNew:false,active:true,photo:'https://www.mens-premium.com/images/mc_1_1_2220.jpeg',url:'profile.html?idx=18',comment:'ベテランセラピストならではの安心感、安定感
+お姉さんセラピストならではの居心地の良さをご堪能あれ♡
+
+電撃入店！！！！！
+ハイレベル美女が入店しました！！！！
+
+ひとつひとつの所作や笑顔、気配りなどどれをとっても超一級品💯
+
+話してみると彼女のおっとりした雰囲気と優しく包み込んでくれるような安心感🪽
+
+自然と溢れ出す優しさやホスピタリティ✨
+
+可愛らしいお顔立ち、澄み切った白く透明感のある美肌、愛らしく見つめる瞳にも感動を覚えてしまいます😍
+
+経験豊富かつ包容力であなたを包み込んでくれます！！！
+
+この機会に是非、彼女と素敵な時間をお過ごしください🩷',photos:["https://www.mens-premium.com/images/mc_1_1_2220.jpeg", "https://www.mens-premium.com/images/mc_1_2_2220.jpeg", "https://www.mens-premium.com/images/mc_1_3_2220.jpeg", "https://www.mens-premium.com/images/mc_1_4_2220.jpeg"]},
     {name:'なの',  nameEn:'Nano',  age:24,special:false,isNew:false,active:true,photo:'',url:'profile.html?idx=19',comment:'',photos:[]},
     {name:'りん',  nameEn:'Rin',   age:23,special:false,isNew:false,active:true,photo:'',url:'profile.html?idx=20',comment:'',photos:[]},
-    {name:'みらい',nameEn:'Mirai', age:21,special:false,isNew:false,active:true,photo:'',url:'profile.html?idx=21',comment:'',photos:[]},
-    {name:'おとね',nameEn:'Otone', age:22,special:false,isNew:false,active:true,photo:'',url:'profile.html?idx=22',comment:'',photos:[]},
-    {name:'みずは',nameEn:'Mizuha',age:25,special:false,isNew:false,active:true,photo:'',url:'profile.html?idx=23',comment:'',photos:[]},
+    {name:'みらい',nameEn:'Mirai', age:21,special:false,isNew:false,active:true,photo:'https://www.mens-premium.com/images/mc_1_1_2350.jpeg',url:'profile.html?idx=21',comment:'出逢った瞬間はじける上品な笑顔！心を見透かされそうな純粋な瞳！
+透明感抜群の最上級セラピストが入店致しました！
+
+知らず知らずのうちにこちらまで笑顔になってしまうほどの愛嬌の持ち主！
+性格が滲み出てしまうほどの可愛いお顔！
+お話をしているとそれだけで癒されていく不思議な感覚に陥っていることでしょう！
+
+澱みない指圧やゼロ距離の密着、また鼠径部へのアプローチはどれをとっても一級品！
+それがさらに進化をし続けているのですから会うたびに新しい彼女を感じられるはずです！',photos:["https://www.mens-premium.com/images/mc_1_1_2350.jpeg", "https://www.mens-premium.com/images/mc_1_2_2350.jpeg", "https://www.mens-premium.com/images/mc_1_3_2350.jpeg"]},
+    {name:'おとね',nameEn:'Otone', age:22,special:false,isNew:false,active:true,photo:'https://www.mens-premium.com/images/mc_1_1_2389.jpeg',url:'profile.html?idx=22',comment:'',photos:["https://www.mens-premium.com/images/mc_1_1_2389.jpeg", "https://www.mens-premium.com/images/mc_1_2_2389.jpeg"]},
+    {name:'みずは',nameEn:'Mizuha',age:25,special:false,isNew:false,active:true,photo:'https://www.mens-premium.com/images/mc_1_1_2394.jpeg',url:'profile.html?idx=23',comment:'',photos:["https://www.mens-premium.com/images/mc_1_1_2394.jpeg", "https://www.mens-premium.com/images/mc_1_2_2394.jpeg", "https://www.mens-premium.com/images/mc_1_3_2394.jpeg", "https://www.mens-premium.com/images/mc_1_4_2394.jpeg"]},
     {name:'るい',  nameEn:'Rui',   age:27,special:true, isNew:false,active:true,photo:'',url:'profile.html?idx=24',comment:'',photos:[]},
-    {name:'えれな',nameEn:'Elena', age:25,special:false,isNew:true, active:true,photo:'',url:'profile.html?idx=25',comment:'',photos:[]},
-    {name:'しいな',nameEn:'Shiina',age:19,special:false,isNew:true, active:true,photo:'',url:'profile.html?idx=26',comment:'',photos:[]},
-    {name:'ねいろ',nameEn:'Neiro', age:25,special:false,isNew:true, active:true,photo:'',url:'profile.html?idx=27',comment:'',photos:[]},
-    {name:'もえか',nameEn:'Moeka', age:22,special:false,isNew:true, active:true,photo:'',url:'profile.html?idx=28',comment:'',photos:[]},
-    {name:'こはね',nameEn:'Kohane',age:23,special:false,isNew:true, active:true,photo:'',url:'profile.html?idx=29',comment:'',photos:[]},
-    {name:'ななみ',nameEn:'Nanami',age:26,special:false,isNew:true, active:true,photo:'',url:'profile.html?idx=30',comment:'',photos:[]},
-    {name:'くろえ',nameEn:'Kuroe', age:19,special:false,isNew:true, active:true,photo:'',url:'profile.html?idx=31',comment:'',photos:[]},
-    {name:'まなか',nameEn:'Manaka',age:26,special:false,isNew:true, active:true,photo:'',url:'profile.html?idx=32',comment:'',photos:[]},
-    {name:'ひめか',nameEn:'Himeka',age:25,special:false,isNew:true, active:true,photo:'',url:'profile.html?idx=33',comment:'',photos:[]},
+    {name:'えれな',nameEn:'Elena', age:25,special:false,isNew:true, active:true,photo:'https://www.mens-premium.com/images/mc_1_1_2534.jpg',url:'profile.html?idx=25',comment:'【エロの伝道師♡】
+
+ツンとした見た目とは裏腹に甘い雰囲気の彼女♡
+
+ディープの時の迫力は破壊力抜群‼︎
+
+洗練された見た目とは少し印象が違い、お話するととても親しみ易く礼儀正しさもあり、スグに打ち解けられる空気はとても居心地の良さと近い距離感を感じられる事でしょう。
+
+スタイルに関しても思わず息を呑んでしまうほど、美しく引き締まったウエストラインと流れるような曲線を描くヒップライン、そして程良く張りと柔らかさのあるGカップ。
+
+是非とも、その「ルックス」「スタイル」そして「妖艶さ」と魅力溢れる彼女に一度お逢い下さい。',photos:["https://www.mens-premium.com/images/mc_1_1_2534.jpg", "https://www.mens-premium.com/images/mc_1_2_2534.jpg", "https://www.mens-premium.com/images/mc_1_3_2534.jpg"]},
+    {name:'しいな',nameEn:'Shiina',age:19,special:false,isNew:true, active:true,photo:'https://www.mens-premium.com/images/mc_1_1_2596.jpeg',url:'profile.html?idx=26',comment:'正統派美少女💋華やかなルックスで会った瞬間から虜にさせます💕
+
+Fカップの美乳で思わず見惚れてしまいますよ㊙️
+密着マッサージは神がかっています㊙️
+
+指圧は強さも変幻自在で満足度は計り知れません😍
+
+心も身体も芯から幸せをかみしめていただけます㊙️',photos:["https://www.mens-premium.com/images/mc_1_1_2596.jpeg", "https://www.mens-premium.com/images/mc_1_2_2596.jpeg"]},
+    {name:'ねいろ',nameEn:'Neiro', age:25,special:false,isNew:true, active:true,photo:'https://www.mens-premium.com/images/mc_1_1_2626.jpeg',url:'profile.html?idx=27',comment:'女神系スタイルのねいろさん♡
+
+顔、スタイル、施術すべてハイクオリティを兼ね備えた超絶美女
+そんな出会いに感謝することでしょう
+
+明るい雰囲気でのお出迎えから
+施術内でのディープストローク♡
+
+そんな女神施術に昇天必須💦
+
+ぜひ一度ご予約ください！',photos:["https://www.mens-premium.com/images/mc_1_1_2626.jpeg", "https://www.mens-premium.com/images/mc_1_2_2626.jpeg", "https://www.mens-premium.com/images/mc_1_3_2626.jpeg"]},
+    {name:'もえか',nameEn:'Moeka', age:22,special:false,isNew:true, active:true,photo:'https://www.mens-premium.com/images/mc_1_1_2654.jpeg',url:'profile.html?idx=28',comment:'',photos:["https://www.mens-premium.com/images/mc_1_1_2654.jpeg", "https://www.mens-premium.com/images/mc_1_2_2654.jpeg"]},
+    {name:'こはね',nameEn:'Kohane',age:23,special:false,isNew:true, active:true,photo:'https://www.mens-premium.com/images/mc_1_1_2698.jpeg',url:'profile.html?idx=29',comment:'Eカップの美巨乳で更にはモデル級スタイル✨
+癒し系美少女「こはね」さんの入店です🎵
+
+ルックスもさる事ながらその洗練された美しいボディは必見！！！
+
+モデル級の細身なスタイルで強調されるEカップは、スタイルの良さを更に引き立て見惚れちゃいます✨
+
+性格は明るく愛嬌があり人懐っこいのにプラスして、コミュニケーションにも自信があるとの事👍
+
+セラピスト経験も長いので、しっかり体をほぐす事にも長けてるんです😳‼️
+
+攻めっ気たっぷりのサービスをご堪能下さいませ！！
+
+ご予約はお早めに☎️',photos:["https://www.mens-premium.com/images/mc_1_1_2698.jpeg", "https://www.mens-premium.com/images/mc_1_2_2698.jpeg", "https://www.mens-premium.com/images/mc_1_3_2698.jpeg", "https://www.mens-premium.com/images/mc_1_4_2698.jpeg"]},
+    {name:'ななみ',nameEn:'Nanami',age:26,special:false,isNew:true, active:true,photo:'https://www.mens-premium.com/images/mc_1_1_2753.jpeg',url:'profile.html?idx=30',comment:'美人×巨乳=最強💛
+
+スタイル抜群で美白肌のななみさん
+
+出会った瞬間に目線が上下に動いてしまうことでしょう。。
+
+高身長からくる超密着施術も期待度MAX♡
+
+当店でしか味わえない超貴重な体験。
+
+ぜひご予約お待ちしております。',photos:["https://www.mens-premium.com/images/mc_1_1_2753.jpeg", "https://www.mens-premium.com/images/mc_1_2_2753.jpeg", "https://www.mens-premium.com/images/mc_1_3_2753.jpeg", "https://www.mens-premium.com/images/mc_1_4_2753.jpeg"]},
+    {name:'くろえ',nameEn:'Kuroe', age:19,special:false,isNew:true, active:true,photo:'https://www.mens-premium.com/images/mc_1_1_2756.jpeg',url:'profile.html?idx=31',comment:'',photos:["https://www.mens-premium.com/images/mc_1_1_2756.jpeg", "https://www.mens-premium.com/images/mc_1_2_2756.jpeg"]},
+    {name:'まなか',nameEn:'Manaka',age:26,special:false,isNew:true, active:true,photo:'https://www.mens-premium.com/images/mc_1_1_2776.jpeg',url:'profile.html?idx=32',comment:'',photos:["https://www.mens-premium.com/images/mc_1_1_2776.jpeg", "https://www.mens-premium.com/images/mc_1_2_2776.jpeg"]},
+    {name:'ひめか',nameEn:'Himeka',age:25,special:false,isNew:true, active:true,photo:'https://www.mens-premium.com/images/mc_1_1_2787.jpeg',url:'profile.html?idx=33',comment:'絶世の美女ととろける甘々な恋人気分♡
+
+整った顔立ちに黄金比率のボディ、非の打ち所がないひめかさん❤️
+
+そんな彼女ですが、施術に入ると大胆で濃厚な責め責めマッサージ❤️
+この激カワのルックスで息をのむほどの至近距離での施術、体感を得ていただけること間違いなしです♡
+
+イチャイチャありドキドキあり
+さらに小悪魔な一面も、、、♡
+
+施術だけではなく会話や仕草にまでその可愛さが❤️
+
+もちすべ肌×濃厚密着の極上癒し体験をお約束いたします。',photos:["https://www.mens-premium.com/images/mc_1_1_2787.jpeg", "https://www.mens-premium.com/images/mc_1_2_2787.jpeg", "https://www.mens-premium.com/images/mc_1_3_2787.jpeg", "https://www.mens-premium.com/images/mc_1_4_2787.jpeg"]},
     {name:'にか',  nameEn:'Nika',  age:21,special:false,isNew:true, active:true,photo:'',url:'profile.html?idx=34',comment:'',photos:[]},
-    {name:'ばんび',nameEn:'Bambi', age:28,special:false,isNew:true, active:true,photo:'',url:'profile.html?idx=35',comment:'',photos:[]},
-    {name:'じゅり',nameEn:'Juri',  age:28,special:false,isNew:true, active:true,photo:'',url:'profile.html?idx=36',comment:'',photos:[]},
+    {name:'ばんび',nameEn:'Bambi', age:28,special:false,isNew:true, active:true,photo:'https://www.mens-premium.com/images/mc_1_1_2802.jpeg',url:'profile.html?idx=35',comment:'扉を開けたら笑顔が止まりません💓
+自信をもっておすすめ出来ます😍
+
+なぜならスタイル、ルックスよりも
+雰囲気、サービスが過ぎてもう、、、😍
+
+極上のスタイルから繰り出される密着施術は病みつきになっちゃいます
+
+人気爆発必至💓
+予約困難になりますので早めのご連絡でお願いします💓',photos:["https://www.mens-premium.com/images/mc_1_1_2802.jpeg", "https://www.mens-premium.com/images/mc_1_2_2802.jpeg"]},
+    {name:'じゅり',nameEn:'Juri',  age:28,special:false,isNew:true, active:true,photo:'https://www.mens-premium.com/images/mc_1_1_2805.jpeg',url:'profile.html?idx=36',comment:'いじわる大好き個性派セラピスト♡
+
+ボディー良し、顔良し、施術良しの三点揃ったSSS級セラピスト
+
+目鼻立ち良い妖艶な美女。
+抜群のグラマラスボディ♡
+
+そんな彼女ですが会話センスも抜群で初めて会ったとは思えないほど打ち解けやすいことでしょう
+
+ひとたび施術に入れば、情熱的で濃厚なタッチに昇天してしまいます。
+
+焦らしに焦らされる絶妙なフェザータッチ
+最高級のボディとの密着タイム
+
+入って良かったと心から思えることでしょう♡
+
+ご予約お待ちしております',photos:["https://www.mens-premium.com/images/mc_1_1_2805.jpeg", "https://www.mens-premium.com/images/mc_1_2_2805.jpeg"]},
     {name:'らん',  nameEn:'Ran',   age:23,special:false,isNew:true, active:true,photo:'',url:'profile.html?idx=37',comment:'',photos:[]},
-    {name:'このみ',nameEn:'Konomi',age:25,special:false,isNew:true, active:true,photo:'',url:'profile.html?idx=38',comment:'',photos:[]},
-    {name:'つむぎ',nameEn:'Tsumugi',age:23,special:false,isNew:true,active:true,photo:'',url:'profile.html?idx=39',comment:'',photos:[]}
+    {name:'このみ',nameEn:'Konomi',age:25,special:false,isNew:true, active:true,photo:'https://www.mens-premium.com/images/mc_1_1_2908.jpeg',url:'profile.html?idx=38',comment:'絶世の美女降臨♡
+
+整った顔立ちに黄金比率のボディ、非の打ち所がないこのみさん♡
+
+この激カワのルックスで本格的な施術も習得済みな上級者‼︎
+
+癒され度100%♡
+
+そんな彼女ですが、施術に入ると大胆で濃厚な責め責めマッサージ❤️
+
+四つん這いやフェザータッチが得意な彼女は小悪魔な一面も、、、♡
+
+施術だけではなく会話や仕草にまでその可愛さが❤️',photos:["https://www.mens-premium.com/images/mc_1_1_2908.jpeg"]},
+    {name:'つむぎ',nameEn:'Tsumugi',age:23,special:false,isNew:true,active:true,photo:'https://www.mens-premium.com/images/mc_1_1_2980.jpeg',url:'profile.html?idx=39',comment:'',photos:["https://www.mens-premium.com/images/mc_1_1_2980.jpeg", "https://www.mens-premium.com/images/mc_1_2_2980.jpeg"]}
   ],
   schedule: {status:'調整中', entries:[]},
   links: [
@@ -1075,6 +1344,7 @@ let D = JSON.parse(localStorage.getItem('platinum_data') || 'null') || JSON.pars
 function renderAll(){
   renderShop();renderNews();renderPickup();renderLinks();
   renderSchedule();
+  if(!sessionStorage.getItem('bannerClosed')) renderBanner();
 }
 function renderShop(){
   const s = D.shop;
@@ -1208,7 +1478,7 @@ async function renderSchedule(){
       ${inner}
       <div class="sched-orn"><div class="orn-line"></div><div class="orn-gem"></div><div class="orn-line"></div></div>
       <a href="tel:${ph}" class="sched-phone">${ph}</a>
-      <a href="#" class="sched-link">スケジュール詳細はこちら</a>`;
+      <a href="schedule.html" class="sched-link">スケジュール詳細はこちら</a>`;
 
   } catch(err) {
     console.error('Supabase fetch error:', err);
@@ -1218,7 +1488,7 @@ async function renderSchedule(){
       <div class="sched-note">最新のスケジュールはお電話にてご確認ください</div>
       <div class="sched-orn"><div class="orn-line"></div><div class="orn-gem"></div><div class="orn-line"></div></div>
       <a href="tel:${ph}" class="sched-phone">${ph}</a>
-      <a href="#" class="sched-link">スケジュール詳細はこちら</a>`;
+      <a href="schedule.html" class="sched-link">スケジュール詳細はこちら</a>`;
   }
 }
 function renderLinks(){
@@ -1247,8 +1517,9 @@ function switchPanel(id,el){
   document.querySelectorAll('.admin-nav-item').forEach(i=>i.classList.remove('active'));
   document.getElementById('panel-'+id).classList.add('active');
   el.classList.add('active');
-  const titles={info:'お知らせ管理',pickup:'ピックアップ設定',staff:'セラピスト管理',reception:'受付状態管理',schedule:'スケジュール管理',links:'相互リンク管理',shop:'店舗設定',password:'パスワード変更'};
+  const titles={info:'お知らせ管理',pickup:'ピックアップ設定',staff:'セラピスト管理',banner:'バナー管理',reception:'受付状態管理',schedule:'スケジュール管理',links:'相互リンク管理',shop:'店舗設定',password:'パスワード変更'};
   document.getElementById('adminPageTitle').textContent=titles[id]||'';
+  if(id==='banner')loadBannerPanel();
   if(id==='pickup')loadPickupPanel();
   if(id==='staff')loadStaffList();
   if(id==='schedule')loadSchedPanel();
@@ -1270,6 +1541,7 @@ function saveAll(){
   D.pickup.photo=document.getElementById('pickupPhoto').value;
   D.pickup.idx=parseInt(document.getElementById('pickupSelect').value)||0;
   // schedule は Supabase から取得するため保存不要
+  saveBanner();
   localStorage.setItem('platinum_data',JSON.stringify(D));
   renderAll();showToast('✓ 保存して反映しました');
 }
@@ -1644,6 +1916,79 @@ function reObserve(){
   document.querySelectorAll('.fade-in:not(.visible)').forEach(el=>obs.observe(el));
 }
 reObserve();
+
+// ===== BANNER =====
+function renderBanner(){
+  const b=D.banner||{active:false,type:'image',imgUrl:'',link:'',textMain:'',textSub:'',textLink:''};
+  const el=document.getElementById('topBanner');
+  const inner=document.getElementById('bannerInner');
+  if(!b.active||(!b.imgUrl&&b.type==='image'&&!b.textMain)){el.classList.remove('active');return;}
+  el.classList.add('active');
+  if(b.type==='image'&&b.imgUrl){
+    const href=b.link?`href="${b.link}" target="_blank" rel="noopener"`:'';
+    inner.innerHTML=`<a ${href} style="display:block"><img class="top-banner-img" src="${b.imgUrl}" alt="バナー"></a>`;
+  } else if(b.textMain){
+    const href=b.textLink||b.link;
+    const tag=href?`a href="${href}" target="_blank" rel="noopener" style="display:block;text-decoration:none"`:'div';
+    const end=href?'a':'div';
+    inner.innerHTML=`<${tag}><div class="top-banner-text"><div class="top-banner-text-main">${b.textMain}</div>${b.textSub?`<div class="top-banner-text-sub">${b.textSub}</div>`:''}</div></${end}>`;
+  }
+  // adjust hero margin
+  document.querySelector('.hero')||null;
+}
+function closeBannerTemp(){
+  document.getElementById('topBanner').classList.remove('active');
+  sessionStorage.setItem('bannerClosed','1');
+}
+function loadBannerPanel(){
+  const b=D.banner||{active:false,type:'image',imgUrl:'',link:'',textMain:'',textSub:'',textLink:''};
+  document.getElementById('bannerActive').checked=b.active;
+  document.getElementById('bannerType').value=b.type||'image';
+  document.getElementById('bannerImgUrl').value=b.imgUrl||'';
+  document.getElementById('bannerLink').value=b.link||'';
+  document.getElementById('bannerTextMain').value=b.textMain||'';
+  document.getElementById('bannerTextSub').value=b.textSub||'';
+  document.getElementById('bannerTextLink').value=b.textLink||'';
+  previewBannerUrl(b.imgUrl||'');
+  updateBannerTypeUI();
+}
+function updateBannerTypeUI(){
+  const t=document.getElementById('bannerType').value;
+  document.getElementById('bannerImageSection').style.display=t==='image'?'block':'none';
+  document.getElementById('bannerTextSection').style.display=t==='text'?'block':'none';
+}
+function previewBannerUrl(url){
+  const img=document.getElementById('bannerPreviewImg');
+  const ph=document.getElementById('bannerPreviewPh');
+  if(url){img.src=url;img.style.display='block';ph.style.display='none';}
+  else{img.style.display='none';ph.style.display='flex';}
+}
+function clearBannerImage(){
+  document.getElementById('bannerImgUrl').value='';
+  document.getElementById('bannerFileInput').value='';
+  previewBannerUrl('');
+}
+async function handleBannerUpload(input){
+  const file=input.files[0];if(!file)return;
+  const b64=await compressImage(file,1200,600,0.85);
+  document.getElementById('bannerImgUrl').value=b64;
+  previewBannerUrl(b64);
+  input.value='';showToast('バナー画像を読み込みました');
+}
+function saveBanner(){
+  D.banner={
+    active:document.getElementById('bannerActive').checked,
+    type:document.getElementById('bannerType').value,
+    imgUrl:document.getElementById('bannerImgUrl').value,
+    link:document.getElementById('bannerLink').value,
+    textMain:document.getElementById('bannerTextMain').value,
+    textSub:document.getElementById('bannerTextSub').value,
+    textLink:document.getElementById('bannerTextLink').value,
+  };
+  localStorage.setItem('platinum_data',JSON.stringify(D));
+  renderBanner();
+  showToast('✓ バナーを保存しました');
+}
 
 // ===== RECEPTION STATUS =====
 function getReceptionOpen(){

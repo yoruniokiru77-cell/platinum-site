@@ -392,6 +392,33 @@ footer::before{content:'';display:block;height:1px;background:linear-gradient(to
 .status-pill{display:inline-block;font-size:7px;letter-spacing:.35em;padding:3px 10px;border-radius:0}
 .status-active{background:rgba(100,180,100,.15);color:rgba(150,220,150,.8);border:1px solid rgba(100,180,100,.3)}
 .status-off{background:rgba(180,100,100,.12);color:rgba(220,150,150,.7);border:1px solid rgba(180,100,100,.25)}
+
+/* RECEPTION TOGGLE BUTTONS */
+.rsv-toggle-wrap{display:flex;gap:10px;margin-top:16px;flex-wrap:wrap}
+.rsv-toggle-btn{padding:10px 24px;font-size:10px;letter-spacing:.35em;border:1px solid rgba(196,152,72,.25);color:rgba(196,152,72,.5);background:transparent;cursor:pointer;transition:all .2s;font-family:var(--ja)}
+.rsv-toggle-btn.active-open{background:rgba(100,180,100,.15);border-color:rgba(100,180,100,.5);color:rgba(150,220,150,.9)}
+.rsv-toggle-btn.active-closed{background:rgba(220,80,80,.12);border-color:rgba(220,80,80,.35);color:rgba(220,130,130,.9)}
+.rsv-toggle-btn.active-auto{background:rgba(196,152,72,.12);border-color:var(--gold2);color:var(--gold2)}
+.rsv-status-now{font-size:10px;letter-spacing:.25em;color:rgba(196,152,72,.5);margin-top:12px}
+
+/* RECEPTION CLOSED MODAL */
+.rec-modal{position:fixed;inset:0;z-index:9500;display:flex;align-items:center;justify-content:center;background:rgba(26,21,16,.88);backdrop-filter:blur(10px);opacity:0;pointer-events:none;transition:opacity .3s}
+.rec-modal.open{opacity:1;pointer-events:auto}
+.rec-modal-box{background:var(--cream);border:1px solid var(--line2);padding:52px 44px;text-align:center;max-width:400px;width:90%;animation:recModalIn .4s cubic-bezier(.25,.46,.45,.94)}
+@keyframes recModalIn{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
+.rec-modal-icon{width:60px;height:60px;border:1px solid var(--line2);border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 24px}
+.rec-modal-icon svg{width:26px;height:26px;stroke:var(--gold2);fill:none;stroke-width:1.2}
+.rec-modal-badge{font-size:8px;letter-spacing:.55em;color:var(--gold);border:1px solid var(--line2);padding:5px 16px;display:inline-block;margin-bottom:20px}
+.rec-modal-title{font-family:var(--serif);font-size:22px;font-weight:300;letter-spacing:.12em;color:var(--dark);margin-bottom:16px}
+.rec-modal-msg{font-size:12px;font-weight:200;line-height:2.2;color:var(--muted);margin-bottom:32px}
+.rec-modal-web{display:block;padding:14px 32px;background:var(--gold2);color:var(--dark);font-family:var(--serif);font-size:12px;letter-spacing:.3em;text-decoration:none;margin-bottom:12px;transition:background .3s;font-weight:500}
+.rec-modal-web:hover{background:var(--gold3)}
+.rec-modal-close{background:none;border:1px solid var(--line);color:var(--muted2);font-size:10px;letter-spacing:.35em;padding:10px 24px;cursor:pointer;width:100%;font-family:var(--ja);transition:all .2s}
+.rec-modal-close:hover{border-color:var(--muted);color:var(--muted)}
+
+/* BOTTOM BAR CLOSED STATE */
+.bottom-bar-call.closed{opacity:.45;position:relative}
+.bottom-bar-call.closed::after{content:'受付終了';position:absolute;top:-20px;left:50%;transform:translateX(-50%);font-size:7px;letter-spacing:.3em;color:rgba(220,130,130,.9);white-space:nowrap;background:var(--dark);padding:3px 8px;border:1px solid rgba(220,80,80,.3)}
 </style>
 </head>
 <body>
@@ -655,6 +682,20 @@ footer::before{content:'';display:block;height:1px;background:linear-gradient(to
   </a>
 </div>
 
+<!-- RECEPTION CLOSED MODAL -->
+<div class="rec-modal" id="recModal">
+  <div class="rec-modal-box">
+    <div class="rec-modal-icon">
+      <svg viewBox="0 0 24 24"><path d="M18.364 18.364A9 9 0 005.636 5.636m12.728 12.728A9 9 0 015.636 5.636m12.728 12.728L5.636 5.636"/></svg>
+    </div>
+    <div class="rec-modal-badge">RECEPTION CLOSED</div>
+    <div class="rec-modal-title">本日の受付は終了しました</div>
+    <p class="rec-modal-msg">本日の予約受付は終了となっております。<br>明日以降のご予約はWeb予約よりお願いします。</p>
+    <a href="https://estama.jp/shop/35702/reserve/" class="rec-modal-web" target="_blank" rel="noopener">Webから予約する</a>
+    <button class="rec-modal-close" onclick="document.getElementById('recModal').classList.remove('open')">閉じる</button>
+  </div>
+</div>
+
 <!-- ===== ADMIN PANEL ===== -->
 <div class="admin-overlay" id="adminOverlay">
   <!-- Password Screen -->
@@ -683,6 +724,9 @@ footer::before{content:'';display:block;height:1px;background:linear-gradient(to
         </div>
         <div class="admin-nav-item" data-panel="staff" onclick="switchPanel('staff',this)">
           <svg viewBox="0 0 24 24"><path d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z"/></svg>セラピスト
+        </div>
+        <div class="admin-nav-item" data-panel="reception" onclick="switchPanel('reception',this)">
+          <svg viewBox="0 0 24 24"><path d="M18.364 18.364A9 9 0 005.636 5.636m12.728 12.728A9 9 0 015.636 5.636m12.728 12.728L5.636 5.636"/></svg>受付状態
         </div>
         <div class="admin-nav-item" data-panel="schedule" onclick="switchPanel('schedule',this)">
           <svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>スケジュール
@@ -740,6 +784,24 @@ footer::before{content:'';display:block;height:1px;background:linear-gradient(to
             <div class="a-section-body">
               <div class="a-card-list" id="staffList"></div>
               <button class="a-add-btn" onclick="openStaffModal()">＋ セラピストを追加</button>
+            </div>
+          </div>
+        </div>
+        <!-- RECEPTION PANEL -->
+        <div class="admin-panel" id="panel-reception">
+          <div class="a-section">
+            <div class="a-section-head"><span class="a-section-title">受付状態の管理</span></div>
+            <div class="a-section-body">
+              <p style="font-size:11px;letter-spacing:.2em;color:rgba(196,152,72,.6);line-height:2;margin-bottom:20px">
+                自動モード: 10:00〜24:00 受付中 / 24:00〜翌10:00 受付終了<br>
+                手動で強制的に開始・終了を設定できます。
+              </p>
+              <div class="rsv-status-now" id="rsvStatusNow"></div>
+              <div class="rsv-toggle-wrap">
+                <button class="rsv-toggle-btn" id="btnRsvAuto" onclick="setReception('auto')">🔄 自動（時刻連動）</button>
+                <button class="rsv-toggle-btn" id="btnRsvOpen" onclick="setReception('open')">✅ 手動：受付中に設定</button>
+                <button class="rsv-toggle-btn" id="btnRsvClosed" onclick="setReception('closed')">🚫 手動：受付終了に設定</button>
+              </div>
             </div>
           </div>
         </div>
@@ -1111,7 +1173,7 @@ function switchPanel(id,el){
   document.querySelectorAll('.admin-nav-item').forEach(i=>i.classList.remove('active'));
   document.getElementById('panel-'+id).classList.add('active');
   el.classList.add('active');
-  const titles={info:'お知らせ管理',pickup:'ピックアップ設定',staff:'セラピスト管理',schedule:'スケジュール管理',links:'相互リンク管理',shop:'店舗設定',password:'パスワード変更'};
+  const titles={info:'お知らせ管理',pickup:'ピックアップ設定',staff:'セラピスト管理',reception:'受付状態管理',schedule:'スケジュール管理',links:'相互リンク管理',shop:'店舗設定',password:'パスワード変更'};
   document.getElementById('adminPageTitle').textContent=titles[id]||'';
   if(id==='pickup')loadPickupPanel();
   if(id==='staff')loadStaffList();
@@ -1349,8 +1411,62 @@ function reObserve(){
 }
 reObserve();
 
+// ===== RECEPTION STATUS =====
+function getReceptionOpen(){
+  const ov=localStorage.getItem('platinum_reception');
+  if(ov==='open') return true;
+  if(ov==='closed') return false;
+  // 自動: JST 10:00〜23:59 = 受付中
+  const now=new Date(Date.now()+9*60*60*1000);
+  const h=now.getUTCHours();
+  return h>=10;
+}
+function setReception(mode){
+  localStorage.setItem('platinum_reception',mode);
+  updateReceptionUI();
+  updateReceptionAdmin();
+  showToast(mode==='auto'?'自動モードに設定しました':mode==='open'?'受付中に設定しました':'受付終了に設定しました');
+}
+function updateReceptionUI(){
+  const open=getReceptionOpen();
+  const callBtns=document.querySelectorAll('.bottom-bar-call');
+  callBtns.forEach(b=>{
+    b.classList.toggle('closed',!open);
+    b.title=open?'':'本日の受付は終了しております';
+  });
+}
+function updateReceptionAdmin(){
+  const ov=localStorage.getItem('platinum_reception')||'auto';
+  const open=getReceptionOpen();
+  const el=document.getElementById('rsvStatusNow');
+  if(el){
+    const statusTxt=open?'🟢 現在：受付中':'🔴 現在：受付終了';
+    const modeTxt=ov==='auto'?'（自動モード）':ov==='open'?'（手動：強制受付中）':'（手動：強制受付終了）';
+    el.textContent=statusTxt+' '+modeTxt;
+  }
+  ['Auto','Open','Closed'].forEach(m=>{
+    const btn=document.getElementById('btnRsv'+m);
+    if(btn) btn.classList.toggle('active-'+m.toLowerCase(), ov===m.toLowerCase());
+  });
+}
+function initReception(){
+  // 全 tel: リンクをインターセプト
+  document.querySelectorAll('a[href^="tel:"]').forEach(a=>{
+    a.addEventListener('click',e=>{
+      if(!getReceptionOpen()){
+        e.preventDefault();
+        document.getElementById('recModal').classList.add('open');
+      }
+    });
+  });
+  updateReceptionUI();
+  // 毎分チェック（10時・0時の自動切替）
+  setInterval(()=>{updateReceptionUI();updateReceptionAdmin();},60000);
+}
+
 // INIT
 renderAll();
+initReception();
 </script>
 </body>
 </html>

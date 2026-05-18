@@ -115,6 +115,18 @@ footer::before{content:'';display:block;height:1px;background:linear-gradient(to
   .map-wrap{height:320px}.footer-grid{grid-template-columns:1fr}footer{padding:40px 24px 28px}
   .page-hero-inner{padding:0 24px}
 }
+.bottom-bar-call.closed{opacity:.45}
+.rec-modal{position:fixed;inset:0;z-index:9500;display:flex;align-items:center;justify-content:center;background:rgba(26,21,16,.88);backdrop-filter:blur(10px);opacity:0;pointer-events:none;transition:opacity .3s}
+.rec-modal.open{opacity:1;pointer-events:auto}
+.rec-modal-box{background:var(--cream);border:1px solid var(--line2);padding:52px 44px;text-align:center;max-width:400px;width:90%}
+.rec-modal-icon{width:60px;height:60px;border:1px solid var(--line2);border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 24px}
+.rec-modal-icon svg{width:26px;height:26px;stroke:var(--gold2);fill:none;stroke-width:1.2}
+.rec-modal-badge{font-size:8px;letter-spacing:.55em;color:var(--gold);border:1px solid var(--line2);padding:5px 16px;display:inline-block;margin-bottom:20px}
+.rec-modal-title{font-family:var(--serif);font-size:22px;font-weight:300;letter-spacing:.12em;color:var(--dark);margin-bottom:16px}
+.rec-modal-msg{font-size:12px;font-weight:200;line-height:2.2;color:var(--muted);margin-bottom:32px}
+.rec-modal-web{display:block;padding:14px 32px;background:var(--gold2);color:var(--dark);font-family:var(--serif);font-size:12px;letter-spacing:.3em;text-decoration:none;margin-bottom:12px;transition:background .3s;font-weight:500}
+.rec-modal-web:hover{background:var(--gold3)}
+.rec-modal-close{background:none;border:1px solid var(--line);color:var(--muted2);font-size:10px;letter-spacing:.35em;padding:10px 24px;cursor:pointer;width:100%;font-family:var(--ja);transition:all .2s}
 </style>
 </head>
 <body>
@@ -202,6 +214,17 @@ footer::before{content:'';display:block;height:1px;background:linear-gradient(to
   </div>
 </div>
 
+<!-- RECEPTION CLOSED MODAL -->
+<div class="rec-modal" id="recModal">
+  <div class="rec-modal-box">
+    <div class="rec-modal-icon"><svg viewBox="0 0 24 24"><path d="M18.364 18.364A9 9 0 005.636 5.636m12.728 12.728A9 9 0 015.636 5.636m12.728 12.728L5.636 5.636"/></svg></div>
+    <div class="rec-modal-badge">RECEPTION CLOSED</div>
+    <div class="rec-modal-title">本日の受付は終了しました</div>
+    <p class="rec-modal-msg">本日の予約受付は終了となっております。<br>明日以降のご予約はWeb予約よりお願いします。</p>
+    <a href="https://estama.jp/shop/35702/reserve/" class="rec-modal-web" target="_blank" rel="noopener">Webから予約する</a>
+    <button class="rec-modal-close" onclick="document.getElementById('recModal').classList.remove('open')">閉じる</button>
+  </div>
+</div>
 <footer>
   <div class="footer-inner">
     <div class="footer-grid">
@@ -247,6 +270,10 @@ document.getElementById('drawerClose').addEventListener('click',()=>document.get
 document.querySelectorAll('.drawer a').forEach(a=>a.addEventListener('click',()=>document.getElementById('drawer').classList.remove('open')));
 const obs=new IntersectionObserver(en=>en.forEach(e=>{if(e.isIntersecting)e.target.classList.add('visible')}),{threshold:.1});
 document.querySelectorAll('.fade-in').forEach(el=>obs.observe(el));
+// RECEPTION
+function getReceptionOpen(){const ov=localStorage.getItem('platinum_reception');if(ov==='open')return true;if(ov==='closed')return false;const now=new Date(Date.now()+9*60*60*1000);return now.getUTCHours()>=10;}
+function initReception(){document.querySelectorAll('a[href^="tel:"]').forEach(a=>{a.addEventListener('click',e=>{if(!getReceptionOpen()){e.preventDefault();document.getElementById('recModal').classList.add('open');}});});const open=getReceptionOpen();document.querySelectorAll('.bottom-bar-call').forEach(b=>b.classList.toggle('closed',!open));setInterval(()=>{const o=getReceptionOpen();document.querySelectorAll('.bottom-bar-call').forEach(b=>b.classList.toggle('closed',!o));},60000);}
+initReception();
 </script>
 </body>
 </html>

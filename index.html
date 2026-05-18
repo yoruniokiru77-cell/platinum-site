@@ -166,6 +166,8 @@ section{padding:112px 0;position:relative;z-index:2}
 .sched-entry{display:flex;justify-content:space-between;align-items:center;padding:14px 20px;border-bottom:1px solid var(--line3)}
 .sched-entry:first-child{border-top:1px solid var(--line3)}
 .sched-entry-name{font-family:var(--serif);font-size:18px;font-weight:300;letter-spacing:.12em;color:var(--dark)}
+.sched-entry-name.sched-entry-link{text-decoration:none;transition:color .3s;cursor:pointer;display:inline-block}
+.sched-entry-name.sched-entry-link:hover{color:var(--gold2)}
 .sched-entry-time{font-size:10px;letter-spacing:.25em;color:var(--gold)}
 .sched-orn{display:flex;align-items:center;gap:12px;justify-content:center;margin:40px 0}
 .orn-line{flex:1;max-width:80px;height:1px;background:var(--line2)}
@@ -1266,11 +1268,18 @@ async function renderSchedule(){
 
     let inner = '';
     if(data && data.length > 0){
+      // セラピスト名→idx変換マップ
+      const nameToIdx = {};
+      D.therapists.forEach((t,i)=>{ nameToIdx[t.name]=i; });
       const rows = data.map(s => {
         const fmt = t => t ? t.slice(0,5) : '';
+        const idx = nameToIdx[s.therapist_name];
+        const nameEl = idx !== undefined
+          ? `<a href="profile.html?idx=${idx}" class="sched-entry-name sched-entry-link">${s.therapist_name || '—'}</a>`
+          : `<span class="sched-entry-name">${s.therapist_name || '—'}</span>`;
         return `
           <div class="sched-entry">
-            <span class="sched-entry-name">${s.therapist_name || '—'}</span>
+            ${nameEl}
             <span class="sched-entry-time">${fmt(s.start_time)} 〜 ${fmt(s.end_time)}</span>
           </div>`;
       }).join('');

@@ -66,6 +66,8 @@ nav.scrolled{box-shadow:0 2px 40px rgba(154,114,48,0.08)}
 .sched-entry:hover{border-color:var(--line2);box-shadow:0 4px 20px rgba(154,114,48,.07)}
 .sched-time{font-family:var(--serif);font-size:14px;font-weight:400;letter-spacing:.1em;color:var(--gold);white-space:nowrap}
 .sched-name{font-family:var(--serif);font-size:26px;font-weight:300;letter-spacing:.12em;color:var(--dark)}
+.sched-name-link{text-decoration:none;transition:color .3s,border-color .3s;border-bottom:1px solid transparent;display:inline-block;cursor:pointer}
+.sched-name-link:hover{color:var(--gold2);border-bottom-color:var(--gold2)}
 .sched-room{font-size:9px;letter-spacing:.35em;color:var(--muted2);margin-top:3px}
 .sched-special{display:inline-flex;align-items:center;gap:5px;font-size:7px;letter-spacing:.4em;color:var(--dark);background:linear-gradient(135deg,#E8C060,#C49848,#E8C060);background-size:200% 200%;animation:shimmer 3s ease-in-out infinite;padding:4px 10px 4px 8px;font-weight:500}
 .sched-special svg{width:9px;height:9px;fill:var(--dark)}
@@ -269,9 +271,15 @@ function fmtDate(iso){
 }
 function fmtTime(t){return t?t.slice(0,5):'—'}
 
-// localStorageのセラピストデータでSPECIALチェック
+// localStorageのセラピストデータでSPECIALチェック・idx検索
 const saved=JSON.parse(localStorage.getItem('platinum_data')||'null');
-const specialNames=(saved&&saved.therapists)?saved.therapists.filter(t=>t.special).map(t=>t.name):['るい','ゆき'];
+const therapistList=(saved&&saved.therapists)?saved.therapists:[];
+const specialNames=therapistList.filter(t=>t.special).map(t=>t.name);
+if(!specialNames.length) specialNames.push('るい','ゆき');
+
+// 名前→プロフィールidx マップ
+const nameToIdx={};
+therapistList.forEach((t,i)=>{ nameToIdx[t.name]=i; });
 
 async function loadDate(dateStr){
   const content=document.getElementById('schedContent');
@@ -284,15 +292,21 @@ async function loadDate(dateStr){
     return;
   }
   const isSpecial=name=>specialNames.includes(name);
-  content.innerHTML=data.map(s=>`
+  content.innerHTML=data.map(s=>{
+    const idx=nameToIdx[s.therapist_name];
+    const nameEl=idx!==undefined
+      ?`<a href="profile.html?idx=${idx}" class="sched-name sched-name-link">${s.therapist_name||'—'}</a>`
+      :`<div class="sched-name">${s.therapist_name||'—'}</div>`;
+    return `
     <div class="sched-entry">
       <div class="sched-time">${fmtTime(s.start_time)}<br><span style="font-size:10px;color:var(--muted2)">〜 ${fmtTime(s.end_time)}</span></div>
       <div>
-        <div class="sched-name">${s.therapist_name||'—'}</div>
+        ${nameEl}
         ${s.room_name?`<div class="sched-room">${s.room_name}</div>`:''}
       </div>
       <div>${isSpecial(s.therapist_name)?`<span class="sched-special">${STAR_SVG}SPECIAL</span>`:''}</div>
-    </div>`).join('');
+    </div>`;
+  }).join('');
 }
 
 // タブ生成

@@ -292,390 +292,46 @@ const sb=supabase.createClient(SUPABASE_URL,SUPABASE_KEY);
 const STAR_SVG='<svg viewBox="0 0 24 24"><path d="M12 2l2.4 7.4H22l-6.2 4.5 2.4 7.4L12 17l-6.2 4.3 2.4-7.4L2 9.4h7.6z"/></svg>';
 
 const DEFAULT_THERAPISTS=[
-  {name:'ななせ',nameEn:'Nanase',age:21,special:false,isNew:false,active:true,photo:'https://www.mens-premium.com/images/mc_1_1_460.jpeg',photos:["https://www.mens-premium.com/images/mc_1_1_460.jpeg", "https://www.mens-premium.com/images/mc_1_2_460.jpeg", "https://www.mens-premium.com/images/mc_1_3_460.jpeg"],comment:'【当店ランクセラピスト】
-
-この機会にぜひご指名ください‼︎
-
-美しいプロポーションに胸が高鳴ります！！
-【現役女子大生】人気グラドルのようなメリハリボディがエロい美少女「ななせ」ちゃんです💛
-
-引き込まれるような大きな瞳が印象的な整ったお顔立ち♪
-そして男を惑わす、若く健康的なハリのあるぴちぴちエッチボディが堪らない！
-引き締まったウエストに、ふんわり綺麗なＦカップが織りなすセクシーなボディライン！
-漢の夢がつまったもち肌美乳のゼロ距離密着マッサージ、、、お客様が羨ましい限りでございます！！
-
-愛嬌満点な性格もとっても魅力的♪
-時折見せる屈託のない笑顔に加え、コミュニケーション能力の高さからプレイ以外の接客にも期待大です！！
-
-ぜひご予約オススメ致します!!'},
-  {name:'ひな',nameEn:'Hina',age:20,special:false,isNew:false,active:true,photo:'https://www.mens-premium.com/images/mc_1_1_624.jpeg',photos:["https://www.mens-premium.com/images/mc_1_1_624.jpeg", "https://www.mens-premium.com/images/mc_1_2_624.jpeg"],comment:'【圧倒的彼女感】
-
-癒し系の超絶最強美人あらわる♡♡♡
-
-これは絶対お気に入りの一人になること間違い無しの逸材！！
-
-容姿端麗でスレンダーでありながら....♡
-
-目のやり場に困るほどのセクシーさ♡
-
-性格はとても穏やかで優しくて女神様のような雰囲気で、あなたを寄り添い癒し尽くしてくれます。
-
-エステは濃厚超絶技巧。
-たっぷりドバドバオイルに、ディープリンパが延々と続いていきます。
-
-ゆったりと深く気持ちよすぎるリンパはまさに夢見心地。
-寛容でカップルマッサージのような気分にさせてくれます。'},
-  {name:'ゆい',nameEn:'Yui',age:22,special:false,isNew:false,active:true,photo:'https://www.mens-premium.com/images/mc_1_1_734.jpeg',photos:["https://www.mens-premium.com/images/mc_1_1_734.jpeg", "https://www.mens-premium.com/images/mc_1_2_734.jpeg", "https://www.mens-premium.com/images/mc_1_3_734.jpeg", "https://www.mens-premium.com/images/mc_1_4_734.jpeg"],comment:'笑顔がたえず愛嬌抜群💕
-聞き上手でどんなお兄様とでも仲良くなれる全てがキュートなセラピストさん✨
-
-幼さの残る外見に似つかわず、そのボディは天下一品✨
-豊かなバストに究極の美尻ライン、美しいボディラインの持ち主です🥰
-
-ふわっとした雰囲気ながらもイタズラ好きな彼女💓
-
-天使と小悪魔のハーフのような
-甘いとろけるような時間
-可愛さとドキドキで悶絶不可避♡
-
-貴方もゆいさんの虜に必ずやなることでしょう。
-彼女との2人きりの時間は絶品です✨'},
-  {name:'あられ',nameEn:'Arare',age:24,special:false,isNew:false,active:true,photo:'https://www.mens-premium.com/images/mc_1_1_1103.jpeg',photos:["https://www.mens-premium.com/images/mc_1_1_1103.jpeg"],comment:'素人系どエロセラピスト♡
-
-こんな可愛い子にあんなことやこんなことまで♡
-
-メンエス界ではなかなかお目にかかれない逸材です‼︎
-
-すべすべ白肌からくる濃厚施術、、
-そんなギャップにイチコロです♡
-
-極めつけは「脳トロボイス」
-施術中脳死すること間違いなし‼︎
-
-ご予約はお早めに‼︎'},
-  {name:'ゆき',nameEn:'Yuki',age:23,special:true,isNew:false,active:true,photo:'https://www.mens-premium.com/images/mc_1_1_1247.jpeg',photos:["https://www.mens-premium.com/images/mc_1_1_1247.jpeg", "https://www.mens-premium.com/images/mc_1_2_1247.jpeg", "https://www.mens-premium.com/images/mc_1_3_1247.jpeg"],comment:'あどけなさの残る可愛さが一瞬で心掴まれるベビーフェイス美少女「ゆき」さん♡
-
-透明感抜群の色白美肌とスレンダーで美しいメリハリのあるボディライン‼︎
-
-しっかりと相手の目を見てぎゅっと距離感を縮めてお客様に寄り添います♡
-
-終始ドキドキ、愛嬌たっぷりの笑顔で2人だけの甘くとろけるような世界へ♡
-
-「贅沢なヒトトキ」を満喫してください'},
-  {name:'ゆあ',nameEn:'Yua',age:22,special:false,isNew:false,active:true,photo:'https://www.mens-premium.com/images/mc_1_1_1411.jpeg',photos:["https://www.mens-premium.com/images/mc_1_1_1411.jpeg", "https://www.mens-premium.com/images/mc_1_2_1411.jpeg", "https://www.mens-premium.com/images/mc_1_4_1411.jpeg"],comment:'〜推し確定案件になります〜
-
-アイドル級ルックス「ゆあ」
-
-扉を開けた瞬間、完全にあなたのアイドルとなる事でしょう♡
-
-こんなに可愛い子が側にいるだけでもドキドキ♡なのに密着施術、、すべすべの肌、、心も身体も癒される事間違いなしです!!
-
-このルックス、この肌感、このエロさ♡
-
-病みつき間違いありません、
-近距離で是非体験してください☆'},
-  {name:'のぞみ',nameEn:'Nozomi',age:23,special:false,isNew:false,active:true,photo:'https://www.mens-premium.com/images/mc_1_1_1505.jpeg',photos:["https://www.mens-premium.com/images/mc_1_1_1505.jpeg", "https://www.mens-premium.com/images/mc_1_2_1505.jpeg"],comment:''},
-  {name:'もあ',nameEn:'Moa',age:22,special:false,isNew:false,active:true,photo:'https://www.mens-premium.com/images/mc_1_1_1523.jpeg',photos:["https://www.mens-premium.com/images/mc_1_1_1523.jpeg", "https://www.mens-premium.com/images/mc_1_2_1523.jpeg", "https://www.mens-premium.com/images/mc_1_3_1523.jpeg"],comment:'意図せずとも男を虜にし骨抜きにするナチュラルキラー美少女♡
-
-もちろん彼女も男性が大好き♡
-
-一心不乱に皆様の毒素を浄化してくれます
-幼いながら整った顔立ちで、明るくて優しい笑顔の裏には本人すら気づかない魔性の本性が・・・
-
-物腰はとても柔らかく従順で常に笑顔を絶やさず、ご奉仕に対する姿勢もとにかく健気！とっても楽しそうにご奉仕します♡
-
-気づけば沼にハマっているはず♡'},
-  {name:'もえ',nameEn:'Moe',age:24,special:false,isNew:false,active:true,photo:'https://www.mens-premium.com/images/mc_1_1_1570.jpeg',photos:["https://www.mens-premium.com/images/mc_1_1_1570.jpeg", "https://www.mens-premium.com/images/mc_1_2_1570.jpeg"],comment:''},
-  {name:'かれん',nameEn:'Karen',age:23,special:false,isNew:false,active:true,photo:'https://www.mens-premium.com/images/mc_1_1_1589.jpeg',photos:["https://www.mens-premium.com/images/mc_1_1_1589.jpeg", "https://www.mens-premium.com/images/mc_1_2_1589.jpeg"],comment:'超SS級美少女♡
-
-坂グループに居てもおかしくないようなアイドルフェイスの超S級美女の入店です！！
-
-見た目通りのおっとりした優しい性格の女の子☆
-きっと癒しのお仕事は天職だろうと思わせる女性です
-
-最上級ルックスで施術は濃厚密着♡
-深めのディープリンパでドキドキ感MAX‼︎
-
-早めのご予約お待ちしております♡'},
-  {name:'まゆ',nameEn:'Mayu',age:23,special:false,isNew:false,active:true,photo:'https://www.mens-premium.com/images/mc_1_1_1768.jpeg',photos:["https://www.mens-premium.com/images/mc_1_1_1768.jpeg", "https://www.mens-premium.com/images/mc_1_2_1768.jpeg", "https://www.mens-premium.com/images/mc_1_3_1768.jpeg", "https://www.mens-premium.com/images/mc_1_4_1768.jpeg"],comment:'圧倒的なメリハリボディ♡
-
-指圧からギリギリまで攻めたオイルマッサージは異次元の気持ちよさ♡
-
-胸、お尻、太ももどこをとっても完璧な身体に密着されたらもう離れたくなくなるほど‼︎
-
-まゆさんの施術を一度受けたら虜になること間違いなし♡
-
-とろけるような濃厚施術をお楽しみください‼︎'},
-  {name:'えな',nameEn:'Ena',age:22,special:false,isNew:false,active:true,photo:'https://www.mens-premium.com/images/mc_1_1_1786.jpeg',photos:["https://www.mens-premium.com/images/mc_1_1_1786.jpeg", "https://www.mens-premium.com/images/mc_1_2_1786.jpeg"],comment:'はっきりとお伝え致します！！！
-【天使みたいに可愛らしく】【無限大の癒しがあり】【極上の施術をする】
-最高のセラピストさんが登場です！
-
-すべすべのもちもち肌を使った密着は気持ちよくなれる代物です！
-可愛らしい声の言葉もまた代物です！
-
-【えな】というエンジェルがプレミアムに入店致しました！
-癒しを求め！スイートな甘い時間を求め！
-是非お越し下さいませ！'},
-  {name:'めい',nameEn:'Mei',age:23,special:false,isNew:false,active:true,photo:'https://www.mens-premium.com/images/mc_1_1_1787.jpeg',photos:["https://www.mens-premium.com/images/mc_1_1_1787.jpeg", "https://www.mens-premium.com/images/mc_1_2_1787.jpeg"],comment:'癒し系の超絶最強美人あらわる♡♡♡
-
-これは絶対お気に入りの一人になること間違い無しの逸材！！
-
-目のやり場に困るほどのセクシーさ♡
-
-性格はとても穏やかで優しくて女神様のような雰囲気で、あなたを寄り添い癒し尽くしてくれます。
-
-エステは濃厚超絶技巧。
-たっぷりドバドバオイルに、ディープリンパが延々と続いていきます。
-
-ゆったりと深く気持ちよすぎるリンパはまさに夢見心地。
-寛容でカップルマッサージのような気分にさせてくれます。'},
-  {name:'るな',nameEn:'Luna',age:21,special:false,isNew:false,active:true,photo:'https://www.mens-premium.com/images/mc_1_1_1805.jpeg',photos:["https://www.mens-premium.com/images/mc_1_1_1805.jpeg", "https://www.mens-premium.com/images/mc_1_2_1805.jpeg", "https://www.mens-premium.com/images/mc_1_3_1805.jpeg", "https://www.mens-premium.com/images/mc_1_4_1805.jpeg"],comment:'癒しと超ド級の施術💋
-
-思わず「守ってあげたい」と感じてしまうような愛らしさ
-
-透き通るような色白の肌に、どこかあどけなさの残る童顔フェイス♡
-ふと笑った瞬間にできるえくぼが本当に可愛らしく、その無邪気な笑顔だけで一気に心を掴まれてしまうお客様も多いはずです‼
-
-実は甘えん坊な一面もあり、距離が縮まると見せてくれる柔らかな表情や仕草は…《 特別感たっぷり♡ 》
-
-そっと寄り添うような雰囲気で、自然と心を解きほぐしてくれるタイプです♪
-
-そして特筆すべきはそのスタイル☆彡
-綺麗なくびれからすらりと伸びる美脚は、思わず見惚れてしまう完成度‼
-可愛らしさと女性らしいラインのギャップがたまりません♡
-
-きっとお帰りの頃には…彼女の笑顔が忘れられなくなっているはずですよ'},
-  {name:'ましろ',nameEn:'Mashiro',age:24,special:false,isNew:false,active:true,photo:'https://www.mens-premium.com/images/mc_1_1_2122.jpeg',photos:["https://www.mens-premium.com/images/mc_1_1_2122.jpeg", "https://www.mens-premium.com/images/mc_1_2_2122.jpeg", "https://www.mens-premium.com/images/mc_1_3_2122.jpeg"],comment:'白い透明感のある清楚な雰囲気と大胆な施術を兼ね備えたセラピストさんのご紹介です♬
-
-彼女の透明感あふれる柔らかな笑顔に心奪われること間違いなし✨
-しかし、その清楚な外見とは裏腹に、施術になると一変大胆不敵な手技で貴方の疲れた体を根こそぎ癒してくれます！！
-
-彼女の優雅な指使いはまるで魔法のようです🪄
-繊細かつ大胆なタッチで、貴方の隅々に潜む疲れを解きほぐし心地良い安らぎをもたらしてくれることでしょう🩷
-
-特別な雰囲気と技術は、他では決して味わえない至福のひとときを約束します✨'},
-  {name:'るみ',nameEn:'Rumi',age:0,special:false,isNew:false,active:true,photo:'https://www.mens-premium.com/images/mc_1_1_2155.jpeg',photos:["https://www.mens-premium.com/images/mc_1_1_2155.jpeg", "https://www.mens-premium.com/images/mc_1_2_2155.jpeg", "https://www.mens-premium.com/images/mc_1_3_2155.jpeg"],comment:'速報‼️
-絶対に人気が出る女性🌟
-
-スレンダーDカップで笑顔のとても可愛い「るみ」のご紹介です🩷
-
-抜群のルックスとスタイルそして他に類を見ない天性のエロス😍
-
-性格も素直で謙虚で男性を立てるタイプのようで、一緒にいるだけで癒されてしまう事でしょう💯
-
-積極的な密着から高まる施術💗
-
-優しく触れながらも、彼女の手は確実に気持ちの良いツボへと入り込んできます💗
-
-お早めのお問い合わせ、心よりお待ちしております！！！'},
-  {name:'みやび',nameEn:'Miyabi',age:0,special:false,isNew:false,active:true,photo:'https://www.mens-premium.com/images/mc_1_1_2156.jpeg',photos:["https://www.mens-premium.com/images/mc_1_1_2156.jpeg", "https://www.mens-premium.com/images/mc_1_2_2156.jpeg", "https://www.mens-premium.com/images/mc_1_3_2156.jpeg", "https://www.mens-premium.com/images/mc_1_4_2156.jpeg"],comment:'レベチな美女セラピスト♡
-
-美人な見た目で大人しい空気感。
-一見するとクールな印象を持ちますが、実は明るく人懐っこい性格な彼女♡
-
-容姿の美しさとパーフェクトにバランスの取れたきめ細かく絹のような肌質。
-
-スレンダーながらそそられるEカップ♡
-
-そしてなんといっても圧巻な存在感を持つその美尻はずっと見ていたくなることでしょう♡
-
-施術では超超超密着タイム…
-最初から最後まで離れることのない密着度はアナコンダ級♡
-
-王道的なハイクオリティさと徐々に感じられるエロス
-
-一度入られてみては…？'},
-  {name:'えみり',nameEn:'Emiri',age:22,special:false,isNew:false,active:true,photo:'https://www.mens-premium.com/images/mc_1_1_2203.jpeg',photos:["https://www.mens-premium.com/images/mc_1_1_2203.jpeg", "https://www.mens-premium.com/images/mc_1_2_2203.jpeg", "https://www.mens-premium.com/images/mc_1_3_2203.jpeg"],comment:'ただ誰がみても一目惚れしてしまう程の顔面偏差値😍
-
-現役グラビアアイドルの入店です！！！
-
-もちもちすべすべ肌に、施術中は雰囲気作りまで徹底するお客様を第一に考える素敵なセラピスト😳💓
-
-このレベルの女の子と2人きりの空間はまるで夢の様です✨
-
-ご予約はお早めに🔥'},
-  {name:'あんな',nameEn:'Anna',age:28,special:false,isNew:false,active:true,photo:'https://www.mens-premium.com/images/mc_1_1_2220.jpeg',photos:["https://www.mens-premium.com/images/mc_1_1_2220.jpeg", "https://www.mens-premium.com/images/mc_1_2_2220.jpeg", "https://www.mens-premium.com/images/mc_1_3_2220.jpeg", "https://www.mens-premium.com/images/mc_1_4_2220.jpeg"],comment:'ベテランセラピストならではの安心感、安定感
-お姉さんセラピストならではの居心地の良さをご堪能あれ♡
-
-電撃入店！！！！！
-ハイレベル美女が入店しました！！！！
-
-ひとつひとつの所作や笑顔、気配りなどどれをとっても超一級品💯
-
-話してみると彼女のおっとりした雰囲気と優しく包み込んでくれるような安心感🪽
-
-自然と溢れ出す優しさやホスピタリティ✨
-
-可愛らしいお顔立ち、澄み切った白く透明感のある美肌、愛らしく見つめる瞳にも感動を覚えてしまいます😍
-
-経験豊富かつ包容力であなたを包み込んでくれます！！！
-
-この機会に是非、彼女と素敵な時間をお過ごしください🩷'},
-  {name:'なの',nameEn:'Nano',age:24,special:false,isNew:false,active:true,photo:'https://www.mens-premium.com/images/mc_1_1_2331.jpeg',photos:["https://www.mens-premium.com/images/mc_1_1_2331.jpeg", "https://www.mens-premium.com/images/mc_1_2_2331.jpeg"],comment:'"最強無敵"
-一度見たら忘れない極上美女の来店です✨
-
-こんな可愛い子に身を委ねていいのでしょうか…
-愛嬌抜群で癒しオーラに溢れた空間は、満足度200%以上の絶対領域🔥
-
-街で見かけたら誰しもが目を奪われ、一瞬で恋に落ちる圧倒的美貌のセラピスト🪽
-
-お客様を最優先に、一人ひとりの心に溶け込むように甘く魅了する巧みな濃厚施術…🫣
-
-帰り際には確実に次回の予約をしたくなる程、そのクオリティーをご堪能下さいっ！！！'},
-  {name:'りん',nameEn:'Rin',age:23,special:false,isNew:false,active:true,photo:'https://www.mens-premium.com/images/mc_1_1_2341.jpeg',photos:["https://www.mens-premium.com/images/mc_1_1_2341.jpeg", "https://www.mens-premium.com/images/mc_1_2_2341.jpeg", "https://www.mens-premium.com/images/mc_1_3_2341.jpeg"],comment:'女神降臨🧚🏻✨
-
-性格、容姿、スタイル、全てご満足いただけるセラピストさん💕
-
-綺麗な顔立ちとえくぼを兼ね備え明るいスマイルでのお出迎え💋
-会った瞬間に次の予約を入れたくなってしまうほどです😍
-
-施術面でも温もりのあるしっとりとした密着マッサージ㊙️には我慢ができません🫣💓
-
-ご予約はお早めにお待ちしています！！！'},
-  {name:'みらい',nameEn:'Mirai',age:21,special:false,isNew:false,active:true,photo:'https://www.mens-premium.com/images/mc_1_1_2350.jpeg',photos:["https://www.mens-premium.com/images/mc_1_1_2350.jpeg", "https://www.mens-premium.com/images/mc_1_2_2350.jpeg", "https://www.mens-premium.com/images/mc_1_3_2350.jpeg"],comment:'出逢った瞬間はじける上品な笑顔！心を見透かされそうな純粋な瞳！
-透明感抜群の最上級セラピストが入店致しました！
-
-知らず知らずのうちにこちらまで笑顔になってしまうほどの愛嬌の持ち主！
-性格が滲み出てしまうほどの可愛いお顔！
-お話をしているとそれだけで癒されていく不思議な感覚に陥っていることでしょう！
-
-澱みない指圧やゼロ距離の密着、また鼠径部へのアプローチはどれをとっても一級品！
-それがさらに進化をし続けているのですから会うたびに新しい彼女を感じられるはずです！'},
-  {name:'おとね',nameEn:'Otone',age:22,special:false,isNew:false,active:true,photo:'https://www.mens-premium.com/images/mc_1_1_2389.jpeg',photos:["https://www.mens-premium.com/images/mc_1_1_2389.jpeg", "https://www.mens-premium.com/images/mc_1_2_2389.jpeg"],comment:''},
-  {name:'みずは',nameEn:'Mizuha',age:25,special:false,isNew:false,active:true,photo:'https://www.mens-premium.com/images/mc_1_1_2394.jpeg',photos:["https://www.mens-premium.com/images/mc_1_1_2394.jpeg", "https://www.mens-premium.com/images/mc_1_2_2394.jpeg", "https://www.mens-premium.com/images/mc_1_3_2394.jpeg", "https://www.mens-premium.com/images/mc_1_4_2394.jpeg"],comment:''},
-  {name:'るい',nameEn:'Rui',age:27,special:true,isNew:false,active:true,photo:'https://www.mens-premium.com/images/mc_1_1_2402.jpeg',photos:["https://www.mens-premium.com/images/mc_1_1_2402.jpeg", "https://www.mens-premium.com/images/mc_1_2_2402.jpeg", "https://www.mens-premium.com/images/mc_1_3_2402.jpeg"],comment:'誰もが認めるいい女♡
-
-100年に1人の美女のご紹介です‼︎
-
-整った顔立ちに峰不二子ばりのスタイル♡
-まさに理想の女性‼︎
-
-そんな美女に出会えた方は超絶ラッキー
-
-見た目だけではありません。
-長い手足からくる圧倒的な密着感♡
-海よりも深いディープリンパ
-
-ドキドキそしてエロエロな完璧な時間を堪能してください♡'},
-  {name:'えれな',nameEn:'Elena',age:25,special:false,isNew:true,active:true,photo:'https://www.mens-premium.com/images/mc_1_1_2534.jpg',photos:["https://www.mens-premium.com/images/mc_1_1_2534.jpg", "https://www.mens-premium.com/images/mc_1_2_2534.jpg", "https://www.mens-premium.com/images/mc_1_3_2534.jpg"],comment:'【エロの伝道師♡】
-
-ツンとした見た目とは裏腹に甘い雰囲気の彼女♡
-
-ディープの時の迫力は破壊力抜群‼︎
-
-洗練された見た目とは少し印象が違い、お話するととても親しみ易く礼儀正しさもあり、スグに打ち解けられる空気はとても居心地の良さと近い距離感を感じられる事でしょう。
-
-スタイルに関しても思わず息を呑んでしまうほど、美しく引き締まったウエストラインと流れるような曲線を描くヒップライン、そして程良く張りと柔らかさのあるGカップ。
-
-是非とも、その「ルックス」「スタイル」そして「妖艶さ」と魅力溢れる彼女に一度お逢い下さい。'},
-  {name:'しいな',nameEn:'Shiina',age:19,special:false,isNew:true,active:true,photo:'https://www.mens-premium.com/images/mc_1_1_2596.jpeg',photos:["https://www.mens-premium.com/images/mc_1_1_2596.jpeg", "https://www.mens-premium.com/images/mc_1_2_2596.jpeg"],comment:'正統派美少女💋華やかなルックスで会った瞬間から虜にさせます💕
-
-Fカップの美乳で思わず見惚れてしまいますよ㊙️
-密着マッサージは神がかっています㊙️
-
-指圧は強さも変幻自在で満足度は計り知れません😍
-
-心も身体も芯から幸せをかみしめていただけます㊙️'},
-  {name:'ねいろ',nameEn:'Neiro',age:25,special:false,isNew:true,active:true,photo:'https://www.mens-premium.com/images/mc_1_1_2626.jpeg',photos:["https://www.mens-premium.com/images/mc_1_1_2626.jpeg", "https://www.mens-premium.com/images/mc_1_2_2626.jpeg", "https://www.mens-premium.com/images/mc_1_3_2626.jpeg"],comment:'女神系スタイルのねいろさん♡
-
-顔、スタイル、施術すべてハイクオリティを兼ね備えた超絶美女
-そんな出会いに感謝することでしょう
-
-明るい雰囲気でのお出迎えから
-施術内でのディープストローク♡
-
-そんな女神施術に昇天必須💦
-
-ぜひ一度ご予約ください！'},
-  {name:'もえか',nameEn:'Moeka',age:22,special:false,isNew:true,active:true,photo:'https://www.mens-premium.com/images/mc_1_1_2654.jpeg',photos:["https://www.mens-premium.com/images/mc_1_1_2654.jpeg", "https://www.mens-premium.com/images/mc_1_2_2654.jpeg"],comment:''},
-  {name:'こはね',nameEn:'Kohane',age:23,special:false,isNew:true,active:true,photo:'https://www.mens-premium.com/images/mc_1_1_2698.jpeg',photos:["https://www.mens-premium.com/images/mc_1_1_2698.jpeg", "https://www.mens-premium.com/images/mc_1_2_2698.jpeg", "https://www.mens-premium.com/images/mc_1_3_2698.jpeg", "https://www.mens-premium.com/images/mc_1_4_2698.jpeg"],comment:'Eカップの美巨乳で更にはモデル級スタイル✨
-癒し系美少女「こはね」さんの入店です🎵
-
-ルックスもさる事ながらその洗練された美しいボディは必見！！！
-
-モデル級の細身なスタイルで強調されるEカップは、スタイルの良さを更に引き立て見惚れちゃいます✨
-
-性格は明るく愛嬌があり人懐っこいのにプラスして、コミュニケーションにも自信があるとの事👍
-
-セラピスト経験も長いので、しっかり体をほぐす事にも長けてるんです😳‼️
-
-攻めっ気たっぷりのサービスをご堪能下さいませ！！
-
-ご予約はお早めに☎️'},
-  {name:'ななみ',nameEn:'Nanami',age:26,special:false,isNew:true,active:true,photo:'https://www.mens-premium.com/images/mc_1_1_2753.jpeg',photos:["https://www.mens-premium.com/images/mc_1_1_2753.jpeg", "https://www.mens-premium.com/images/mc_1_2_2753.jpeg", "https://www.mens-premium.com/images/mc_1_3_2753.jpeg", "https://www.mens-premium.com/images/mc_1_4_2753.jpeg"],comment:'美人×巨乳=最強💛
-
-スタイル抜群で美白肌のななみさん
-
-出会った瞬間に目線が上下に動いてしまうことでしょう。。
-
-高身長からくる超密着施術も期待度MAX♡
-
-当店でしか味わえない超貴重な体験。
-
-ぜひご予約お待ちしております。'},
-  {name:'くろえ',nameEn:'Kuroe',age:19,special:false,isNew:true,active:true,photo:'https://www.mens-premium.com/images/mc_1_1_2756.jpeg',photos:["https://www.mens-premium.com/images/mc_1_1_2756.jpeg", "https://www.mens-premium.com/images/mc_1_2_2756.jpeg"],comment:''},
-  {name:'まなか',nameEn:'Manaka',age:26,special:false,isNew:true,active:true,photo:'https://www.mens-premium.com/images/mc_1_1_2776.jpeg',photos:["https://www.mens-premium.com/images/mc_1_1_2776.jpeg", "https://www.mens-premium.com/images/mc_1_2_2776.jpeg"],comment:''},
-  {name:'ひめか',nameEn:'Himeka',age:25,special:false,isNew:true,active:true,photo:'https://www.mens-premium.com/images/mc_1_1_2787.jpeg',photos:["https://www.mens-premium.com/images/mc_1_1_2787.jpeg", "https://www.mens-premium.com/images/mc_1_2_2787.jpeg", "https://www.mens-premium.com/images/mc_1_3_2787.jpeg", "https://www.mens-premium.com/images/mc_1_4_2787.jpeg"],comment:'絶世の美女ととろける甘々な恋人気分♡
-
-整った顔立ちに黄金比率のボディ、非の打ち所がないひめかさん❤️
-
-そんな彼女ですが、施術に入ると大胆で濃厚な責め責めマッサージ❤️
-この激カワのルックスで息をのむほどの至近距離での施術、体感を得ていただけること間違いなしです♡
-
-イチャイチャありドキドキあり
-さらに小悪魔な一面も、、、♡
-
-施術だけではなく会話や仕草にまでその可愛さが❤️
-
-もちすべ肌×濃厚密着の極上癒し体験をお約束いたします。'},
-  {name:'にか',nameEn:'Nika',age:21,special:false,isNew:true,active:true,photo:'https://www.mens-premium.com/images/mc_1_1_2794.jpeg',photos:["https://www.mens-premium.com/images/mc_1_1_2794.jpeg"],comment:''},
-  {name:'ばんび',nameEn:'Bambi',age:28,special:false,isNew:true,active:true,photo:'https://www.mens-premium.com/images/mc_1_1_2802.jpeg',photos:["https://www.mens-premium.com/images/mc_1_1_2802.jpeg", "https://www.mens-premium.com/images/mc_1_2_2802.jpeg"],comment:'扉を開けたら笑顔が止まりません💓
-自信をもっておすすめ出来ます😍
-
-なぜならスタイル、ルックスよりも
-雰囲気、サービスが過ぎてもう、、、😍
-
-極上のスタイルから繰り出される密着施術は病みつきになっちゃいます
-
-人気爆発必至💓
-予約困難になりますので早めのご連絡でお願いします💓'},
-  {name:'じゅり',nameEn:'Juri',age:28,special:false,isNew:true,active:true,photo:'https://www.mens-premium.com/images/mc_1_1_2805.jpeg',photos:["https://www.mens-premium.com/images/mc_1_1_2805.jpeg", "https://www.mens-premium.com/images/mc_1_2_2805.jpeg"],comment:'いじわる大好き個性派セラピスト♡
-
-ボディー良し、顔良し、施術良しの三点揃ったSSS級セラピスト
-
-目鼻立ち良い妖艶な美女。
-抜群のグラマラスボディ♡
-
-そんな彼女ですが会話センスも抜群で初めて会ったとは思えないほど打ち解けやすいことでしょう
-
-ひとたび施術に入れば、情熱的で濃厚なタッチに昇天してしまいます。
-
-焦らしに焦らされる絶妙なフェザータッチ
-最高級のボディとの密着タイム
-
-入って良かったと心から思えることでしょう♡
-
-ご予約お待ちしております'},
-  {name:'らん',nameEn:'Ran',age:23,special:false,isNew:true,active:true,photo:'https://www.mens-premium.com/images/mc_1_1_2815.jpeg',photos:["https://www.mens-premium.com/images/mc_1_1_2815.jpeg", "https://www.mens-premium.com/images/mc_1_2_2815.jpeg", "https://www.mens-premium.com/images/mc_1_3_2815.jpeg", "https://www.mens-premium.com/images/mc_1_4_2815.jpeg"],comment:'愛嬌、仕草全てが可愛い💕一瞬で虜になりますよ❣️
-
-スタイルはもう男性陣皆が好きであろう体型です🥰
-プリッと上がった綺麗なヒップ🍑💕
-
-施術に入ると積極的㊙️激しさに強弱をつけて繰り出される手技🔞
-抗うことなんてできません💦'},
-  {name:'このみ',nameEn:'Konomi',age:25,special:false,isNew:true,active:true,photo:'https://www.mens-premium.com/images/mc_1_1_2908.jpeg',photos:["https://www.mens-premium.com/images/mc_1_1_2908.jpeg"],comment:'絶世の美女降臨♡
-
-整った顔立ちに黄金比率のボディ、非の打ち所がないこのみさん♡
-
-この激カワのルックスで本格的な施術も習得済みな上級者‼︎
-
-癒され度100%♡
-
-そんな彼女ですが、施術に入ると大胆で濃厚な責め責めマッサージ❤️
-
-四つん這いやフェザータッチが得意な彼女は小悪魔な一面も、、、♡
-
-施術だけではなく会話や仕草にまでその可愛さが❤️'},
-  {name:'つむぎ',nameEn:'Tsumugi',age:23,special:false,isNew:true,active:true,photo:'https://www.mens-premium.com/images/mc_1_1_2980.jpeg',photos:["https://www.mens-premium.com/images/mc_1_1_2980.jpeg", "https://www.mens-premium.com/images/mc_1_2_2980.jpeg"],comment:''}
+  {name:"ななせ",nameEn:"Nanase",age:21,special:false,isNew:false,active:true,photo:"https://www.mens-premium.com/images/mc_1_1_460.jpeg",comment:"【当店ランクセラピスト】\nこの機会にぜひご指名ください！\n美しいプロポーションに胸が高鳴ります！\n引き込まれるような大きな瞳が印象的な整ったお顔立ち♪\n愛嬌満点な性格もとっても魅力的♪\nぜひご予約オススメ致します!!",photos:["https://www.mens-premium.com/images/mc_1_1_460.jpeg", "https://www.mens-premium.com/images/mc_1_2_460.jpeg", "https://www.mens-premium.com/images/mc_1_3_460.jpeg"]},
+  {name:"ひな",nameEn:"Hina",age:20,special:false,isNew:false,active:true,photo:"https://www.mens-premium.com/images/mc_1_1_624.jpeg",comment:"【圧倒的彼女感】\n癒し系の超絶最強美人あらわる！\n容姿端麗でスレンダーでありながら目のやり場に困るほどのセクシーさ♡\n性格はとても穏やかで優しくて女神様のような雰囲気で、あなたを寄り添い癒し尽くしてくれます。\nエステは濃厚超絶技巧。ゆったりと深く気持ちよすぎるリンパはまさに夢見心地。",photos:["https://www.mens-premium.com/images/mc_1_1_624.jpeg", "https://www.mens-premium.com/images/mc_1_2_624.jpeg"]},
+  {name:"ゆい",nameEn:"Yui",age:22,special:false,isNew:false,active:true,photo:"https://www.mens-premium.com/images/mc_1_1_734.jpeg",comment:"笑顔がたえず愛嬌抜群！\n聞き上手でどんなお兄様とでも仲良くなれる全てがキュートなセラピストさん✨\n幼さの残る外見に似つかわず、そのボディは天下一品✨\n豊かなバストに究極の美尻ライン、美しいボディラインの持ち主です。\nふわっとした雰囲気ながらもイタズラ好きな彼女♡\n天使と小悪魔のハーフのような甘いとろけるような時間\n貴方もゆいさんの虜に必ずやなることでしょう。",photos:["https://www.mens-premium.com/images/mc_1_1_734.jpeg", "https://www.mens-premium.com/images/mc_1_2_734.jpeg", "https://www.mens-premium.com/images/mc_1_3_734.jpeg", "https://www.mens-premium.com/images/mc_1_4_734.jpeg"]},
+  {name:"あられ",nameEn:"Arare",age:24,special:false,isNew:false,active:true,photo:"https://www.mens-premium.com/images/mc_1_1_1103.jpeg",comment:"素人系どエロセラピスト♡\nメンエス界ではなかなかお目にかかれない逸材です！\nすべすべ白肌からくる濃厚施術、そんなギャップにイチコロです♡\n極めつけは「脳トロボイス」施術中脳死すること間違いなし！\nご予約はお早めに！",photos:["https://www.mens-premium.com/images/mc_1_1_1103.jpeg"]},
+  {name:"ゆき",nameEn:"Yuki",age:23,special:true,isNew:false,active:true,photo:"https://www.mens-premium.com/images/mc_1_1_1247.jpeg",comment:"あどけなさの残る可愛さが一瞬で心掴まれるベビーフェイス美少女「ゆき」さん♡\n透明感抜群の色白美肌とスレンダーで美しいメリハリのあるボディライン！\nしっかりと相手の目を見てぎゅっと距離感を縮めてお客様に寄り添います♡\n終始ドキドキ、愛嬌たっぷりの笑顔で2人だけの甘くとろけるような世界へ♡\n「贅沢なヒトトキ」を満喫してください",photos:["https://www.mens-premium.com/images/mc_1_1_1247.jpeg", "https://www.mens-premium.com/images/mc_1_2_1247.jpeg", "https://www.mens-premium.com/images/mc_1_3_1247.jpeg"]},
+  {name:"ゆあ",nameEn:"Yua",age:22,special:false,isNew:false,active:true,photo:"https://www.mens-premium.com/images/mc_1_1_1411.jpeg",comment:"〜推し確定案件になります〜\nアイドル級ルックス「ゆあ」\n扉を開けた瞬間、完全にあなたのアイドルとなる事でしょう♡\nこんなに可愛い子が側にいるだけでもドキドキ♡なのに密着施術、すべすべの肌、心も身体も癒される事間違いなしです！\n病みつき間違いありません、近距離で是非体験してください☆",photos:["https://www.mens-premium.com/images/mc_1_1_1411.jpeg", "https://www.mens-premium.com/images/mc_1_2_1411.jpeg", "https://www.mens-premium.com/images/mc_1_4_1411.jpeg"]},
+  {name:"のぞみ",nameEn:"Nozomi",age:23,special:false,isNew:false,active:true,photo:"https://www.mens-premium.com/images/mc_1_1_1505.jpeg",comment:"",photos:["https://www.mens-premium.com/images/mc_1_1_1505.jpeg", "https://www.mens-premium.com/images/mc_1_2_1505.jpeg"]},
+  {name:"もあ",nameEn:"Moa",age:22,special:false,isNew:false,active:true,photo:"https://www.mens-premium.com/images/mc_1_1_1523.jpeg",comment:"意図せずとも男を虜にし骨抜きにするナチュラルキラー美少女♡\nもちろん彼女も男性が大好き♡\n一心不乱に皆様の毒素を浄化してくれます\n物腰はとても柔らかく従順で常に笑顔を絶やさず、ご奉仕に対する姿勢もとにかく健気！\n気づけば沼にハマっているはず♡",photos:["https://www.mens-premium.com/images/mc_1_1_1523.jpeg", "https://www.mens-premium.com/images/mc_1_2_1523.jpeg", "https://www.mens-premium.com/images/mc_1_3_1523.jpeg"]},
+  {name:"もえ",nameEn:"Moe",age:24,special:false,isNew:false,active:true,photo:"https://www.mens-premium.com/images/mc_1_1_1570.jpeg",comment:"",photos:["https://www.mens-premium.com/images/mc_1_1_1570.jpeg", "https://www.mens-premium.com/images/mc_1_2_1570.jpeg"]},
+  {name:"かれん",nameEn:"Karen",age:23,special:false,isNew:false,active:true,photo:"https://www.mens-premium.com/images/mc_1_1_1589.jpeg",comment:"超SS級美少女♡\n坂グループに居てもおかしくないようなアイドルフェイスの超S級美女の入店です！\n見た目通りのおっとりした優しい性格の女の子☆\n最上級ルックスで施術は濃厚密着♡\n深めのディープリンパでドキドキ感MAX！\n早めのご予約お待ちしております♡",photos:["https://www.mens-premium.com/images/mc_1_1_1589.jpeg", "https://www.mens-premium.com/images/mc_1_2_1589.jpeg"]},
+  {name:"まゆ",nameEn:"Mayu",age:23,special:false,isNew:false,active:true,photo:"https://www.mens-premium.com/images/mc_1_1_1768.jpeg",comment:"圧倒的なメリハリボディ♡\n指圧からギリギリまで攻めたオイルマッサージは異次元の気持ちよさ♡\n胸、お尻、太ももどこをとっても完璧な身体に密着されたらもう離れたくなくなるほど！\nまゆさんの施術を一度受けたら虜になること間違いなし♡",photos:["https://www.mens-premium.com/images/mc_1_1_1768.jpeg", "https://www.mens-premium.com/images/mc_1_2_1768.jpeg", "https://www.mens-premium.com/images/mc_1_3_1768.jpeg", "https://www.mens-premium.com/images/mc_1_4_1768.jpeg"]},
+  {name:"えな",nameEn:"Ena",age:22,special:false,isNew:false,active:true,photo:"https://www.mens-premium.com/images/mc_1_1_1786.jpeg",comment:"はっきりとお伝え致します！\n【天使みたいに可愛らしく】【無限大の癒しがあり】【極上の施術をする】最高のセラピストさんが登場です！\nすべすべのもちもち肌を使った密着は気持ちよくなれる代物です！\n【えな】というエンジェルがプレミアムに入店致しました！癒しを求め！スイートな甘い時間を求め！",photos:["https://www.mens-premium.com/images/mc_1_1_1786.jpeg", "https://www.mens-premium.com/images/mc_1_2_1786.jpeg"]},
+  {name:"めい",nameEn:"Mei",age:23,special:false,isNew:false,active:true,photo:"https://www.mens-premium.com/images/mc_1_1_1787.jpeg",comment:"癒し系の超絶最強美人あらわる！\nこれは絶対お気に入りの一人になること間違い無しの逸材！\n目のやり場に困るほどのセクシーさ♡\n性格はとても穏やかで優しくて女神様のような雰囲気で、あなたを寄り添い癒し尽くしてくれます。\nエステは濃厚超絶技巧。ゆったりと深く気持ちよすぎるリンパはまさに夢見心地。",photos:["https://www.mens-premium.com/images/mc_1_1_1787.jpeg", "https://www.mens-premium.com/images/mc_1_2_1787.jpeg"]},
+  {name:"るな",nameEn:"Luna",age:21,special:false,isNew:false,active:true,photo:"https://www.mens-premium.com/images/mc_1_1_1805.jpeg",comment:"癒しと超ド級の施術\n思わず「守ってあげたい」と感じてしまうような愛らしさ\n透き通るような色白の肌に、どこかあどけなさの残る童顔フェイス♡\nふと笑った瞬間にできるえくぼが本当に可愛らしく、その無邪気な笑顔だけで一気に心を掴まれてしまうお客様も多いはずです！\n実は甘えん坊な一面もあり、距離が縮まると見せてくれる柔らかな表情や仕草は特別感たっぷり♡\nそっと寄り添うような雰囲気で、自然と心を解きほぐしてくれるタイプです♪",photos:["https://www.mens-premium.com/images/mc_1_1_1805.jpeg", "https://www.mens-premium.com/images/mc_1_2_1805.jpeg", "https://www.mens-premium.com/images/mc_1_3_1805.jpeg", "https://www.mens-premium.com/images/mc_1_4_1805.jpeg"]},
+  {name:"ましろ",nameEn:"Mashiro",age:24,special:false,isNew:false,active:true,photo:"https://www.mens-premium.com/images/mc_1_1_2122.jpeg",comment:"白い透明感のある清楚な雰囲気と大胆な施術を兼ね備えたセラピストさんのご紹介です！\n彼女の透明感あふれる柔らかな笑顔に心奪われること間違いなし✨\nしかし、その清楚な外見とは裏腹に、施術になると一変大胆不敵な手技で貴方の疲れた体を根こそぎ癒してくれます！\n彼女の優雅な指使いはまるで魔法のようです。\n特別な雰囲気と技術は、他では決して味わえない至福のひとときを約束します✨",photos:["https://www.mens-premium.com/images/mc_1_1_2122.jpeg", "https://www.mens-premium.com/images/mc_1_2_2122.jpeg", "https://www.mens-premium.com/images/mc_1_3_2122.jpeg"]},
+  {name:"るみ",nameEn:"Rumi",age:0,special:false,isNew:false,active:true,photo:"https://www.mens-premium.com/images/mc_1_1_2155.jpeg",comment:"絶対に人気が出る女性！\nスレンダーDカップで笑顔のとても可愛い「るみ」のご紹介です\n抜群のルックスとスタイルそして他に類を見ない天性のエロス\n性格も素直で謙虚で男性を立てるタイプのようで、一緒にいるだけで癒されてしまう事でしょう！\nお早めのお問い合わせ、心よりお待ちしております！",photos:["https://www.mens-premium.com/images/mc_1_1_2155.jpeg", "https://www.mens-premium.com/images/mc_1_2_2155.jpeg", "https://www.mens-premium.com/images/mc_1_3_2155.jpeg"]},
+  {name:"みやび",nameEn:"Miyabi",age:0,special:false,isNew:false,active:true,photo:"https://www.mens-premium.com/images/mc_1_1_2156.jpeg",comment:"レベチな美女セラピスト♡\n美人な見た目で大人しい空気感。実は明るく人懐っこい性格な彼女♡\n容姿の美しさとパーフェクトにバランスの取れたきめ細かく絹のような肌質。\nスレンダーながらそそられるEカップ♡\nそしてなんといっても圧巻な存在感を持つその美尻はずっと見ていたくなることでしょう♡\n施術では超超超密着タイム。王道的なハイクオリティさと徐々に感じられるエロス。一度入られてみては…？",photos:["https://www.mens-premium.com/images/mc_1_1_2156.jpeg", "https://www.mens-premium.com/images/mc_1_2_2156.jpeg", "https://www.mens-premium.com/images/mc_1_3_2156.jpeg", "https://www.mens-premium.com/images/mc_1_4_2156.jpeg"]},
+  {name:"えみり",nameEn:"Emiri",age:22,special:false,isNew:false,active:true,photo:"https://www.mens-premium.com/images/mc_1_1_2203.jpeg",comment:"ただ誰がみても一目惚れしてしまう程の顔面偏差値\n現役グラビアアイドルの入店です！\nもちもちすべすべ肌に、施術中は雰囲気作りまで徹底するお客様を第一に考える素敵なセラピスト\nこのレベルの女の子と2人きりの空間はまるで夢の様です✨\nご予約はお早めに",photos:["https://www.mens-premium.com/images/mc_1_1_2203.jpeg", "https://www.mens-premium.com/images/mc_1_2_2203.jpeg", "https://www.mens-premium.com/images/mc_1_3_2203.jpeg"]},
+  {name:"あんな",nameEn:"Anna",age:28,special:false,isNew:false,active:true,photo:"https://www.mens-premium.com/images/mc_1_1_2220.jpeg",comment:"ベテランセラピストならではの安心感、安定感\nお姉さんセラピストならではの居心地の良さをご堪能あれ♡\nハイレベル美女が入店しました！\nひとつひとつの所作や笑顔、気配りなどどれをとっても超一級品\n話してみると彼女のおっとりした雰囲気と優しく包み込んでくれるような安心感\n可愛らしいお顔立ち、澄み切った白く透明感のある美肌、愛らしく見つめる瞳にも感動を覚えてしまいます\n経験豊富かつ包容力であなたを包み込んでくれます！",photos:["https://www.mens-premium.com/images/mc_1_1_2220.jpeg", "https://www.mens-premium.com/images/mc_1_2_2220.jpeg", "https://www.mens-premium.com/images/mc_1_3_2220.jpeg", "https://www.mens-premium.com/images/mc_1_4_2220.jpeg"]},
+  {name:"なの",nameEn:"Nano",age:24,special:false,isNew:false,active:true,photo:"https://www.mens-premium.com/images/mc_1_1_2331.jpeg",comment:"\"最強無敵\"\n一度見たら忘れない極上美女の来店です✨\nこんな可愛い子に身を委ねていいのでしょうか…\n愛嬌抜群で癒しオーラに溢れた空間は、満足度200%以上の絶対領域\n街で見かけたら誰しもが目を奪われ、一瞬で恋に落ちる圧倒的美貌のセラピスト\nお客様を最優先に、一人ひとりの心に溶け込むように甘く魅了する巧みな濃厚施術\n帰り際には確実に次回の予約をしたくなる程、そのクオリティーをご堪能下さい！",photos:["https://www.mens-premium.com/images/mc_1_1_2331.jpeg", "https://www.mens-premium.com/images/mc_1_2_2331.jpeg"]},
+  {name:"りん",nameEn:"Rin",age:23,special:false,isNew:false,active:true,photo:"https://www.mens-premium.com/images/mc_1_1_2341.jpeg",comment:"女神降臨！\n性格、容姿、スタイル、全てご満足いただけるセラピストさん♡\n綺麗な顔立ちとえくぼを兼ね備え明るいスマイルでのお出迎え\n会った瞬間に次の予約を入れたくなってしまうほどです\n施術面でも温もりのあるしっとりとした密着マッサージには我慢ができません\nご予約はお早めにお待ちしています！",photos:["https://www.mens-premium.com/images/mc_1_1_2341.jpeg", "https://www.mens-premium.com/images/mc_1_2_2341.jpeg", "https://www.mens-premium.com/images/mc_1_3_2341.jpeg"]},
+  {name:"みらい",nameEn:"Mirai",age:21,special:false,isNew:false,active:true,photo:"https://www.mens-premium.com/images/mc_1_1_2350.jpeg",comment:"出逢った瞬間はじける上品な笑顔！心を見透かされそうな純粋な瞳！\n透明感抜群の最上級セラピストが入店致しました！\n知らず知らずのうちにこちらまで笑顔になってしまうほどの愛嬌の持ち主！\n澱みない指圧やゼロ距離の密着、また鼠径部へのアプローチはどれをとっても一級品！",photos:["https://www.mens-premium.com/images/mc_1_1_2350.jpeg", "https://www.mens-premium.com/images/mc_1_2_2350.jpeg", "https://www.mens-premium.com/images/mc_1_3_2350.jpeg"]},
+  {name:"おとね",nameEn:"Otone",age:22,special:false,isNew:false,active:true,photo:"https://www.mens-premium.com/images/mc_1_1_2389.jpeg",comment:"",photos:["https://www.mens-premium.com/images/mc_1_1_2389.jpeg", "https://www.mens-premium.com/images/mc_1_2_2389.jpeg"]},
+  {name:"みずは",nameEn:"Mizuha",age:25,special:false,isNew:false,active:true,photo:"https://www.mens-premium.com/images/mc_1_1_2394.jpeg",comment:"",photos:["https://www.mens-premium.com/images/mc_1_1_2394.jpeg", "https://www.mens-premium.com/images/mc_1_2_2394.jpeg", "https://www.mens-premium.com/images/mc_1_3_2394.jpeg", "https://www.mens-premium.com/images/mc_1_4_2394.jpeg"]},
+  {name:"るい",nameEn:"Rui",age:27,special:true,isNew:false,active:true,photo:"https://www.mens-premium.com/images/mc_1_1_2402.jpeg",comment:"誰もが認めるいい女♡\n100年に1人の美女のご紹介です！\n整った顔立ちに峰不二子ばりのスタイル♡\nまさに理想の女性！そんな美女に出会えた方は超絶ラッキー\n見た目だけではありません。長い手足からくる圧倒的な密着感♡\n海よりも深いディープリンパ\nドキドキそしてエロエロな完璧な時間を堪能してください♡",photos:["https://www.mens-premium.com/images/mc_1_1_2402.jpeg", "https://www.mens-premium.com/images/mc_1_2_2402.jpeg", "https://www.mens-premium.com/images/mc_1_3_2402.jpeg"]},
+  {name:"えれな",nameEn:"Elena",age:25,special:false,isNew:true,active:true,photo:"https://www.mens-premium.com/images/mc_1_1_2534.jpg",comment:"【エロの伝道師♡】\nツンとした見た目とは裏腹に甘い雰囲気の彼女♡\nディープの時の迫力は破壊力抜群！\n洗練された見た目とは少し印象が違い、お話するととても親しみ易く礼儀正しさもあり、スグに打ち解けられる空気はとても居心地の良さと近い距離感を感じられる事でしょう。\n是非とも、その「ルックス」「スタイル」「妖艶さ」と魅力溢れる彼女に一度お逢い下さい。",photos:["https://www.mens-premium.com/images/mc_1_1_2534.jpg", "https://www.mens-premium.com/images/mc_1_2_2534.jpg", "https://www.mens-premium.com/images/mc_1_3_2534.jpg"]},
+  {name:"しいな",nameEn:"Shiina",age:19,special:false,isNew:true,active:true,photo:"https://www.mens-premium.com/images/mc_1_1_2596.jpeg",comment:"正統派美少女！華やかなルックスで会った瞬間から虜にさせます！\nFカップの美乳で思わず見惚れてしまいますよ。\n密着マッサージは神がかっています。\n指圧は強さも変幻自在で満足度は計り知れません\n心も身体も芯から幸せをかみしめていただけます",photos:["https://www.mens-premium.com/images/mc_1_1_2596.jpeg", "https://www.mens-premium.com/images/mc_1_2_2596.jpeg"]},
+  {name:"ねいろ",nameEn:"Neiro",age:25,special:false,isNew:true,active:true,photo:"https://www.mens-premium.com/images/mc_1_1_2626.jpeg",comment:"女神系スタイルのねいろさん♡\n顔、スタイル、施術すべてハイクオリティを兼ね備えた超絶美女\nそんな出会いに感謝することでしょう\n明るい雰囲気でのお出迎えから施術内でのディープストローク♡\nぜひ一度ご予約ください！",photos:["https://www.mens-premium.com/images/mc_1_1_2626.jpeg", "https://www.mens-premium.com/images/mc_1_2_2626.jpeg", "https://www.mens-premium.com/images/mc_1_3_2626.jpeg"]},
+  {name:"もえか",nameEn:"Moeka",age:22,special:false,isNew:true,active:true,photo:"https://www.mens-premium.com/images/mc_1_1_2654.jpeg",comment:"",photos:["https://www.mens-premium.com/images/mc_1_1_2654.jpeg", "https://www.mens-premium.com/images/mc_1_2_2654.jpeg"]},
+  {name:"こはね",nameEn:"Kohane",age:23,special:false,isNew:true,active:true,photo:"https://www.mens-premium.com/images/mc_1_1_2698.jpeg",comment:"Eカップの美巨乳で更にはモデル級スタイル✨\n癒し系美少女「こはね」さんの入店です！\nルックスもさる事ながらその洗練された美しいボディは必見！\nモデル級の細身なスタイルで強調されるEカップは、スタイルの良さを更に引き立て見惚れちゃいます✨\n性格は明るく愛嬌があり人懐っこいのにプラスして、コミュニケーションにも自信があるとの事\nご予約はお早めに",photos:["https://www.mens-premium.com/images/mc_1_1_2698.jpeg", "https://www.mens-premium.com/images/mc_1_2_2698.jpeg", "https://www.mens-premium.com/images/mc_1_3_2698.jpeg", "https://www.mens-premium.com/images/mc_1_4_2698.jpeg"]},
+  {name:"ななみ",nameEn:"Nanami",age:26,special:false,isNew:true,active:true,photo:"https://www.mens-premium.com/images/mc_1_1_2753.jpeg",comment:"美人x巨乳=最強！\nスタイル抜群で美白肌のななみさん\n出会った瞬間に目線が上下に動いてしまうことでしょう。\n高身長からくる超密着施術も期待度MAX♡\nぜひご予約お待ちしております。",photos:["https://www.mens-premium.com/images/mc_1_1_2753.jpeg", "https://www.mens-premium.com/images/mc_1_2_2753.jpeg", "https://www.mens-premium.com/images/mc_1_3_2753.jpeg", "https://www.mens-premium.com/images/mc_1_4_2753.jpeg"]},
+  {name:"くろえ",nameEn:"Kuroe",age:19,special:false,isNew:true,active:true,photo:"https://www.mens-premium.com/images/mc_1_1_2756.jpeg",comment:"",photos:["https://www.mens-premium.com/images/mc_1_1_2756.jpeg", "https://www.mens-premium.com/images/mc_1_2_2756.jpeg"]},
+  {name:"まなか",nameEn:"Manaka",age:26,special:false,isNew:true,active:true,photo:"https://www.mens-premium.com/images/mc_1_1_2776.jpeg",comment:"",photos:["https://www.mens-premium.com/images/mc_1_1_2776.jpeg", "https://www.mens-premium.com/images/mc_1_2_2776.jpeg"]},
+  {name:"ひめか",nameEn:"Himeka",age:25,special:false,isNew:true,active:true,photo:"https://www.mens-premium.com/images/mc_1_1_2787.jpeg",comment:"絶世の美女ととろける甘々な恋人気分♡\n整った顔立ちに黄金比率のボディ、非の打ち所がないひめかさん！\nそんな彼女ですが、施術に入ると大胆で濃厚な責め責めマッサージ\nこの激カワのルックスで息をのむほどの至近距離での施術、体感を得ていただけること間違いなしです♡\nイチャイチャありドキドキあり、さらに小悪魔な一面も、、、♡\nもちすべ肌x濃厚密着の極上癒し体験をお約束いたします。",photos:["https://www.mens-premium.com/images/mc_1_1_2787.jpeg", "https://www.mens-premium.com/images/mc_1_2_2787.jpeg", "https://www.mens-premium.com/images/mc_1_3_2787.jpeg", "https://www.mens-premium.com/images/mc_1_4_2787.jpeg"]},
+  {name:"にか",nameEn:"Nika",age:21,special:false,isNew:true,active:true,photo:"https://www.mens-premium.com/images/mc_1_1_2794.jpeg",comment:"",photos:["https://www.mens-premium.com/images/mc_1_1_2794.jpeg"]},
+  {name:"ばんび",nameEn:"Bambi",age:28,special:false,isNew:true,active:true,photo:"https://www.mens-premium.com/images/mc_1_1_2802.jpeg",comment:"扉を開けたら笑顔が止まりません！\n自信をもっておすすめ出来ます\n極上のスタイルから繰り出される密着施術は病みつきになっちゃいます\n人気爆発必至！予約困難になりますので早めのご連絡でお願いします",photos:["https://www.mens-premium.com/images/mc_1_1_2802.jpeg", "https://www.mens-premium.com/images/mc_1_2_2802.jpeg"]},
+  {name:"じゅり",nameEn:"Juri",age:28,special:false,isNew:true,active:true,photo:"https://www.mens-premium.com/images/mc_1_1_2805.jpeg",comment:"いじわる大好き個性派セラピスト♡\nボディー良し、顔良し、施術良しの三点揃ったSSS級セラピスト\n目鼻立ち良い妖艶な美女。抜群のグラマラスボディ♡\nそんな彼女ですが会話センスも抜群で初めて会ったとは思えないほど打ち解けやすいことでしょう\nひとたび施術に入れば、情熱的で濃厚なタッチに昇天してしまいます。\nご予約お待ちしております",photos:["https://www.mens-premium.com/images/mc_1_1_2805.jpeg", "https://www.mens-premium.com/images/mc_1_2_2805.jpeg"]},
+  {name:"らん",nameEn:"Ran",age:23,special:false,isNew:true,active:true,photo:"https://www.mens-premium.com/images/mc_1_1_2815.jpeg",comment:"愛嬌、仕草全てが可愛い！一瞬で虜になりますよ！\nスタイルはもう男性陣皆が好きであろう体型です\nプリッと上がった綺麗なヒップ！\n施術に入ると積極的！激しさに強弱をつけて繰り出される手技",photos:["https://www.mens-premium.com/images/mc_1_1_2815.jpeg", "https://www.mens-premium.com/images/mc_1_2_2815.jpeg", "https://www.mens-premium.com/images/mc_1_3_2815.jpeg", "https://www.mens-premium.com/images/mc_1_4_2815.jpeg"]},
+  {name:"このみ",nameEn:"Konomi",age:25,special:false,isNew:true,active:true,photo:"https://www.mens-premium.com/images/mc_1_1_2908.jpeg",comment:"絶世の美女降臨♡\n整った顔立ちに黄金比率のボディ、非の打ち所がないこのみさん♡\nこの激カワのルックスで本格的な施術も習得済みな上級者！\n癒され度100%♡\n施術に入ると大胆で濃厚な責め責めマッサージ\nフェザータッチが得意な彼女は小悪魔な一面も、、、♡",photos:["https://www.mens-premium.com/images/mc_1_1_2908.jpeg"]},
+  {name:"つむぎ",nameEn:"Tsumugi",age:23,special:false,isNew:true,active:true,photo:"https://www.mens-premium.com/images/mc_1_1_2980.jpeg",comment:"",photos:["https://www.mens-premium.com/images/mc_1_1_2980.jpeg", "https://www.mens-premium.com/images/mc_1_2_2980.jpeg"]}
 ];
 
 const saved=JSON.parse(localStorage.getItem('platinum_data')||'null');

@@ -289,7 +289,7 @@ async function loadDate(dateStr){
   const label=document.getElementById('schedLabel');
   label.textContent=fmtDate(dateStr)+'の出勤';
   content.innerHTML=`<div class="sched-empty"><div class="sched-empty-icon"><svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg></div><div class="loading-dots"><span></span><span></span><span></span></div></div>`;
-  const {data,error}=await sb.from('shifts').select('therapist_name,start_time,end_time,room_name').eq('store_id',STORE_ID).eq('status','approved').eq('date',dateStr).order('start_time',{ascending:true});
+  const {data,error}=await sb.from('shifts').select('therapist_name,start_time,end_time').eq('store_id',STORE_ID).eq('status','approved').eq('date',dateStr).order('start_time',{ascending:true});
   if(error||!data||!data.length){
     content.innerHTML=`<div class="sched-empty"><div class="sched-empty-icon"><svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg></div><div class="sched-empty-title">本日のシフトはありません</div><div class="sched-empty-note">最新情報はお電話にてご確認ください</div></div>`;
     return;
@@ -305,7 +305,6 @@ async function loadDate(dateStr){
       <div class="sched-time">${fmtTime(s.start_time)}<br><span style="font-size:10px;color:var(--muted2)">〜 ${fmtTime(s.end_time)}</span></div>
       <div>
         ${nameEl}
-        ${s.room_name?`<div class="sched-room">${s.room_name}</div>`:''}
       </div>
       <div>${isSpecial(s.therapist_name)?`<span class="sched-special">${STAR_SVG}SPECIAL</span>`:''}</div>
     </div>`;

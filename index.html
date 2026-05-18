@@ -375,6 +375,34 @@ footer::before{content:'';display:block;height:1px;background:linear-gradient(to
 /* ADD BUTTON */
 .a-add-btn{width:100%;padding:12px;border:1px dashed rgba(196,152,72,.25);color:rgba(196,152,72,.4);background:transparent;cursor:pointer;font-size:10px;letter-spacing:.4em;font-family:var(--ja);transition:all .2s;margin-top:10px}
 .a-add-btn:hover{border-color:var(--gold2);color:var(--gold2)}
+
+/* IMAGE EDITOR */
+.img-editor{display:grid;grid-template-columns:160px 1fr;gap:20px;background:rgba(255,255,255,.02);border:1px solid rgba(196,152,72,.12);padding:20px}
+.img-preview-wrap{display:flex;flex-direction:column;gap:10px}
+.img-preview{width:140px;height:186px;background:rgba(255,255,255,.04);border:1px solid rgba(196,152,72,.15);position:relative;overflow:hidden;flex-shrink:0}
+.img-preview-ph{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;opacity:.4}
+.img-preview-ph span{font-size:9px;letter-spacing:.3em;color:rgba(200,191,170,.6)}
+.img-preview-actions{display:flex;flex-direction:column;gap:6px}
+.img-upload-btn{display:flex;align-items:center;justify-content:center;gap:6px;padding:8px 10px;background:rgba(196,152,72,.12);border:1px solid rgba(196,152,72,.3);color:rgba(196,152,72,.8);font-size:9px;letter-spacing:.25em;cursor:pointer;transition:all .2s;font-family:var(--ja);text-align:center}
+.img-upload-btn:hover{background:rgba(196,152,72,.22);color:var(--gold2)}
+.img-clear-btn{padding:7px 10px;background:rgba(200,80,80,.08);border:1px solid rgba(200,80,80,.2);color:rgba(220,120,120,.7);font-size:9px;letter-spacing:.25em;cursor:pointer;transition:all .2s;font-family:var(--ja)}
+.img-clear-btn:hover{background:rgba(200,80,80,.15);color:rgba(240,140,140,.9)}
+.img-url-section{display:flex;flex-direction:column;gap:8px}
+.img-url-note{font-size:9px;letter-spacing:.15em;color:rgba(196,152,72,.3);line-height:1.8;margin-top:4px}
+/* STAFF THUMB in list */
+.a-card-thumb{width:40px;height:53px;background:rgba(255,255,255,.04);border:1px solid rgba(196,152,72,.12);flex-shrink:0;overflow:hidden;position:relative}
+.a-card-thumb img{width:100%;height:100%;object-fit:cover;position:absolute;inset:0}
+.a-card-thumb-ph{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;opacity:.2}
+.a-card-thumb-ph svg{width:18px;height:18px}
+/* UPLOAD PROGRESS */
+.img-progress{height:2px;background:rgba(196,152,72,.1);margin-top:6px;overflow:hidden}
+.img-progress-bar{height:100%;background:var(--gold2);width:0%;transition:width .3s}
+/* MULTI PHOTOS GRID */
+.photos-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:10px}
+.photo-thumb-wrap{position:relative;aspect-ratio:2/3;background:rgba(255,255,255,.04);border:1px solid rgba(196,152,72,.15);overflow:hidden;cursor:grab}
+.photo-thumb-wrap img{width:100%;height:100%;object-fit:cover}
+.photo-thumb-del{position:absolute;top:4px;right:4px;width:20px;height:20px;background:rgba(200,60,60,.8);border:none;color:#fff;font-size:12px;line-height:1;cursor:pointer;display:flex;align-items:center;justify-content:center;border-radius:2px}
+.photo-thumb-idx{position:absolute;bottom:4px;left:4px;font-size:8px;letter-spacing:.2em;color:#fff;background:rgba(0,0,0,.5);padding:2px 6px}
 /* MODAL */
 .a-modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:9100;display:none;align-items:center;justify-content:center}
 .a-modal-overlay.open{display:flex}
@@ -882,21 +910,67 @@ footer::before{content:'';display:block;height:1px;background:linear-gradient(to
 </div>
 
 <div class="a-modal-overlay" id="modalStaff">
-  <div class="a-modal">
+  <div class="a-modal" style="width:640px">
     <div class="a-modal-head"><span class="a-modal-title">セラピスト編集</span><button class="a-modal-close" onclick="closeModal('modalStaff')">✕</button></div>
     <div class="a-modal-body">
-      <div class="a-form-row">
+      <!-- IMAGE SECTION -->
+      <div class="img-editor">
+        <div class="img-preview-wrap">
+          <div class="img-preview" id="msPhotoPreview">
+            <div class="img-preview-ph" id="msPreviewPh">
+              <svg viewBox="0 0 60 60" fill="none" width="40" height="40"><circle cx="30" cy="22" r="13" stroke="rgba(200,191,170,.4)" stroke-width="1.2"/><path d="M6 54c0-13.3 10.7-24 24-24s24 10.7 24 24" stroke="rgba(200,191,170,.4)" stroke-width="1.2"/></svg>
+              <span>写真なし</span>
+            </div>
+            <img id="msPreviewImg" src="" alt="" style="display:none;width:100%;height:100%;object-fit:cover;position:absolute;inset:0">
+          </div>
+          <div class="img-preview-actions">
+            <label class="img-upload-btn" for="msFileInput">
+              <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4M17 8l-5-5-5 5M12 3v12"/></svg>
+              画像をアップロード
+            </label>
+            <input type="file" id="msFileInput" accept="image/*" style="display:none" onchange="handleStaffImageUpload(this)">
+            <button class="img-clear-btn" onclick="clearStaffImage()">削除</button>
+          </div>
+        </div>
+        <div class="img-url-section">
+          <label class="a-label">または画像URL</label>
+          <input class="a-input" id="msPhoto" placeholder="https://..." oninput="previewFromUrl(this.value)">
+          <p class="img-url-note">※ アップロードはJPG・PNG・WEBP対応。容量は1MB以内推奨。</p>
+        </div>
+      </div>
+      <!-- BASIC INFO -->
+      <div class="a-form-row" style="margin-top:20px">
         <div><label class="a-label">名前（日本語）</label><input class="a-input" id="msName" placeholder="例: るい"></div>
         <div><label class="a-label">英字名</label><input class="a-input" id="msNameEn" placeholder="例: Rui"></div>
       </div>
       <div class="a-form-row">
-        <div><label class="a-label">年齢</label><input class="a-input" id="msAge" type="number" placeholder="22"></div>
+        <div><label class="a-label">年齢（非公開の場合は0）</label><input class="a-input" id="msAge" type="number" placeholder="22"></div>
         <div><label class="a-label">プロフィールURL</label><input class="a-input" id="msUrl" placeholder="https://..."></div>
       </div>
-      <div class="a-form-row full"><div><label class="a-label">写真URL（空欄可）</label><input class="a-input" id="msPhoto" placeholder="https://..."></div></div>
       <div class="a-checkbox-row"><input type="checkbox" class="a-checkbox" id="msSpecial"><label class="a-checkbox-label" for="msSpecial">★ 特別セラピスト（本指名料 ¥2,000）</label></div>
       <div class="a-checkbox-row"><input type="checkbox" class="a-checkbox" id="msNew"><label class="a-checkbox-label" for="msNew">NEW バッジを表示</label></div>
       <div class="a-checkbox-row"><input type="checkbox" class="a-checkbox" id="msActive" checked><label class="a-checkbox-label" for="msActive">表示する（チェックを外すと非表示）</label></div>
+      <!-- COMMENT -->
+      <div class="a-form-row full" style="margin-top:16px">
+        <div>
+          <label class="a-label">プロフィールコメント（プロフィールページに表示）</label>
+          <textarea class="a-textarea" id="msComment" rows="6" placeholder="セラピストの紹介文を入力してください。&#10;改行はそのまま反映されます。"></textarea>
+        </div>
+      </div>
+      <!-- MULTI PHOTOS -->
+      <div style="margin-top:16px">
+        <label class="a-label">追加写真（プロフィールページのギャラリー）</label>
+        <div id="msPhotosGrid" class="photos-grid"></div>
+        <div style="display:flex;gap:8px;margin-top:10px;flex-wrap:wrap">
+          <label class="img-upload-btn" for="msPhotosFileInput" style="font-size:9px">
+            <svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4M17 8l-5-5-5 5M12 3v12"/></svg>
+            写真を追加（アップロード）
+          </label>
+          <input type="file" id="msPhotosFileInput" accept="image/*" multiple style="display:none" onchange="handleMultiPhotoUpload(this)">
+          <button class="img-upload-btn" onclick="addPhotoByUrl()" style="border-style:solid">＋ URLで追加</button>
+        </div>
+        <p class="img-url-note">最大6枚。先頭の写真がメイン表示になります。ドラッグで並び替え可。</p>
+      </div>
       <input type="hidden" id="msIdx" value="-1">
     </div>
     <div class="a-modal-footer"><button class="a-btn-sm" onclick="closeModal('modalStaff')">キャンセル</button><button class="a-btn-sm primary" onclick="saveStaff()">保存</button></div>
@@ -948,46 +1022,46 @@ const DEFAULT = {
   news: [{date:'2025.01.01',cat:'お知らせ',body:'現在お知らせはございません。最新情報はお電話にてご確認くださいませ。'}],
   pickup: {idx:0, nameEn:'Rui', quote:'100年に1人の美女', comment:'誰もが認める、いい女。\n整った顔立ちに峰不二子ばりのスタイル —\nまさに理想の女性です。\n\n長い手足からくる圧倒的な密着感。\n海よりも深い、ディープリンパ。\nドキドキそして完璧な時間を、堪能ください。', photo:''},
   therapists: [
-    {name:'ななせ',nameEn:'Nanase',age:21,special:false,isNew:false,active:true,photo:'',url:'https://www.mens-premium.com/profile/_uid/460/'},
-    {name:'ひな',  nameEn:'Hina',  age:20,special:false,isNew:false,active:true,photo:'',url:'https://www.mens-premium.com/profile/_uid/624/'},
-    {name:'ゆい',  nameEn:'Yui',   age:22,special:false,isNew:false,active:true,photo:'',url:'https://www.mens-premium.com/profile/_uid/734/'},
-    {name:'あられ',nameEn:'Arare', age:24,special:false,isNew:false,active:true,photo:'',url:'https://www.mens-premium.com/profile/_uid/1103/'},
-    {name:'ゆき',  nameEn:'Yuki',  age:23,special:true, isNew:false,active:true,photo:'',url:'https://www.mens-premium.com/profile/_uid/1247/'},
-    {name:'ゆあ',  nameEn:'Yua',   age:22,special:false,isNew:false,active:true,photo:'',url:'https://www.mens-premium.com/profile/_uid/1411/'},
-    {name:'のぞみ',nameEn:'Nozomi',age:23,special:false,isNew:false,active:true,photo:'',url:'https://www.mens-premium.com/profile/_uid/1505/'},
-    {name:'もあ',  nameEn:'Moa',   age:22,special:false,isNew:false,active:true,photo:'',url:'https://www.mens-premium.com/profile/_uid/1523/'},
-    {name:'もえ',  nameEn:'Moe',   age:24,special:false,isNew:false,active:true,photo:'',url:'https://www.mens-premium.com/profile/_uid/1570/'},
-    {name:'かれん',nameEn:'Karen', age:23,special:false,isNew:false,active:true,photo:'',url:'https://www.mens-premium.com/profile/_uid/1589/'},
-    {name:'まゆ',  nameEn:'Mayu',  age:23,special:false,isNew:false,active:true,photo:'',url:'https://www.mens-premium.com/profile/_uid/1768/'},
-    {name:'えな',  nameEn:'Ena',   age:22,special:false,isNew:false,active:true,photo:'',url:'https://www.mens-premium.com/profile/_uid/1786/'},
-    {name:'めい',  nameEn:'Mei',   age:23,special:false,isNew:false,active:true,photo:'',url:'https://www.mens-premium.com/profile/_uid/1787/'},
-    {name:'るな',  nameEn:'Luna',  age:21,special:false,isNew:false,active:true,photo:'',url:'https://www.mens-premium.com/profile/_uid/1805/'},
-    {name:'ましろ',nameEn:'Mashiro',age:24,special:false,isNew:false,active:true,photo:'',url:'https://www.mens-premium.com/profile/_uid/2122/'},
-    {name:'るみ',  nameEn:'Rumi',  age:0, special:false,isNew:false,active:true,photo:'',url:'https://www.mens-premium.com/profile/_uid/2155/'},
-    {name:'みやび',nameEn:'Miyabi',age:0, special:false,isNew:false,active:true,photo:'',url:'https://www.mens-premium.com/profile/_uid/2156/'},
-    {name:'えみり',nameEn:'Emiri', age:22,special:false,isNew:false,active:true,photo:'',url:'https://www.mens-premium.com/profile/_uid/2203/'},
-    {name:'あんな',nameEn:'Anna',  age:28,special:false,isNew:false,active:true,photo:'',url:'https://www.mens-premium.com/profile/_uid/2220/'},
-    {name:'なの',  nameEn:'Nano',  age:24,special:false,isNew:false,active:true,photo:'',url:'https://www.mens-premium.com/profile/_uid/2331/'},
-    {name:'りん',  nameEn:'Rin',   age:23,special:false,isNew:false,active:true,photo:'',url:'https://www.mens-premium.com/profile/_uid/2341/'},
-    {name:'みらい',nameEn:'Mirai', age:21,special:false,isNew:false,active:true,photo:'',url:'https://www.mens-premium.com/profile/_uid/2350/'},
-    {name:'おとね',nameEn:'Otone', age:22,special:false,isNew:false,active:true,photo:'',url:'https://www.mens-premium.com/profile/_uid/2389/'},
-    {name:'みずは',nameEn:'Mizuha',age:25,special:false,isNew:false,active:true,photo:'',url:'https://www.mens-premium.com/profile/_uid/2394/'},
-    {name:'るい',  nameEn:'Rui',   age:27,special:true, isNew:false,active:true,photo:'',url:'https://www.mens-premium.com/profile/_uid/2402/'},
-    {name:'えれな',nameEn:'Elena', age:25,special:false,isNew:true, active:true,photo:'',url:'https://www.mens-premium.com/profile/_uid/2534/'},
-    {name:'しいな',nameEn:'Shiina',age:19,special:false,isNew:true, active:true,photo:'',url:'https://www.mens-premium.com/profile/_uid/2596/'},
-    {name:'ねいろ',nameEn:'Neiro', age:25,special:false,isNew:true, active:true,photo:'',url:'https://www.mens-premium.com/profile/_uid/2626/'},
-    {name:'もえか',nameEn:'Moeka', age:22,special:false,isNew:true, active:true,photo:'',url:'https://www.mens-premium.com/profile/_uid/2654/'},
-    {name:'こはね',nameEn:'Kohane',age:23,special:false,isNew:true, active:true,photo:'',url:'https://www.mens-premium.com/profile/_uid/2698/'},
-    {name:'ななみ',nameEn:'Nanami',age:26,special:false,isNew:true, active:true,photo:'',url:'https://www.mens-premium.com/profile/_uid/2753/'},
-    {name:'くろえ',nameEn:'Kuroe', age:19,special:false,isNew:true, active:true,photo:'',url:'https://www.mens-premium.com/profile/_uid/2756/'},
-    {name:'まなか',nameEn:'Manaka',age:26,special:false,isNew:true, active:true,photo:'',url:'https://www.mens-premium.com/profile/_uid/2776/'},
-    {name:'ひめか',nameEn:'Himeka',age:25,special:false,isNew:true, active:true,photo:'',url:'https://www.mens-premium.com/profile/_uid/2787/'},
-    {name:'にか',  nameEn:'Nika',  age:21,special:false,isNew:true, active:true,photo:'',url:'https://www.mens-premium.com/profile/_uid/2794/'},
-    {name:'ばんび',nameEn:'Bambi', age:28,special:false,isNew:true, active:true,photo:'',url:'https://www.mens-premium.com/profile/_uid/2802/'},
-    {name:'じゅり',nameEn:'Juri',  age:28,special:false,isNew:true, active:true,photo:'',url:'https://www.mens-premium.com/profile/_uid/2805/'},
-    {name:'らん',  nameEn:'Ran',   age:23,special:false,isNew:true, active:true,photo:'',url:'https://www.mens-premium.com/profile/_uid/2815/'},
-    {name:'このみ',nameEn:'Konomi',age:25,special:false,isNew:true, active:true,photo:'',url:'https://www.mens-premium.com/profile/_uid/2908/'},
-    {name:'つむぎ',nameEn:'Tsumugi',age:23,special:false,isNew:true,active:true,photo:'',url:'https://www.mens-premium.com/profile/_uid/2980/'}
+    {name:'ななせ',nameEn:'Nanase',age:21,special:false,isNew:false,active:true,photo:'',url:'profile.html?idx=0',comment:'',photos:[]},
+    {name:'ひな',  nameEn:'Hina',  age:20,special:false,isNew:false,active:true,photo:'',url:'profile.html?idx=1',comment:'',photos:[]},
+    {name:'ゆい',  nameEn:'Yui',   age:22,special:false,isNew:false,active:true,photo:'',url:'profile.html?idx=2',comment:'',photos:[]},
+    {name:'あられ',nameEn:'Arare', age:24,special:false,isNew:false,active:true,photo:'',url:'profile.html?idx=3',comment:'',photos:[]},
+    {name:'ゆき',  nameEn:'Yuki',  age:23,special:true, isNew:false,active:true,photo:'',url:'profile.html?idx=4',comment:'',photos:[]},
+    {name:'ゆあ',  nameEn:'Yua',   age:22,special:false,isNew:false,active:true,photo:'',url:'profile.html?idx=5',comment:'',photos:[]},
+    {name:'のぞみ',nameEn:'Nozomi',age:23,special:false,isNew:false,active:true,photo:'',url:'profile.html?idx=6',comment:'',photos:[]},
+    {name:'もあ',  nameEn:'Moa',   age:22,special:false,isNew:false,active:true,photo:'',url:'profile.html?idx=7',comment:'',photos:[]},
+    {name:'もえ',  nameEn:'Moe',   age:24,special:false,isNew:false,active:true,photo:'',url:'profile.html?idx=8',comment:'',photos:[]},
+    {name:'かれん',nameEn:'Karen', age:23,special:false,isNew:false,active:true,photo:'',url:'profile.html?idx=9',comment:'',photos:[]},
+    {name:'まゆ',  nameEn:'Mayu',  age:23,special:false,isNew:false,active:true,photo:'',url:'profile.html?idx=10',comment:'',photos:[]},
+    {name:'えな',  nameEn:'Ena',   age:22,special:false,isNew:false,active:true,photo:'',url:'profile.html?idx=11',comment:'',photos:[]},
+    {name:'めい',  nameEn:'Mei',   age:23,special:false,isNew:false,active:true,photo:'',url:'profile.html?idx=12',comment:'',photos:[]},
+    {name:'るな',  nameEn:'Luna',  age:21,special:false,isNew:false,active:true,photo:'',url:'profile.html?idx=13',comment:'',photos:[]},
+    {name:'ましろ',nameEn:'Mashiro',age:24,special:false,isNew:false,active:true,photo:'',url:'profile.html?idx=14',comment:'',photos:[]},
+    {name:'るみ',  nameEn:'Rumi',  age:0, special:false,isNew:false,active:true,photo:'',url:'profile.html?idx=15',comment:'',photos:[]},
+    {name:'みやび',nameEn:'Miyabi',age:0, special:false,isNew:false,active:true,photo:'',url:'profile.html?idx=16',comment:'',photos:[]},
+    {name:'えみり',nameEn:'Emiri', age:22,special:false,isNew:false,active:true,photo:'',url:'profile.html?idx=17',comment:'',photos:[]},
+    {name:'あんな',nameEn:'Anna',  age:28,special:false,isNew:false,active:true,photo:'',url:'profile.html?idx=18',comment:'',photos:[]},
+    {name:'なの',  nameEn:'Nano',  age:24,special:false,isNew:false,active:true,photo:'',url:'profile.html?idx=19',comment:'',photos:[]},
+    {name:'りん',  nameEn:'Rin',   age:23,special:false,isNew:false,active:true,photo:'',url:'profile.html?idx=20',comment:'',photos:[]},
+    {name:'みらい',nameEn:'Mirai', age:21,special:false,isNew:false,active:true,photo:'',url:'profile.html?idx=21',comment:'',photos:[]},
+    {name:'おとね',nameEn:'Otone', age:22,special:false,isNew:false,active:true,photo:'',url:'profile.html?idx=22',comment:'',photos:[]},
+    {name:'みずは',nameEn:'Mizuha',age:25,special:false,isNew:false,active:true,photo:'',url:'profile.html?idx=23',comment:'',photos:[]},
+    {name:'るい',  nameEn:'Rui',   age:27,special:true, isNew:false,active:true,photo:'',url:'profile.html?idx=24',comment:'',photos:[]},
+    {name:'えれな',nameEn:'Elena', age:25,special:false,isNew:true, active:true,photo:'',url:'profile.html?idx=25',comment:'',photos:[]},
+    {name:'しいな',nameEn:'Shiina',age:19,special:false,isNew:true, active:true,photo:'',url:'profile.html?idx=26',comment:'',photos:[]},
+    {name:'ねいろ',nameEn:'Neiro', age:25,special:false,isNew:true, active:true,photo:'',url:'profile.html?idx=27',comment:'',photos:[]},
+    {name:'もえか',nameEn:'Moeka', age:22,special:false,isNew:true, active:true,photo:'',url:'profile.html?idx=28',comment:'',photos:[]},
+    {name:'こはね',nameEn:'Kohane',age:23,special:false,isNew:true, active:true,photo:'',url:'profile.html?idx=29',comment:'',photos:[]},
+    {name:'ななみ',nameEn:'Nanami',age:26,special:false,isNew:true, active:true,photo:'',url:'profile.html?idx=30',comment:'',photos:[]},
+    {name:'くろえ',nameEn:'Kuroe', age:19,special:false,isNew:true, active:true,photo:'',url:'profile.html?idx=31',comment:'',photos:[]},
+    {name:'まなか',nameEn:'Manaka',age:26,special:false,isNew:true, active:true,photo:'',url:'profile.html?idx=32',comment:'',photos:[]},
+    {name:'ひめか',nameEn:'Himeka',age:25,special:false,isNew:true, active:true,photo:'',url:'profile.html?idx=33',comment:'',photos:[]},
+    {name:'にか',  nameEn:'Nika',  age:21,special:false,isNew:true, active:true,photo:'',url:'profile.html?idx=34',comment:'',photos:[]},
+    {name:'ばんび',nameEn:'Bambi', age:28,special:false,isNew:true, active:true,photo:'',url:'profile.html?idx=35',comment:'',photos:[]},
+    {name:'じゅり',nameEn:'Juri',  age:28,special:false,isNew:true, active:true,photo:'',url:'profile.html?idx=36',comment:'',photos:[]},
+    {name:'らん',  nameEn:'Ran',   age:23,special:false,isNew:true, active:true,photo:'',url:'profile.html?idx=37',comment:'',photos:[]},
+    {name:'このみ',nameEn:'Konomi',age:25,special:false,isNew:true, active:true,photo:'',url:'profile.html?idx=38',comment:'',photos:[]},
+    {name:'つむぎ',nameEn:'Tsumugi',age:23,special:false,isNew:true,active:true,photo:'',url:'profile.html?idx=39',comment:'',photos:[]}
   ],
   schedule: {status:'調整中', entries:[]},
   links: [
@@ -1241,45 +1315,205 @@ function loadPickupPanel(){
 
 // ===== STAFF =====
 function loadStaffList(){
-  document.getElementById('staffList').innerHTML=D.therapists.map((t,i)=>`
-    <div class="a-card">
+  document.getElementById('staffList').innerHTML=D.therapists.map((t,i)=>{
+    const thumb = t.photo
+      ? `<div class="a-card-thumb"><img src="${t.photo}" alt="${t.name}"></div>`
+      : `<div class="a-card-thumb"><div class="a-card-thumb-ph"><svg viewBox="0 0 60 60" fill="none"><circle cx="30" cy="22" r="13" stroke="rgba(200,191,170,.4)" stroke-width="1.5"/><path d="M6 54c0-13.3 10.7-24 24-24s24 10.7 24 24" stroke="rgba(200,191,170,.4)" stroke-width="1.5"/></svg></div></div>`;
+    return `
+    <div class="a-card" style="align-items:center">
+      ${thumb}
       <div class="a-card-info">
         <div class="a-card-title">${t.name}（${t.nameEn}）<span class="status-pill ${t.active?'status-active':'status-off'}" style="margin-left:8px">${t.active?'表示中':'非表示'}</span></div>
-        <div class="a-card-sub">${t.age}歳</div>
+        <div class="a-card-sub">${t.age>0?t.age+'歳':''}</div>
         <div class="a-card-tags">
           ${t.special?`<span class="a-tag special">${STAR_SVG} SPECIAL</span>`:''}
           ${t.isNew?'<span class="a-tag new">NEW</span>':''}
+          ${t.photo?'<span class="a-tag" style="color:rgba(100,200,150,.7);border-color:rgba(100,200,150,.3)">写真あり</span>':''}
         </div>
       </div>
       <div class="a-card-actions">
         <button class="a-btn-sm" onclick="openStaffModal(${i})">編集</button>
         <button class="a-btn-sm danger" onclick="deleteStaff(${i})">削除</button>
       </div>
-    </div>`).join('')||'<p style="color:rgba(196,152,72,.3);font-size:11px">セラピストがいません</p>';
+    </div>`;
+  }).join('')||'<p style="color:rgba(196,152,196,.3);font-size:11px">セラピストがいません</p>';
+}
+function updateModalPreview(src){
+  const img=document.getElementById('msPreviewImg');
+  const ph=document.getElementById('msPreviewPh');
+  if(src){img.src=src;img.style.display='block';ph.style.display='none';}
+  else{img.src='';img.style.display='none';ph.style.display='flex';}
+}
+function previewFromUrl(url){
+  updateModalPreview(url||'');
+}
+function clearStaffImage(){
+  document.getElementById('msPhoto').value='';
+  document.getElementById('msFileInput').value='';
+  updateModalPreview('');
+}
+async function handleStaffImageUpload(input){
+  const file=input.files[0];
+  if(!file) return;
+  const MAX_W=600, MAX_H=800, QUALITY=0.82;
+  const reader=new FileReader();
+  reader.onload=function(e){
+    const imgEl=new Image();
+    imgEl.onload=function(){
+      // Canvas圧縮
+      let w=imgEl.width, h=imgEl.height;
+      const ratio=Math.min(MAX_W/w, MAX_H/h, 1);
+      w=Math.round(w*ratio); h=Math.round(h*ratio);
+      const canvas=document.createElement('canvas');
+      canvas.width=w; canvas.height=h;
+      const ctx=canvas.getContext('2d');
+      ctx.drawImage(imgEl,0,0,w,h);
+      const type=file.type==='image/png'?'image/png':'image/jpeg';
+      const b64=canvas.toDataURL(type, QUALITY);
+      // サイズチェック (~1.5MB base64 limit)
+      if(b64.length>2*1024*1024){
+        showToast('画像が大きすぎます。1MB以内の画像をお使いください');
+        return;
+      }
+      document.getElementById('msPhoto').value=b64;
+      updateModalPreview(b64);
+      showToast('画像を読み込みました');
+    };
+    imgEl.src=e.target.result;
+  };
+  reader.readAsDataURL(file);
 }
 function openStaffModal(idx=-1){
   document.getElementById('msIdx').value=idx;
   if(idx>=0){
     const t=D.therapists[idx];
-    document.getElementById('msName').value=t.name;document.getElementById('msNameEn').value=t.nameEn;
-    document.getElementById('msAge').value=t.age;document.getElementById('msUrl').value=t.url||'';
+    document.getElementById('msName').value=t.name;
+    document.getElementById('msNameEn').value=t.nameEn;
+    document.getElementById('msAge').value=t.age;
+    document.getElementById('msUrl').value=`profile.html?idx=${idx}`;
     document.getElementById('msPhoto').value=t.photo||'';
-    document.getElementById('msSpecial').checked=t.special;document.getElementById('msNew').checked=t.isNew;document.getElementById('msActive').checked=t.active;
+    document.getElementById('msComment').value=t.comment||'';
+    document.getElementById('msSpecial').checked=t.special;
+    document.getElementById('msNew').checked=t.isNew;
+    document.getElementById('msActive').checked=t.active;
+    updateModalPreview(t.photo||'');
+    renderPhotosGrid(t.photos||[]);
   }else{
-    ['msName','msNameEn','msUrl','msPhoto'].forEach(id=>document.getElementById(id).value='');
+    ['msName','msNameEn','msUrl','msPhoto','msComment'].forEach(id=>document.getElementById(id).value='');
     document.getElementById('msAge').value='';
-    document.getElementById('msSpecial').checked=false;document.getElementById('msNew').checked=true;document.getElementById('msActive').checked=true;
+    document.getElementById('msSpecial').checked=false;
+    document.getElementById('msNew').checked=true;
+    document.getElementById('msActive').checked=true;
+    updateModalPreview('');
+    renderPhotosGrid([]);
   }
+  document.getElementById('msFileInput').value='';
   openModal('modalStaff');
 }
 function saveStaff(){
   const idx=parseInt(document.getElementById('msIdx').value);
-  const t={name:document.getElementById('msName').value,nameEn:document.getElementById('msNameEn').value,age:parseInt(document.getElementById('msAge').value)||0,url:document.getElementById('msUrl').value,photo:document.getElementById('msPhoto').value,special:document.getElementById('msSpecial').checked,isNew:document.getElementById('msNew').checked,active:document.getElementById('msActive').checked};
+  const photos=getCurrentPhotos();
+  const mainPhoto=document.getElementById('msPhoto').value || (photos.length?photos[0]:'');
+  const t={
+    name:document.getElementById('msName').value,
+    nameEn:document.getElementById('msNameEn').value,
+    age:parseInt(document.getElementById('msAge').value)||0,
+    url:`profile.html?idx=${idx>=0?idx:D.therapists.length}`,
+    photo:mainPhoto,
+    photos:photos,
+    comment:document.getElementById('msComment').value,
+    special:document.getElementById('msSpecial').checked,
+    isNew:document.getElementById('msNew').checked,
+    active:document.getElementById('msActive').checked
+  };
   if(!t.name){showToast('名前を入力してください');return;}
   if(idx>=0)D.therapists[idx]=t;else D.therapists.push(t);
-  closeModal('modalStaff');loadStaffList();showToast('保存しました');
+  // URL を正しいインデックスに更新
+  D.therapists.forEach((th,i)=>{ th.url=`profile.html?idx=${i}`; });
+  localStorage.setItem('platinum_data',JSON.stringify(D));
+  closeModal('modalStaff');loadStaffList();showToast('✓ 保存しました');
 }
-function deleteStaff(i){if(confirm('削除しますか？')){D.therapists.splice(i,1);loadStaffList();}}
+function deleteStaff(i){
+  if(confirm('削除しますか？')){
+    D.therapists.splice(i,1);
+    D.therapists.forEach((th,i)=>{ th.url=`profile.html?idx=${i}`; });
+    localStorage.setItem('platinum_data',JSON.stringify(D));
+    loadStaffList();
+  }
+}
+
+// ===== MULTI PHOTO =====
+let _currentPhotos=[];
+function getCurrentPhotos(){return [..._currentPhotos];}
+function renderPhotosGrid(photos){
+  _currentPhotos=[...photos];
+  const grid=document.getElementById('msPhotosGrid');
+  if(!grid) return;
+  grid.innerHTML=_currentPhotos.map((src,i)=>`
+    <div class="photo-thumb-wrap" draggable="true" data-i="${i}" ondragstart="dragStart(event,${i})" ondragover="event.preventDefault()" ondrop="dragDrop(event,${i})">
+      <img src="${src}" alt="写真${i+1}">
+      <span class="photo-thumb-idx">${i===0?'メイン':i+1}</span>
+      <button class="photo-thumb-del" onclick="removePhoto(${i})">✕</button>
+    </div>`).join('');
+}
+function removePhoto(i){
+  _currentPhotos.splice(i,1);
+  renderPhotosGrid(_currentPhotos);
+  // メイン写真を先頭に同期
+  if(_currentPhotos.length>0) updateModalPreview(_currentPhotos[0]);
+  else updateModalPreview(document.getElementById('msPhoto').value||'');
+}
+function addPhotoByUrl(){
+  const url=prompt('画像URLを入力してください:');
+  if(!url) return;
+  if(_currentPhotos.length>=6){showToast('写真は最大6枚です');return;}
+  _currentPhotos.push(url);
+  renderPhotosGrid(_currentPhotos);
+  if(_currentPhotos.length===1){updateModalPreview(url);document.getElementById('msPhoto').value=url;}
+}
+async function handleMultiPhotoUpload(input){
+  const files=Array.from(input.files).slice(0,6-_currentPhotos.length);
+  if(!files.length) return;
+  if(_currentPhotos.length+files.length>6){showToast(`残り${6-_currentPhotos.length}枚まで追加できます`);}
+  for(const file of files){
+    const b64=await compressImage(file,600,800,0.82);
+    if(b64.length>2*1024*1024){showToast('画像が大きすぎます（1MB以内推奨）');continue;}
+    _currentPhotos.push(b64);
+  }
+  renderPhotosGrid(_currentPhotos);
+  if(_currentPhotos.length>0){updateModalPreview(_currentPhotos[0]);document.getElementById('msPhoto').value=_currentPhotos[0];}
+  input.value='';
+}
+function compressImage(file,maxW,maxH,quality){
+  return new Promise(resolve=>{
+    const reader=new FileReader();
+    reader.onload=e=>{
+      const img=new Image();
+      img.onload=()=>{
+        let w=img.width,h=img.height;
+        const r=Math.min(maxW/w,maxH/h,1);
+        w=Math.round(w*r);h=Math.round(h*r);
+        const c=document.createElement('canvas');
+        c.width=w;c.height=h;
+        c.getContext('2d').drawImage(img,0,0,w,h);
+        resolve(c.toDataURL(file.type==='image/png'?'image/png':'image/jpeg',quality));
+      };
+      img.src=e.target.result;
+    };
+    reader.readAsDataURL(file);
+  });
+}
+// ドラッグ並び替え
+let _dragIdx=null;
+function dragStart(e,i){_dragIdx=i;e.dataTransfer.effectAllowed='move';}
+function dragDrop(e,i){
+  if(_dragIdx===null||_dragIdx===i) return;
+  const moved=_currentPhotos.splice(_dragIdx,1)[0];
+  _currentPhotos.splice(i,0,moved);
+  renderPhotosGrid(_currentPhotos);
+  if(_currentPhotos.length>0){updateModalPreview(_currentPhotos[0]);document.getElementById('msPhoto').value=_currentPhotos[0];}
+  _dragIdx=null;
+}
 
 // ===== SCHEDULE (Supabase read-only) =====
 async function loadSchedPanel(){

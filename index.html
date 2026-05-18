@@ -1,0 +1,1278 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>プラチナ | Platinum Men's Esthetic — 神栖</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Noto+Serif+JP:wght@200;300;400;500&display=swap" rel="stylesheet">
+<style>
+/* ===== RESET ===== */
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#FAF7F2;--bg2:#F4EFE6;--bg3:#EDE6D8;--dark:#1A1510;--dark2:#2E2820;
+  --gold:#9A7230;--gold2:#C49848;--gold3:#E8C060;--gold-lt:#F5DFA0;
+  --muted:#7A6E62;--muted2:#A89E94;--cream:#FBF8F3;
+  --line:rgba(154,114,48,0.18);--line2:rgba(154,114,48,0.35);--line3:rgba(154,114,48,0.08);
+  --serif:'Cormorant Garamond',Georgia,serif;--ja:'Noto Serif JP','Yu Mincho',serif;
+}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--dark);font-family:var(--ja);overflow-x:hidden;cursor:none}
+
+/* CURSOR */
+.cursor{position:fixed;width:8px;height:8px;background:var(--gold2);border-radius:50%;pointer-events:none;z-index:9999;transform:translate(-50%,-50%);mix-blend-mode:multiply}
+.cursor-ring{position:fixed;width:34px;height:34px;border:1px solid rgba(154,114,48,0.45);border-radius:50%;pointer-events:none;z-index:9998;transform:translate(-50%,-50%);transition:width .3s cubic-bezier(.25,.46,.45,.94),height .3s cubic-bezier(.25,.46,.45,.94)}
+.cursor-ring.expand{width:52px;height:52px;opacity:.5}
+
+/* NAV */
+nav{position:fixed;top:0;left:0;width:100%;z-index:1000;padding:0 56px;display:flex;align-items:center;justify-content:space-between;height:80px;background:rgba(250,247,242,0.93);backdrop-filter:blur(12px);border-bottom:1px solid var(--line);transition:box-shadow .4s}
+nav.scrolled{box-shadow:0 2px 40px rgba(154,114,48,0.08)}
+.nav-logo{display:flex;align-items:center;gap:16px;text-decoration:none}
+.nav-logo-mark{width:42px;height:42px;border:1.5px solid var(--gold2);border-radius:50%;display:flex;align-items:center;justify-content:center;background:var(--dark);flex-shrink:0}
+.nav-logo-mark span{font-family:var(--serif);font-size:22px;font-weight:400;color:var(--gold3)}
+.nav-logo-text .en{font-family:var(--serif);font-size:20px;font-weight:400;letter-spacing:.18em;color:var(--dark);display:block}
+.nav-logo-text .ja{font-size:9px;letter-spacing:.5em;color:var(--muted);margin-top:1px;display:block}
+.nav-center{display:flex;gap:36px;list-style:none}
+.nav-center a{text-decoration:none;font-size:10px;font-weight:300;letter-spacing:.35em;color:var(--muted);transition:color .3s;display:flex;flex-direction:column;align-items:center;gap:3px;position:relative;padding-bottom:4px}
+.nav-center a::after{content:'';position:absolute;bottom:0;left:50%;right:50%;height:1px;background:var(--gold2);transition:left .3s,right .3s}
+.nav-center a:hover::after{left:0;right:0}
+.nav-center a .en-sm{font-family:var(--serif);font-size:13px;font-weight:400;letter-spacing:.12em;color:var(--dark2)}
+.nav-center a:hover .en-sm,.nav-center a:hover{color:var(--gold)}
+.nav-right{display:flex;flex-direction:column;align-items:flex-end;gap:3px}
+.nav-hours{font-size:9px;letter-spacing:.3em;color:var(--muted2)}
+.nav-phone{font-family:var(--serif);font-size:17px;font-weight:400;letter-spacing:.08em;color:var(--dark);text-decoration:none;transition:color .3s}
+.nav-phone:hover{color:var(--gold)}
+.hamburger{display:none;flex-direction:column;gap:5px;cursor:pointer;padding:8px;background:none;border:none}
+.hamburger span{display:block;width:24px;height:1px;background:var(--dark)}
+
+/* HERO */
+.hero{position:relative;width:100%;height:100vh;min-height:640px;display:flex;align-items:center;justify-content:center;overflow:hidden;background:var(--bg)}
+.hero-pattern{position:absolute;inset:0;overflow:hidden;pointer-events:none}
+.hero-pattern svg{width:100%;height:100%;opacity:.06}
+.hero-glow{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:70vw;height:70vh;background:radial-gradient(ellipse,rgba(196,152,72,.14) 0%,transparent 70%);pointer-events:none}
+.hero-content{position:relative;z-index:2;text-align:center;padding:0 24px;max-width:900px}
+.hero-badge{display:inline-flex;align-items:center;gap:12px;border:1px solid var(--line2);padding:8px 24px;margin-bottom:40px;opacity:0;animation:fadeUp 1s .2s forwards;background:rgba(250,247,242,.8)}
+.hero-badge span{font-size:9px;letter-spacing:.55em;color:var(--gold)}
+.hero-badge-dot{width:4px;height:4px;background:var(--gold2);border-radius:50%}
+.hero-title{font-family:var(--serif);font-size:clamp(68px,9vw,130px);font-weight:300;letter-spacing:.1em;color:var(--dark);line-height:.88;opacity:0;animation:fadeUp 1.2s .4s forwards}
+.hero-title em{display:block;font-style:italic;font-size:.38em;letter-spacing:.45em;color:var(--gold);margin-top:14px;font-weight:400}
+.hero-divider{width:80px;height:1px;background:linear-gradient(to right,transparent,var(--gold2),transparent);margin:36px auto;opacity:0;animation:fadeUp 1s .7s forwards}
+.hero-sub{font-size:12px;font-weight:200;letter-spacing:.5em;color:var(--muted);line-height:2;opacity:0;animation:fadeUp 1s .85s forwards}
+.hero-cta{display:flex;gap:20px;justify-content:center;margin-top:52px;opacity:0;animation:fadeUp 1s 1.05s forwards}
+.btn-primary{padding:15px 48px;background:var(--dark);color:var(--gold3);font-family:var(--serif);font-size:13px;letter-spacing:.35em;text-decoration:none;transition:all .4s;border:1.5px solid var(--dark);display:inline-block;position:relative;overflow:hidden}
+.btn-primary::before{content:'';position:absolute;inset:0;background:var(--gold2);transform:scaleX(0);transform-origin:left;transition:transform .4s cubic-bezier(.77,0,.18,1)}
+.btn-primary:hover::before{transform:scaleX(1)}
+.btn-primary:hover{color:var(--dark);border-color:var(--gold2)}
+.btn-primary span{position:relative;z-index:1}
+.btn-outline{padding:15px 48px;border:1.5px solid var(--line2);color:var(--muted);font-family:var(--serif);font-size:13px;letter-spacing:.35em;text-decoration:none;transition:all .4s;background:transparent}
+.btn-outline:hover{border-color:var(--gold);color:var(--gold)}
+.hero-scroll{position:absolute;bottom:44px;left:50%;transform:translateX(-50%);text-align:center;opacity:0;animation:fadeUp 1s 1.4s forwards}
+.hero-scroll span{font-size:8px;letter-spacing:.5em;color:var(--muted2);display:block;margin-bottom:12px}
+.scroll-bar{width:1px;height:56px;background:linear-gradient(to bottom,var(--gold),transparent);margin:0 auto;animation:scrollPulse 2.5s ease-in-out infinite}
+
+/* TICKER */
+.ticker{width:100%;overflow:hidden;background:var(--dark);padding:13px 0;position:relative;z-index:2}
+.ticker-inner{display:flex;gap:60px;animation:ticker 22s linear infinite;white-space:nowrap}
+.ticker-inner span{font-size:9px;letter-spacing:.55em;color:var(--gold2);flex-shrink:0}
+
+/* SECTIONS */
+section{padding:112px 0;position:relative;z-index:2}
+.container{max-width:1120px;margin:0 auto;padding:0 56px}
+.s-label{font-size:9px;letter-spacing:.55em;color:var(--gold);margin-bottom:10px;display:block}
+.s-title{font-family:var(--serif);font-size:44px;font-weight:300;letter-spacing:.06em;color:var(--dark);line-height:1}
+.s-rule{width:100%;height:1px;background:linear-gradient(to right,var(--line2),var(--line3));margin-top:28px}
+.s-head{margin-bottom:64px}
+.flex-head{display:flex;align-items:flex-end;justify-content:space-between;margin-bottom:64px}
+.more-link{font-family:var(--serif);font-size:12px;letter-spacing:.25em;color:var(--muted);text-decoration:none;display:inline-flex;align-items:center;gap:8px;border-bottom:1px solid var(--line);transition:color .3s,border-color .3s}
+.more-link:hover{color:var(--gold);border-color:var(--gold)}
+
+/* INFO */
+.info-section{background:var(--cream)}
+.info-item{display:grid;grid-template-columns:auto auto 1fr;gap:28px;align-items:start;padding:28px 0;border-bottom:1px solid var(--line3)}
+.info-item:first-child{border-top:1px solid var(--line3)}
+.info-date{font-family:var(--serif);font-size:14px;letter-spacing:.1em;color:var(--gold)}
+.info-cat{font-size:8px;letter-spacing:.35em;color:var(--cream);background:var(--dark2);padding:4px 12px;align-self:center}
+.info-body{font-size:12px;font-weight:300;line-height:2;color:var(--muted);padding-top:1px}
+
+/* PICKUP */
+.pickup-section{background:var(--bg2)}
+.pickup-wrap{display:grid;grid-template-columns:5fr 4fr;gap:0;border:1px solid var(--line)}
+.pickup-img-wrap{position:relative;overflow:hidden;background:var(--bg3);aspect-ratio:4/5}
+.pickup-img-wrap img{width:100%;height:100%;object-fit:cover}
+.pickup-img-wrap::after{content:'';position:absolute;inset:0;background:linear-gradient(to bottom,transparent 55%,rgba(26,21,16,.7))}
+.pickup-placeholder{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;flex-direction:column;opacity:.2}
+.pickup-img-label{position:absolute;bottom:0;left:0;right:0;padding:32px;z-index:2}
+.pickup-img-name{font-family:var(--serif);font-size:56px;font-weight:300;letter-spacing:.12em;color:#FAF7F2;line-height:1}
+.pickup-img-age{font-size:10px;letter-spacing:.4em;color:rgba(232,192,96,.9);margin-top:4px}
+.pickup-detail{padding:56px 52px;display:flex;flex-direction:column;justify-content:center;background:var(--cream)}
+.pickup-special{display:inline-flex;align-items:center;gap:8px;background:linear-gradient(135deg,#E8C060 0%,#C49848 40%,#E8C060 65%,#B08030 100%);background-size:200% 200%;animation:shimmerBadge 3s ease-in-out infinite;color:var(--dark);font-size:8px;letter-spacing:.5em;font-weight:500;padding:6px 18px 6px 14px;margin-bottom:14px}
+.pickup-special svg{width:11px;height:11px;fill:var(--dark)}
+.pickup-em{font-size:9px;letter-spacing:.55em;color:var(--gold);border:1px solid var(--line2);padding:6px 18px;display:inline-block;margin-bottom:28px}
+.pickup-quote{font-family:var(--serif);font-size:30px;font-style:italic;font-weight:300;letter-spacing:.06em;color:var(--dark);line-height:1.2;margin-bottom:28px}
+.pickup-body{font-size:11.5px;font-weight:200;line-height:2.5;color:var(--muted);margin-bottom:36px;padding-left:16px;border-left:2px solid var(--gold-lt)}
+.pickup-action{display:flex;align-items:center;gap:14px;font-family:var(--serif);font-size:12px;letter-spacing:.3em;color:var(--gold);text-decoration:none;transition:gap .3s}
+.pickup-action .arr{width:40px;height:1px;background:var(--gold);position:relative;transition:width .3s}
+.pickup-action .arr::after{content:'';position:absolute;right:0;top:-3px;width:6px;height:6px;border-top:1px solid var(--gold);border-right:1px solid var(--gold);transform:rotate(45deg)}
+.pickup-action:hover .arr{width:60px}
+
+/* STAFF */
+.staff-section{background:var(--bg)}
+.staff-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:20px}
+.staff-card{cursor:pointer}
+.staff-inner{aspect-ratio:2/3;background:var(--bg3);border:1px solid var(--line);position:relative;overflow:hidden;transition:border-color .4s}
+.staff-card:hover .staff-inner{border-color:var(--gold2)}
+.staff-inner img{width:100%;height:100%;object-fit:cover}
+.staff-overlay{position:absolute;inset:0;background:linear-gradient(to bottom,transparent 40%,rgba(26,21,16,.72))}
+.staff-ph{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;opacity:.18}
+.staff-new{position:absolute;top:14px;right:14px;font-size:7px;letter-spacing:.45em;color:var(--gold2);background:var(--dark);border:1px solid rgba(196,152,72,.35);padding:4px 10px}
+.special-badge{position:absolute;top:14px;left:14px;display:flex;align-items:center;gap:5px;font-size:7px;letter-spacing:.4em;color:var(--dark);background:linear-gradient(135deg,#E8C060 0%,#C49848 40%,#E8C060 60%,#B08030 100%);background-size:200% 200%;animation:shimmerBadge 3s ease-in-out infinite;padding:5px 10px 5px 8px;font-weight:500}
+.special-badge svg{width:9px;height:9px;fill:var(--dark)}
+.staff-bottom{position:absolute;bottom:0;left:0;right:0;padding:20px 18px;transform:translateY(4px);transition:transform .35s}
+.staff-card:hover .staff-bottom{transform:translateY(0)}
+.staff-name{font-family:var(--serif);font-size:22px;font-weight:300;letter-spacing:.12em;color:#FAF7F2}
+.staff-age{font-size:9px;letter-spacing:.4em;color:rgba(232,192,96,.85);margin-top:3px}
+.staff-detail{display:block;width:100%;text-align:center;padding:11px;background:var(--dark);color:var(--gold3);font-family:var(--serif);font-size:10px;letter-spacing:.35em;text-decoration:none;margin-top:10px;opacity:0;transform:translateY(6px);transition:opacity .3s,transform .3s,background .3s;border:1.5px solid var(--dark)}
+.staff-card:hover .staff-detail{opacity:1;transform:translateY(0)}
+.staff-detail:hover{background:var(--gold2);border-color:var(--gold2);color:var(--dark)}
+
+/* SCHEDULE */
+.schedule-section{background:var(--bg2)}
+.sched-box{border:1px solid var(--line);background:var(--cream);padding:72px 56px;text-align:center}
+.sched-icon{width:56px;height:56px;border:1px solid var(--line2);border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 28px}
+.sched-status{font-family:var(--serif);font-size:22px;font-weight:300;letter-spacing:.2em;color:var(--dark);font-style:italic;margin-bottom:12px}
+.sched-note{font-size:10px;letter-spacing:.3em;color:var(--muted2);font-weight:200;margin-bottom:16px}
+.sched-entries{margin:0 auto 24px;max-width:600px;text-align:left}
+.sched-entry{display:flex;justify-content:space-between;align-items:center;padding:14px 20px;border-bottom:1px solid var(--line3)}
+.sched-entry:first-child{border-top:1px solid var(--line3)}
+.sched-entry-name{font-family:var(--serif);font-size:18px;font-weight:300;letter-spacing:.12em;color:var(--dark)}
+.sched-entry-time{font-size:10px;letter-spacing:.25em;color:var(--gold)}
+.sched-orn{display:flex;align-items:center;gap:12px;justify-content:center;margin:40px 0}
+.orn-line{flex:1;max-width:80px;height:1px;background:var(--line2)}
+.orn-gem{width:7px;height:7px;background:var(--gold2);transform:rotate(45deg)}
+.sched-phone{font-family:var(--serif);font-size:30px;font-weight:300;letter-spacing:.1em;color:var(--dark);text-decoration:none;transition:color .3s;display:block;margin-bottom:24px}
+.sched-phone:hover{color:var(--gold)}
+.sched-link{font-size:10px;letter-spacing:.4em;color:var(--muted2);text-decoration:none;border-bottom:1px solid var(--line);padding-bottom:3px;transition:color .3s,border-color .3s}
+.sched-link:hover{color:var(--gold);border-color:var(--gold)}
+
+/* PRICE */
+.price-section{background:var(--dark);color:var(--gold-lt)}
+.price-section .s-label{color:var(--gold3)}
+.price-section .s-title{color:var(--gold-lt)}
+.price-section .s-rule{background:linear-gradient(to right,rgba(196,152,72,.4),rgba(196,152,72,.05))}
+.price-lede{max-width:600px;margin:0 auto 60px;text-align:center}
+.price-lede p{font-size:11.5px;font-weight:200;line-height:2.6;color:rgba(196,152,72,.7)}
+.include-bar{border:1px solid rgba(196,152,72,.2);padding:32px 40px;background:rgba(196,152,72,.04);margin-bottom:2px;text-align:center}
+.include-title{font-size:9px;letter-spacing:.55em;color:var(--gold3);margin-bottom:20px}
+.include-tags{display:flex;gap:32px;justify-content:center;flex-wrap:wrap}
+.include-tag{font-size:11px;letter-spacing:.2em;color:rgba(232,192,96,.8);display:flex;align-items:center;gap:10px;font-weight:200}
+.include-tag::before{content:'◆';font-size:6px;color:var(--gold2)}
+.course-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:2px;background:rgba(196,152,72,.12);margin-bottom:2px}
+.course-card{background:var(--dark);padding:44px 20px;text-align:center;transition:background .3s;position:relative}
+.course-card:hover{background:rgba(196,152,72,.06)}
+.course-card.pop{background:rgba(196,152,72,.08)}
+.course-card.pop::before{content:'POPULAR';position:absolute;top:0;left:0;right:0;font-size:7px;letter-spacing:.5em;color:var(--dark);background:var(--gold2);padding:5px 0;text-align:center}
+.course-min{font-family:var(--serif);font-size:50px;font-weight:300;color:var(--gold-lt);letter-spacing:.03em;line-height:1}
+.course-min sub{font-size:16px;color:rgba(196,152,72,.6);vertical-align:baseline}
+.course-sep{width:28px;height:1px;background:rgba(196,152,72,.3);margin:14px auto}
+.course-price{font-family:var(--serif);font-size:26px;font-weight:400;color:var(--gold2);letter-spacing:.05em}
+.course-price span{font-size:12px;color:rgba(196,152,72,.5)}
+.opt-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:2px;background:rgba(196,152,72,.12)}
+.opt-row{background:var(--dark);padding:22px 36px;display:flex;justify-content:space-between;align-items:center;transition:background .3s}
+.opt-row:hover{background:rgba(196,152,72,.05)}
+.opt-k{font-size:11px;letter-spacing:.2em;color:rgba(196,152,72,.55);font-weight:200}
+.opt-v{font-family:var(--serif);font-size:17px;letter-spacing:.08em;color:var(--gold2)}
+.opt-section-label{grid-column:1/-1;background:var(--dark);padding:14px 36px;font-size:8px;letter-spacing:.55em;color:rgba(196,152,72,.4);border-top:1px solid rgba(196,152,72,.1);display:flex;align-items:center;gap:16px}
+.opt-section-label::after{content:'';flex:1;height:1px;background:rgba(196,152,72,.1)}
+.opt-special-note{display:inline-flex;align-items:center;gap:5px;font-size:7px;letter-spacing:.35em;color:var(--dark);background:linear-gradient(90deg,#E8C060,#C49848,#E8C060);background-size:200% 100%;animation:shimmerBadge 3s ease-in-out infinite;padding:3px 9px 3px 7px;font-weight:500;vertical-align:middle;margin-left:8px}
+.opt-special-note svg{width:8px;height:8px;fill:var(--dark)}
+.opt-row-special{background:rgba(196,152,72,.07)!important}
+.opt-row-special .opt-k{color:rgba(232,192,96,.75)!important}
+.opt-row-special .opt-v{color:var(--gold3)!important}
+.price-note{text-align:center;margin-top:20px;font-size:10px;letter-spacing:.22em;color:rgba(196,152,72,.4);font-weight:200}
+
+/* LINKS */
+.links-section{background:var(--bg2)}
+.links-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:16px}
+.link-card{border:1px solid var(--line);background:var(--cream);padding:20px 24px;display:flex;align-items:center;gap:16px;text-decoration:none;transition:border-color .3s,box-shadow .3s}
+.link-card:hover{border-color:var(--line2);box-shadow:0 4px 24px rgba(154,114,48,.07)}
+.link-card-img{width:60px;height:40px;object-fit:contain;flex-shrink:0;background:var(--bg3);display:flex;align-items:center;justify-content:center}
+.link-card-img img{width:100%;height:100%;object-fit:contain}
+.link-card-icon{width:60px;height:40px;background:var(--bg3);display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.link-card-icon svg{width:20px;height:20px;opacity:.3}
+.link-card-name{font-size:11px;letter-spacing:.2em;color:var(--dark2);font-weight:300;line-height:1.6}
+.link-card-url{font-size:9px;letter-spacing:.15em;color:var(--muted2);margin-top:3px}
+
+/* NOTICE */
+.notice-section{background:var(--bg2)}
+.notice-grid{display:grid;grid-template-columns:1fr 1fr;gap:24px}
+.notice-card{background:var(--cream);border:1px solid var(--line);padding:36px 32px;transition:border-color .3s,box-shadow .3s}
+.notice-card:hover{border-color:var(--line2);box-shadow:0 4px 32px rgba(154,114,48,.07)}
+.notice-head{display:flex;align-items:center;gap:12px;margin-bottom:20px}
+.notice-ico{width:28px;height:28px;border:1px solid var(--line2);border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.notice-ico svg{width:13px;height:13px;stroke:var(--gold2);fill:none;stroke-width:1.5}
+.notice-ttl{font-family:var(--serif);font-size:14px;letter-spacing:.2em;color:var(--dark)}
+.notice-body{font-size:11px;font-weight:200;line-height:2.4;color:var(--muted)}
+
+/* ACCESS */
+.access-section{background:var(--bg)}
+.access-split{display:grid;grid-template-columns:3fr 2fr;gap:72px;align-items:start}
+.access-ttl{font-family:var(--serif);font-size:12px;letter-spacing:.4em;color:var(--gold);margin-bottom:32px}
+.access-row{display:flex;gap:0;border-bottom:1px solid var(--line3)}
+.access-key{width:100px;flex-shrink:0;padding:18px 20px 18px 0;font-size:10px;letter-spacing:.3em;color:var(--muted2);font-weight:300}
+.access-val{padding:18px 0;font-size:12.5px;font-weight:300;line-height:1.8;color:var(--dark2);flex:1}
+.access-cta-wrap{background:var(--dark);padding:44px 36px;text-align:center}
+.access-cta-label{font-size:8px;letter-spacing:.55em;color:var(--gold3);margin-bottom:18px;display:block}
+.access-cta-num{font-family:var(--serif);font-size:26px;font-weight:300;letter-spacing:.08em;color:var(--gold-lt);text-decoration:none;display:block;transition:color .3s;margin-bottom:8px}
+.access-cta-num:hover{color:var(--gold3)}
+.access-cta-hrs{font-size:9px;letter-spacing:.35em;color:rgba(196,152,72,.5);margin-bottom:32px;display:block}
+.access-cta-btn{display:block;width:100%;padding:15px;background:var(--gold2);color:var(--dark);font-family:var(--serif);font-size:12px;letter-spacing:.35em;text-decoration:none;text-align:center;transition:all .4s;border:1.5px solid var(--gold2)}
+.access-cta-btn:hover{background:transparent;color:var(--gold2)}
+
+/* FOOTER */
+footer{background:var(--dark);padding:64px 56px 40px;position:relative;z-index:2}
+footer::before{content:'';display:block;height:1px;background:linear-gradient(to right,transparent,rgba(196,152,72,.4),transparent);margin-bottom:56px}
+.footer-grid{display:grid;grid-template-columns:1fr 2fr 1fr;gap:40px;margin-bottom:56px;align-items:start;max-width:1120px;margin-left:auto;margin-right:auto}
+.footer-brand .en{font-family:var(--serif);font-size:26px;font-weight:300;letter-spacing:.2em;color:var(--gold-lt)}
+.footer-brand .ja{font-size:9px;letter-spacing:.5em;color:rgba(196,152,72,.5);margin-top:8px;display:block}
+.footer-brand .tagline{font-size:10px;letter-spacing:.2em;color:rgba(196,152,72,.4);margin-top:16px;font-weight:200;line-height:2}
+.footer-nav-grid{display:grid;grid-template-columns:1fr 1fr;gap:0}
+.footer-nav-grid a{display:block;padding:12px 0;font-size:10px;letter-spacing:.35em;color:rgba(196,152,72,.5);text-decoration:none;border-bottom:1px solid rgba(196,152,72,.08);transition:color .3s}
+.footer-nav-grid a:hover{color:var(--gold2)}
+.footer-contact .fc-label{font-size:8px;letter-spacing:.5em;color:var(--gold3);margin-bottom:12px}
+.footer-contact .fc-num{font-family:var(--serif);font-size:20px;font-weight:300;letter-spacing:.1em;color:var(--gold-lt);text-decoration:none;display:block;transition:color .3s}
+.footer-contact .fc-num:hover{color:var(--gold3)}
+.footer-contact .fc-hrs{font-size:9px;letter-spacing:.3em;color:rgba(196,152,72,.45);margin-top:6px}
+.footer-bottom{display:flex;justify-content:space-between;align-items:center;padding-top:32px;border-top:1px solid rgba(196,152,72,.1);max-width:1120px;margin:0 auto}
+.footer-copy{font-size:9px;letter-spacing:.2em;color:rgba(196,152,72,.35);cursor:default;user-select:none}
+.footer-disc{font-size:9px;letter-spacing:.25em;color:rgba(196,152,72,.25)}
+
+/* FLOAT CALL */
+.float-call{position:fixed;bottom:36px;right:36px;z-index:900;display:flex;flex-direction:column;align-items:center;gap:8px}
+.float-btn{width:62px;height:62px;border-radius:50%;background:var(--dark);border:1.5px solid var(--gold2);display:flex;align-items:center;justify-content:center;text-decoration:none;animation:floatPulse 3.5s ease-in-out infinite;transition:transform .3s,background .3s}
+.float-btn:hover{transform:scale(1.1);background:var(--gold2)}
+.float-btn svg{width:22px;height:22px;fill:var(--gold2);transition:fill .3s}
+.float-btn:hover svg{fill:var(--dark)}
+.float-label{font-size:7.5px;letter-spacing:.4em;color:var(--muted);background:var(--bg);padding:3px 8px;border:1px solid var(--line)}
+
+/* ANIMS */
+@keyframes fadeUp{from{opacity:0;transform:translateY(28px)}to{opacity:1;transform:translateY(0)}}
+@keyframes scrollPulse{0%,100%{opacity:0;transform:scaleY(0);transform-origin:top}60%{opacity:1;transform:scaleY(1)}}
+@keyframes ticker{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+@keyframes floatPulse{0%,100%{box-shadow:0 0 0 0 rgba(196,152,72,.3)}50%{box-shadow:0 0 0 10px rgba(196,152,72,0)}}
+@keyframes shimmerBadge{0%,100%{background-position:0% 50%}50%{background-position:100% 50%}}
+.fade-in{opacity:0;transform:translateY(28px);transition:opacity .85s cubic-bezier(.25,.46,.45,.94),transform .85s cubic-bezier(.25,.46,.45,.94)}
+.fade-in.visible{opacity:1;transform:translateY(0)}
+.d1{transition-delay:.08s}.d2{transition-delay:.16s}.d3{transition-delay:.24s}.d4{transition-delay:.32s}
+
+/* MOBILE */
+@media(max-width:960px){
+  nav{padding:0 24px}.nav-center{display:none}.hamburger{display:flex}
+  .container{padding:0 24px}section{padding:80px 0}
+  .pickup-wrap{grid-template-columns:1fr}.pickup-detail{padding:36px 28px}
+  .staff-grid{grid-template-columns:repeat(2,1fr)}
+  .course-grid{grid-template-columns:repeat(2,1fr)}
+  .notice-grid{grid-template-columns:1fr}.access-split{grid-template-columns:1fr}
+  .footer-grid{grid-template-columns:1fr}
+  footer{padding:48px 24px 32px}
+}
+@media(max-width:580px){
+  .hero-title{font-size:clamp(52px,14vw,80px)}
+  .staff-grid{grid-template-columns:repeat(2,1fr);gap:12px}
+  .course-grid{grid-template-columns:1fr 1fr}
+  .opt-grid{grid-template-columns:1fr}
+  .hero-cta{flex-direction:column;align-items:center}
+  .footer-nav-grid{grid-template-columns:1fr}
+}
+
+/* DRAWER */
+.drawer{position:fixed;inset:0;background:rgba(26,21,16,.97);z-index:999;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:36px;opacity:0;pointer-events:none;transition:opacity .4s}
+.drawer.open{opacity:1;pointer-events:auto}
+.drawer a{font-family:var(--serif);font-size:28px;font-weight:300;letter-spacing:.15em;color:var(--gold-lt);text-decoration:none;opacity:0;transform:translateY(16px);transition:opacity .35s,transform .35s,color .3s}
+.drawer.open a{opacity:1;transform:translateY(0)}
+.drawer.open a:nth-child(1){transition-delay:.08s}.drawer.open a:nth-child(2){transition-delay:.14s}.drawer.open a:nth-child(3){transition-delay:.20s}.drawer.open a:nth-child(4){transition-delay:.26s}.drawer.open a:nth-child(5){transition-delay:.32s}.drawer.open a:nth-child(6){transition-delay:.38s}
+.drawer a:hover{color:var(--gold2)}
+.drawer-close{position:absolute;top:28px;right:28px;background:none;border:none;color:var(--gold2);font-size:22px;cursor:pointer;font-family:var(--serif);padding:8px}
+
+/* ===== ADMIN PANEL ===== */
+.admin-overlay{position:fixed;inset:0;z-index:9000;display:none;flex-direction:column}
+.admin-overlay.open{display:flex}
+/* PASSWORD SCREEN */
+.admin-pw-screen{position:absolute;inset:0;background:rgba(26,21,16,.97);display:flex;align-items:center;justify-content:center;flex-direction:column;gap:24px;z-index:2}
+.admin-pw-screen.hidden{display:none}
+.admin-pw-title{font-family:var(--serif);font-size:28px;font-weight:300;letter-spacing:.2em;color:var(--gold-lt)}
+.admin-pw-sub{font-size:10px;letter-spacing:.4em;color:rgba(196,152,72,.5)}
+.admin-pw-input{background:rgba(255,255,255,.05);border:1px solid rgba(196,152,72,.3);color:var(--gold-lt);font-size:16px;padding:14px 24px;letter-spacing:.3em;text-align:center;outline:none;width:260px;font-family:var(--serif)}
+.admin-pw-input:focus{border-color:var(--gold2)}
+.admin-pw-btn{padding:12px 40px;background:var(--gold2);color:var(--dark);font-family:var(--serif);font-size:12px;letter-spacing:.35em;border:none;cursor:pointer;transition:background .3s;font-weight:500}
+.admin-pw-btn:hover{background:var(--gold3)}
+.admin-pw-err{font-size:10px;letter-spacing:.25em;color:#c0504a;height:16px}
+/* ADMIN SHELL */
+.admin-shell{display:flex;height:100vh;background:#1a1a22;overflow:hidden}
+/* SIDEBAR */
+.admin-sidebar{width:220px;flex-shrink:0;background:#111118;border-right:1px solid rgba(196,152,72,.12);display:flex;flex-direction:column}
+.admin-brand{padding:24px 20px 20px;border-bottom:1px solid rgba(196,152,72,.1)}
+.admin-brand-name{font-family:var(--serif);font-size:18px;font-weight:300;letter-spacing:.18em;color:var(--gold-lt)}
+.admin-brand-sub{font-size:8px;letter-spacing:.4em;color:rgba(196,152,72,.4);margin-top:4px}
+.admin-nav{flex:1;padding:16px 0;overflow-y:auto}
+.admin-nav-item{display:flex;align-items:center;gap:12px;padding:12px 20px;font-size:11px;letter-spacing:.25em;color:rgba(196,152,72,.5);cursor:pointer;transition:all .2s;border-left:2px solid transparent}
+.admin-nav-item:hover{color:rgba(196,152,72,.8);background:rgba(196,152,72,.04)}
+.admin-nav-item.active{color:var(--gold2);background:rgba(196,152,72,.07);border-left-color:var(--gold2)}
+.admin-nav-item svg{width:16px;height:16px;stroke:currentColor;fill:none;stroke-width:1.5;flex-shrink:0}
+.admin-sidebar-footer{padding:16px 20px;border-top:1px solid rgba(196,152,72,.1)}
+.admin-close-btn{width:100%;padding:10px;background:rgba(196,152,72,.08);border:1px solid rgba(196,152,72,.2);color:rgba(196,152,72,.6);font-size:10px;letter-spacing:.35em;cursor:pointer;transition:all .2s;font-family:var(--ja)}
+.admin-close-btn:hover{background:rgba(196,152,72,.15);color:var(--gold2)}
+/* MAIN */
+.admin-main{flex:1;display:flex;flex-direction:column;overflow:hidden}
+.admin-topbar{height:56px;background:#111118;border-bottom:1px solid rgba(196,152,72,.12);display:flex;align-items:center;justify-content:space-between;padding:0 28px;flex-shrink:0}
+.admin-page-title{font-family:var(--serif);font-size:16px;font-weight:300;letter-spacing:.15em;color:var(--gold-lt)}
+.admin-save-btn{padding:8px 28px;background:var(--gold2);color:var(--dark);font-size:10px;letter-spacing:.35em;border:none;cursor:pointer;transition:background .2s;font-family:var(--ja);font-weight:500}
+.admin-save-btn:hover{background:var(--gold3)}
+.admin-save-btn:disabled{background:rgba(196,152,72,.3);color:rgba(196,152,72,.5);cursor:default}
+.admin-content{flex:1;overflow-y:auto;padding:28px}
+/* PANELS */
+.admin-panel{display:none}
+.admin-panel.active{display:block}
+/* FORM ELEMENTS */
+.a-section{background:#111118;border:1px solid rgba(196,152,72,.12);margin-bottom:20px}
+.a-section-head{padding:16px 20px;border-bottom:1px solid rgba(196,152,72,.08);display:flex;align-items:center;justify-content:space-between}
+.a-section-title{font-size:11px;letter-spacing:.35em;color:rgba(196,152,72,.7)}
+.a-section-body{padding:20px}
+.a-form-row{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:16px}
+.a-form-row.full{grid-template-columns:1fr}
+.a-label{font-size:9px;letter-spacing:.4em;color:rgba(196,152,72,.5);margin-bottom:6px;display:block}
+.a-input,.a-select,.a-textarea{width:100%;background:rgba(255,255,255,.04);border:1px solid rgba(196,152,72,.18);color:rgba(250,247,242,.85);font-size:12px;padding:10px 14px;outline:none;font-family:var(--ja);transition:border-color .2s}
+.a-input:focus,.a-select:focus,.a-textarea:focus{border-color:rgba(196,152,72,.5)}
+.a-textarea{resize:vertical;min-height:80px;line-height:1.8}
+.a-select option{background:#1a1a22}
+.a-checkbox-row{display:flex;align-items:center;gap:10px;margin-bottom:12px}
+.a-checkbox{width:16px;height:16px;accent-color:var(--gold2);cursor:pointer}
+.a-checkbox-label{font-size:11px;letter-spacing:.2em;color:rgba(196,152,72,.6);cursor:pointer}
+/* CARD LIST */
+.a-card-list{display:flex;flex-direction:column;gap:10px}
+.a-card{background:rgba(255,255,255,.03);border:1px solid rgba(196,152,72,.1);padding:16px 18px;display:flex;align-items:flex-start;justify-content:space-between;gap:16px;transition:border-color .2s}
+.a-card:hover{border-color:rgba(196,152,72,.25)}
+.a-card-info{flex:1;min-width:0}
+.a-card-title{font-size:13px;letter-spacing:.1em;color:rgba(250,247,242,.8);font-family:var(--serif);margin-bottom:4px}
+.a-card-sub{font-size:10px;letter-spacing:.15em;color:rgba(196,152,72,.45)}
+.a-card-tags{display:flex;gap:6px;margin-top:8px;flex-wrap:wrap}
+.a-tag{font-size:7px;letter-spacing:.35em;padding:3px 8px;border:1px solid rgba(196,152,72,.25);color:rgba(196,152,72,.6)}
+.a-tag.special{background:rgba(196,152,72,.15);border-color:rgba(196,152,72,.4);color:var(--gold2)}
+.a-tag.new{border-color:rgba(180,200,180,.3);color:rgba(180,200,180,.7)}
+.a-card-actions{display:flex;gap:8px;flex-shrink:0}
+.a-btn-sm{padding:6px 14px;font-size:9px;letter-spacing:.3em;border:1px solid rgba(196,152,72,.25);color:rgba(196,152,72,.6);background:transparent;cursor:pointer;transition:all .2s;font-family:var(--ja)}
+.a-btn-sm:hover{border-color:var(--gold2);color:var(--gold2)}
+.a-btn-sm.danger:hover{border-color:#c0504a;color:#c0504a}
+.a-btn-sm.primary{background:rgba(196,152,72,.15);border-color:var(--gold2);color:var(--gold2)}
+/* ADD BUTTON */
+.a-add-btn{width:100%;padding:12px;border:1px dashed rgba(196,152,72,.25);color:rgba(196,152,72,.4);background:transparent;cursor:pointer;font-size:10px;letter-spacing:.4em;font-family:var(--ja);transition:all .2s;margin-top:10px}
+.a-add-btn:hover{border-color:var(--gold2);color:var(--gold2)}
+/* MODAL */
+.a-modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:9100;display:none;align-items:center;justify-content:center}
+.a-modal-overlay.open{display:flex}
+.a-modal{background:#1a1a22;border:1px solid rgba(196,152,72,.25);width:560px;max-width:90vw;max-height:80vh;overflow-y:auto}
+.a-modal-head{padding:20px 24px;border-bottom:1px solid rgba(196,152,72,.12);display:flex;align-items:center;justify-content:space-between}
+.a-modal-title{font-size:13px;letter-spacing:.25em;color:var(--gold-lt);font-family:var(--serif)}
+.a-modal-close{background:none;border:none;color:rgba(196,152,72,.5);font-size:18px;cursor:pointer;padding:4px;line-height:1;font-family:var(--serif)}
+.a-modal-close:hover{color:var(--gold2)}
+.a-modal-body{padding:24px}
+.a-modal-footer{padding:16px 24px;border-top:1px solid rgba(196,152,72,.12);display:flex;justify-content:flex-end;gap:12px}
+/* TOAST */
+.a-toast{position:fixed;bottom:32px;left:50%;transform:translateX(-50%);background:var(--dark);border:1px solid var(--gold2);color:var(--gold2);font-size:10px;letter-spacing:.35em;padding:12px 28px;z-index:9200;opacity:0;transition:opacity .3s;pointer-events:none}
+.a-toast.show{opacity:1}
+/* STATUS pill */
+.status-pill{display:inline-block;font-size:7px;letter-spacing:.35em;padding:3px 10px;border-radius:0}
+.status-active{background:rgba(100,180,100,.15);color:rgba(150,220,150,.8);border:1px solid rgba(100,180,100,.3)}
+.status-off{background:rgba(180,100,100,.12);color:rgba(220,150,150,.7);border:1px solid rgba(180,100,100,.25)}
+</style>
+</head>
+<body>
+
+<div class="cursor" id="cursor"></div>
+<div class="cursor-ring" id="cursorRing"></div>
+
+<!-- DRAWER -->
+<div class="drawer" id="drawer">
+  <button class="drawer-close" id="drawerClose">✕</button>
+  <a href="#home">Home</a>
+  <a href="#concept">Concept</a>
+  <a href="#price">System</a>
+  <a href="#therapist">Therapist</a>
+  <a href="#schedule">Schedule</a>
+  <a href="#access">Access</a>
+</div>
+
+<!-- NAV -->
+<nav id="mainNav">
+  <a href="#home" class="nav-logo">
+    <div class="nav-logo-mark"><span>P</span></div>
+    <div class="nav-logo-text">
+      <span class="en">Platinum</span>
+      <span class="ja">プラチナ</span>
+    </div>
+  </a>
+  <ul class="nav-center">
+    <li><a href="#concept"><span class="en-sm">Concept</span>コンセプト</a></li>
+    <li><a href="#price"><span class="en-sm">System</span>料金システム</a></li>
+    <li><a href="#therapist"><span class="en-sm">Therapist</span>セラピスト</a></li>
+    <li><a href="#schedule"><span class="en-sm">Schedule</span>スケジュール</a></li>
+    <li><a href="#access"><span class="en-sm">Access</span>アクセス</a></li>
+  </ul>
+  <div class="nav-right">
+    <span class="nav-hours" id="navHours">12:00 — 26:00</span>
+    <a href="tel:070-9094-9709" class="nav-phone" id="navPhone">070-9094-9709</a>
+  </div>
+  <button class="hamburger" id="hamburger">
+    <span></span><span></span><span></span>
+  </button>
+</nav>
+
+<!-- HERO -->
+<section class="hero" id="home">
+  <div class="hero-pattern">
+    <svg viewBox="0 0 1200 800" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg">
+      <defs><pattern id="dGrid" x="0" y="0" width="60" height="60" patternUnits="userSpaceOnUse"><path d="M30 0 L60 30 L30 60 L0 30 Z" fill="none" stroke="#9A7230" stroke-width="0.5"/></pattern></defs>
+      <rect width="100%" height="100%" fill="url(#dGrid)"/>
+      <path d="M600 80 L900 400 L600 720 L300 400 Z" fill="none" stroke="#9A7230" stroke-width="0.8"/>
+      <path d="M600 160 L820 400 L600 640 L380 400 Z" fill="none" stroke="#9A7230" stroke-width="0.5"/>
+    </svg>
+  </div>
+  <div class="hero-glow"></div>
+  <div class="hero-content">
+    <div class="hero-badge">
+      <div class="hero-badge-dot"></div>
+      <span>PLATINUM MEN'S ESTHETIC · 神栖 · 茨城</span>
+      <div class="hero-badge-dot"></div>
+    </div>
+    <h1 class="hero-title">Platinum<em>プ ラ チ ナ</em></h1>
+    <div class="hero-divider"></div>
+    <p class="hero-sub">一度体験したら、もう元には戻れない<br>究極のドキドキ体験を、あなたへ</p>
+    <div class="hero-cta">
+      <a href="tel:070-9094-9709" class="btn-primary" id="heroPhone"><span>今すぐご予約</span></a>
+      <a href="#concept" class="btn-outline">About</a>
+    </div>
+  </div>
+  <div class="hero-scroll"><span>SCROLL</span><div class="scroll-bar"></div></div>
+</section>
+
+<!-- TICKER -->
+<div class="ticker">
+  <div class="ticker-inner">
+    <span>PLATINUM MEN'S ESTHETIC</span><span>◆</span>
+    <span>神栖 · 茨城</span><span>◆</span>
+    <span id="tickerHours">12:00 — 26:00</span><span>◆</span>
+    <span>究極のプレミアム体験</span><span>◆</span>
+    <span id="tickerPhone">TEL 070-9094-9709</span><span>◆</span>
+    <span>PREMIUM · ELEGANT · LUXURIOUS</span><span>◆</span>
+    <span>PLATINUM MEN'S ESTHETIC</span><span>◆</span>
+    <span>神栖 · 茨城</span><span>◆</span>
+    <span id="tickerHours2">12:00 — 26:00</span><span>◆</span>
+    <span>究極のプレミアム体験</span><span>◆</span>
+    <span id="tickerPhone2">TEL 070-9094-9709</span><span>◆</span>
+    <span>PREMIUM · ELEGANT · LUXURIOUS</span><span>◆</span>
+  </div>
+</div>
+
+<!-- INFO -->
+<section class="info-section" id="concept">
+  <div class="container">
+    <div class="flex-head fade-in">
+      <div class="s-head" style="margin-bottom:0">
+        <span class="s-label">INFORMATION</span>
+        <div class="s-title">新着情報</div>
+        <div class="s-rule"></div>
+      </div>
+    </div>
+    <div id="newsContainer"></div>
+  </div>
+</section>
+
+<!-- PICKUP -->
+<section style="padding:0;position:relative;z-index:2;background:var(--bg2)">
+  <div class="container" style="padding-top:112px;padding-bottom:112px">
+    <div class="flex-head fade-in">
+      <div class="s-head" style="margin-bottom:0">
+        <span class="s-label">PICK UP</span>
+        <div class="s-title">注目セラピスト</div>
+        <div class="s-rule"></div>
+      </div>
+      <a href="#therapist" class="more-link">セラピスト一覧 →</a>
+    </div>
+    <div id="pickupContainer" class="fade-in"></div>
+  </div>
+</section>
+
+<!-- STAFF -->
+<section class="staff-section" id="therapist">
+  <div class="container">
+    <div class="flex-head fade-in">
+      <div class="s-head" style="margin-bottom:0">
+        <span class="s-label">NEW FACE</span>
+        <div class="s-title">新人セラピスト</div>
+        <div class="s-rule"></div>
+      </div>
+    </div>
+    <div class="staff-grid" id="staffGrid"></div>
+  </div>
+</section>
+
+<!-- SCHEDULE -->
+<section class="schedule-section" id="schedule">
+  <div class="container">
+    <div class="s-head fade-in" style="text-align:center;margin-bottom:52px">
+      <span class="s-label" style="display:block;margin-bottom:8px">TODAY</span>
+      <div class="s-title">本日の出勤</div>
+    </div>
+    <div class="sched-box fade-in" id="scheduleBox"></div>
+  </div>
+</section>
+
+<!-- PRICE -->
+<section class="price-section" id="price">
+  <div class="container">
+    <div class="s-head fade-in" style="text-align:center;margin-bottom:56px">
+      <span class="s-label" style="display:block;margin-bottom:8px">SYSTEM</span>
+      <div class="s-title">料金システム</div>
+      <div class="s-rule" style="max-width:200px;margin:24px auto 0"></div>
+    </div>
+    <div class="price-lede fade-in">
+      <p>プラチナコースには下記の内容がすべて含まれております。<br>従来のメンズエステに比べ、6,000円以上もお得な圧倒的なクオリティを。</p>
+    </div>
+    <div class="include-bar fade-in">
+      <div class="include-title">PREMIUM COURSE CONTENTS — 含まれるサービス</div>
+      <div class="include-tags">
+        <div class="include-tag">ドキドキマッサージ</div>
+        <div class="include-tag">ホットリッチオイル増量</div>
+        <div class="include-tag">プレミアムディープリンパ</div>
+      </div>
+    </div>
+    <div class="course-grid fade-in">
+      <div class="course-card"><div class="course-min">90<sub>min</sub></div><div class="course-sep"></div><div class="course-price"><span>¥ </span>20,000</div></div>
+      <div class="course-card pop"><div class="course-min">120<sub>min</sub></div><div class="course-sep"></div><div class="course-price"><span>¥ </span>25,000</div></div>
+      <div class="course-card"><div class="course-min">150<sub>min</sub></div><div class="course-sep"></div><div class="course-price"><span>¥ </span>30,000</div></div>
+      <div class="course-card"><div class="course-min">180<sub>min</sub></div><div class="course-sep"></div><div class="course-price"><span>¥ </span>35,000</div></div>
+    </div>
+    <div class="opt-grid fade-in">
+      <div class="opt-row"><span class="opt-k">延長 (15分)</span><span class="opt-v">¥ 4,000</span></div>
+      <div class="opt-row"><span class="opt-k">衣装チェンジ</span><span class="opt-v">ASK</span></div>
+      <div class="opt-section-label">指名料</div>
+      <div class="opt-row"><span class="opt-k">指名料（通常）</span><span class="opt-v">¥ 1,000</span></div>
+      <div class="opt-row opt-row-special">
+        <span class="opt-k">本指名料<span class="opt-special-note"><svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 2l2.4 7.4H22l-6.2 4.5 2.4 7.4L12 17l-6.2 4.3 2.4-7.4L2 9.4h7.6z"/></svg>SPECIAL</span></span>
+        <span class="opt-v">¥ 2,000</span>
+      </div>
+      <div class="opt-section-label">キャンセル</div>
+      <div class="opt-row" style="grid-column:1/-1"><span class="opt-k">当日キャンセル</span><span class="opt-v">コース料金の半額</span></div>
+    </div>
+    <p class="price-note" style="font-size:9.5px">★ 特別セラピスト（Special）は本指名料が ¥2,000 となります | 2回目以降は自動的に本指名扱いになります</p>
+    <p class="price-note">お支払いは現金のみ｜出張サービスは行っておりません</p>
+  </div>
+</section>
+
+<!-- NOTICE -->
+<section class="notice-section">
+  <div class="container">
+    <div class="s-head fade-in" style="margin-bottom:52px">
+      <span class="s-label">NOTICE</span><div class="s-title">注意事項</div><div class="s-rule"></div>
+    </div>
+    <div class="notice-grid">
+      <div class="notice-card fade-in"><div class="notice-head"><div class="notice-ico"><svg viewBox="0 0 24 24"><path d="M12 22c5.52 0 10-4.48 10-10S17.52 2 12 2 2 6.48 2 12s4.48 10 10 10zm0-6v-4m0-4h.01"/></svg></div><div class="notice-ttl">キャンセルについて</div></div><div class="notice-body">キャンセルご希望の場合は必ず事前にご連絡ください。施術開始1時間前以降のキャンセルはコース料金の50%、ルームご入店後は全額をお支払いいただきます。ご予約時間より10分以上ご連絡なき場合はキャンセル扱いとなります。</div></div>
+      <div class="notice-card fade-in d1"><div class="notice-head"><div class="notice-ico"><svg viewBox="0 0 24 24"><path d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/></svg></div><div class="notice-ttl">サービスについて</div></div><div class="notice-body">当サロンは風俗店ではございません。性風俗的サービスは一切行っておりません。コース時間はご予約時間から退室までで、シャワーもお時間に含まれます。</div></div>
+      <div class="notice-card fade-in d2"><div class="notice-head"><div class="notice-ico"><svg viewBox="0 0 24 24"><path d="M18.364 18.364A9 9 0 005.636 5.636m12.728 12.728A9 9 0 015.636 5.636m12.728 12.728L5.636 5.636"/></svg></div><div class="notice-ttl">禁止事項</div></div><div class="notice-body">18歳未満のご利用不可。セラピストへの不適切な言動・接触・強要禁止。盗撮・盗聴禁止。泥酔・薬物使用者のご利用禁止。暴力団関係者・全身刺青のある方・同業者のご利用禁止。非通知でのご連絡不可。</div></div>
+      <div class="notice-card fade-in d3"><div class="notice-head"><div class="notice-ico"><svg viewBox="0 0 24 24"><path d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg></div><div class="notice-ttl">その他</div></div><div class="notice-body">セラピストとの個人的な連絡先交換・店外へのお誘い・他店引き抜きは堅くお断りします。貴重品はロッカーもしくは貴重品袋にて管理ください。紛失・施術後の体調不良に伴う返金の責任は負いかねます。</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- LINKS -->
+<section class="links-section" id="linksSection" style="display:none">
+  <div class="container">
+    <div class="s-head fade-in" style="margin-bottom:52px">
+      <span class="s-label">LINKS</span><div class="s-title">相互リンク</div><div class="s-rule"></div>
+    </div>
+    <div class="links-grid" id="linksGrid"></div>
+  </div>
+</section>
+
+<!-- ACCESS -->
+<section class="access-section" id="access">
+  <div class="container">
+    <div class="s-head fade-in" style="margin-bottom:60px">
+      <span class="s-label">ACCESS</span><div class="s-title">アクセス</div><div class="s-rule"></div>
+    </div>
+    <div class="access-split">
+      <div class="fade-in">
+        <div class="access-ttl">SHOP INFORMATION</div>
+        <div class="access-row"><div class="access-key">店舗名</div><div class="access-val">プラチナ（Platinum Men's Esthetic）</div></div>
+        <div class="access-row"><div class="access-key">エリア</div><div class="access-val" id="accessArea">茨城県 神栖市</div></div>
+        <div class="access-row"><div class="access-key">営業時間</div><div class="access-val" id="accessHours">12:00 — 26:00</div></div>
+        <div class="access-row"><div class="access-key">定休日</div><div class="access-val" id="accessOff">なし</div></div>
+        <div class="access-row" style="border-bottom:none"><div class="access-key">お支払い</div><div class="access-val">現金のみ</div></div>
+      </div>
+      <div class="fade-in d2">
+        <div class="access-cta-wrap">
+          <span class="access-cta-label">RESERVATION</span>
+          <a href="tel:070-9094-9709" class="access-cta-num" id="accessPhone">070-9094-9709</a>
+          <span class="access-cta-hrs" id="accessHours2">12:00 — 26:00</span>
+          <a href="tel:070-9094-9709" class="access-cta-btn" id="accessPhoneBtn">お電話で予約する</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-grid">
+    <div class="footer-brand">
+      <div class="en">Platinum</div>
+      <span class="ja">プラチナ · Men's Esthetic</span>
+      <div class="tagline">神栖の地で、究極の<br>プレミアム体験を</div>
+    </div>
+    <nav class="footer-nav-grid">
+      <a href="#home">トップページ</a>
+      <a href="#concept">コンセプト</a>
+      <a href="#price">料金システム</a>
+      <a href="#therapist">セラピスト</a>
+      <a href="#schedule">スケジュール</a>
+      <a href="#access">アクセス</a>
+      <a href="#linksSection">相互リンク</a>
+    </nav>
+    <div class="footer-contact">
+      <div class="fc-label">お電話でご予約</div>
+      <a href="tel:070-9094-9709" class="fc-num" id="footerPhone">070-9094-9709</a>
+      <div class="fc-hrs" id="footerHours">12:00 — 26:00</div>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <span class="footer-copy" id="footerCopy">Copyright © Platinum Men's Esthetic. All Rights Reserved.</span>
+    <span class="footer-disc">当店は風俗店ではございません</span>
+  </div>
+</footer>
+
+<div class="float-call">
+  <a href="tel:070-9094-9709" class="float-btn" id="floatPhone">
+    <svg viewBox="0 0 24 24"><path d="M6.6 10.8c1.4 2.8 3.8 5.1 6.6 6.6l2.2-2.2c.3-.3.7-.4 1-.2 1.1.4 2.3.6 3.6.6.6 0 1 .4 1 1V20c0 .6-.4 1-1 1C10.6 21 3 13.4 3 4c0-.6.4-1 1-1h3.5c.6 0 1 .4 1 1 0 1.3.2 2.5.6 3.6.1.3 0 .7-.2 1L6.6 10.8z"/></svg>
+  </a>
+  <span class="float-label">CALL</span>
+</div>
+
+<!-- ===== ADMIN PANEL ===== -->
+<div class="admin-overlay" id="adminOverlay">
+  <!-- Password Screen -->
+  <div class="admin-pw-screen" id="adminPwScreen">
+    <div class="admin-pw-title">Admin</div>
+    <div class="admin-pw-sub">管理画面</div>
+    <input type="password" class="admin-pw-input" id="adminPwInput" placeholder="パスワード" autocomplete="off">
+    <button class="admin-pw-btn" id="adminPwBtn">ログイン</button>
+    <div class="admin-pw-err" id="adminPwErr"></div>
+    <button onclick="closeAdmin()" style="background:none;border:none;color:rgba(196,152,72,.35);font-size:10px;letter-spacing:.4em;cursor:pointer;margin-top:8px;font-family:var(--ja)">キャンセル</button>
+  </div>
+  <!-- Admin Shell -->
+  <div class="admin-shell" id="adminShell" style="display:none">
+    <!-- Sidebar -->
+    <div class="admin-sidebar">
+      <div class="admin-brand">
+        <div class="admin-brand-name">Platinum</div>
+        <div class="admin-brand-sub">管理画面</div>
+      </div>
+      <div class="admin-nav">
+        <div class="admin-nav-item active" data-panel="info" onclick="switchPanel('info',this)">
+          <svg viewBox="0 0 24 24"><path d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>お知らせ
+        </div>
+        <div class="admin-nav-item" data-panel="pickup" onclick="switchPanel('pickup',this)">
+          <svg viewBox="0 0 24 24"><path d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z"/></svg>ピックアップ
+        </div>
+        <div class="admin-nav-item" data-panel="staff" onclick="switchPanel('staff',this)">
+          <svg viewBox="0 0 24 24"><path d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z"/></svg>セラピスト
+        </div>
+        <div class="admin-nav-item" data-panel="schedule" onclick="switchPanel('schedule',this)">
+          <svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>スケジュール
+        </div>
+        <div class="admin-nav-item" data-panel="links" onclick="switchPanel('links',this)">
+          <svg viewBox="0 0 24 24"><path d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1"/></svg>相互リンク
+        </div>
+        <div class="admin-nav-item" data-panel="shop" onclick="switchPanel('shop',this)">
+          <svg viewBox="0 0 24 24"><path d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"/><path d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/></svg>店舗設定
+        </div>
+        <div class="admin-nav-item" data-panel="password" onclick="switchPanel('password',this)">
+          <svg viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0110 0v4"/></svg>パスワード変更
+        </div>
+      </div>
+      <div class="admin-sidebar-footer">
+        <button class="admin-close-btn" onclick="closeAdmin()">← サイトに戻る</button>
+      </div>
+    </div>
+    <!-- Main Content -->
+    <div class="admin-main">
+      <div class="admin-topbar">
+        <span class="admin-page-title" id="adminPageTitle">お知らせ管理</span>
+        <button class="admin-save-btn" id="adminSaveBtn" onclick="saveAll()">保存して反映</button>
+      </div>
+      <div class="admin-content">
+        <!-- INFO PANEL -->
+        <div class="admin-panel active" id="panel-info">
+          <div class="a-section">
+            <div class="a-section-head"><span class="a-section-title">お知らせ一覧</span></div>
+            <div class="a-section-body">
+              <div class="a-card-list" id="newsList"></div>
+              <button class="a-add-btn" onclick="openNewsModal()">＋ お知らせを追加</button>
+            </div>
+          </div>
+        </div>
+        <!-- PICKUP PANEL -->
+        <div class="admin-panel" id="panel-pickup">
+          <div class="a-section">
+            <div class="a-section-head"><span class="a-section-title">ピックアップセラピスト設定</span></div>
+            <div class="a-section-body">
+              <div class="a-form-row">
+                <div><label class="a-label">セラピスト選択</label><select class="a-select" id="pickupSelect"></select></div>
+                <div><label class="a-label">英字名（カード表示用）</label><input class="a-input" id="pickupNameEn" placeholder="例: Rui"></div>
+              </div>
+              <div class="a-form-row full"><div><label class="a-label">引用文（大見出し）</label><input class="a-input" id="pickupQuote" placeholder="例: 100年に1人の美女"></div></div>
+              <div class="a-form-row full"><div><label class="a-label">紹介コメント</label><textarea class="a-textarea" id="pickupComment" rows="5"></textarea></div></div>
+              <div class="a-form-row full"><div><label class="a-label">写真URL（空欄の場合はプレースホルダー表示）</label><input class="a-input" id="pickupPhoto" placeholder="https://..."></div></div>
+            </div>
+          </div>
+        </div>
+        <!-- STAFF PANEL -->
+        <div class="admin-panel" id="panel-staff">
+          <div class="a-section">
+            <div class="a-section-head"><span class="a-section-title">セラピスト一覧</span></div>
+            <div class="a-section-body">
+              <div class="a-card-list" id="staffList"></div>
+              <button class="a-add-btn" onclick="openStaffModal()">＋ セラピストを追加</button>
+            </div>
+          </div>
+        </div>
+        <!-- SCHEDULE PANEL -->
+        <div class="admin-panel" id="panel-schedule">
+          <div class="a-section">
+            <div class="a-section-head"><span class="a-section-title">本日の出勤状況</span></div>
+            <div class="a-section-body">
+              <div style="margin-bottom:20px">
+                <label class="a-label">表示ステータス</label>
+                <select class="a-select" id="schedStatus" style="max-width:300px">
+                  <option value="調整中">スケジュール調整中</option>
+                  <option value="出勤あり">出勤あり（下記リストを表示）</option>
+                  <option value="本日休業">本日休業</option>
+                </select>
+              </div>
+              <div class="a-card-list" id="schedList"></div>
+              <button class="a-add-btn" onclick="openSchedModal()">＋ 出勤セラピストを追加</button>
+            </div>
+          </div>
+        </div>
+        <!-- LINKS PANEL -->
+        <div class="admin-panel" id="panel-links">
+          <div class="a-section">
+            <div class="a-section-head"><span class="a-section-title">相互リンク一覧</span></div>
+            <div class="a-section-body">
+              <div class="a-card-list" id="linksList"></div>
+              <button class="a-add-btn" onclick="openLinksModal()">＋ リンクを追加</button>
+            </div>
+          </div>
+        </div>
+        <!-- SHOP PANEL -->
+        <div class="admin-panel" id="panel-shop">
+          <div class="a-section">
+            <div class="a-section-head"><span class="a-section-title">店舗情報</span></div>
+            <div class="a-section-body">
+              <div class="a-form-row">
+                <div><label class="a-label">電話番号</label><input class="a-input" id="shopPhone" placeholder="070-0000-0000"></div>
+                <div><label class="a-label">営業時間</label><input class="a-input" id="shopHours" placeholder="12:00 — 26:00"></div>
+              </div>
+              <div class="a-form-row">
+                <div><label class="a-label">エリア</label><input class="a-input" id="shopArea" placeholder="茨城県 神栖市"></div>
+                <div><label class="a-label">定休日</label><input class="a-input" id="shopOff" placeholder="なし、または〇曜日"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- PASSWORD PANEL -->
+        <div class="admin-panel" id="panel-password">
+          <div class="a-section">
+            <div class="a-section-head"><span class="a-section-title">管理パスワード変更</span></div>
+            <div class="a-section-body">
+              <div class="a-form-row">
+                <div><label class="a-label">現在のパスワード</label><input type="password" class="a-input" id="pwCurrent" placeholder="現在のパスワード"></div>
+              </div>
+              <div class="a-form-row">
+                <div><label class="a-label">新しいパスワード</label><input type="password" class="a-input" id="pwNew" placeholder="新しいパスワード"></div>
+                <div><label class="a-label">確認</label><input type="password" class="a-input" id="pwConfirm" placeholder="もう一度入力"></div>
+              </div>
+              <button class="a-btn-sm primary" style="margin-top:8px" onclick="changePassword()">パスワードを変更</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- MODALS -->
+<div class="a-modal-overlay" id="modalNews">
+  <div class="a-modal">
+    <div class="a-modal-head"><span class="a-modal-title">お知らせ編集</span><button class="a-modal-close" onclick="closeModal('modalNews')">✕</button></div>
+    <div class="a-modal-body">
+      <div class="a-form-row">
+        <div><label class="a-label">日付</label><input class="a-input" id="mnDate" placeholder="2025.01.01"></div>
+        <div><label class="a-label">カテゴリ</label><input class="a-input" id="mnCat" placeholder="お知らせ"></div>
+      </div>
+      <div class="a-form-row full"><div><label class="a-label">本文</label><textarea class="a-textarea" id="mnBody" rows="4"></textarea></div></div>
+      <input type="hidden" id="mnIdx" value="-1">
+    </div>
+    <div class="a-modal-footer"><button class="a-btn-sm" onclick="closeModal('modalNews')">キャンセル</button><button class="a-btn-sm primary" onclick="saveNews()">保存</button></div>
+  </div>
+</div>
+
+<div class="a-modal-overlay" id="modalStaff">
+  <div class="a-modal">
+    <div class="a-modal-head"><span class="a-modal-title">セラピスト編集</span><button class="a-modal-close" onclick="closeModal('modalStaff')">✕</button></div>
+    <div class="a-modal-body">
+      <div class="a-form-row">
+        <div><label class="a-label">名前（日本語）</label><input class="a-input" id="msName" placeholder="例: るい"></div>
+        <div><label class="a-label">英字名</label><input class="a-input" id="msNameEn" placeholder="例: Rui"></div>
+      </div>
+      <div class="a-form-row">
+        <div><label class="a-label">年齢</label><input class="a-input" id="msAge" type="number" placeholder="22"></div>
+        <div><label class="a-label">プロフィールURL</label><input class="a-input" id="msUrl" placeholder="https://..."></div>
+      </div>
+      <div class="a-form-row full"><div><label class="a-label">写真URL（空欄可）</label><input class="a-input" id="msPhoto" placeholder="https://..."></div></div>
+      <div class="a-checkbox-row"><input type="checkbox" class="a-checkbox" id="msSpecial"><label class="a-checkbox-label" for="msSpecial">★ 特別セラピスト（本指名料 ¥2,000）</label></div>
+      <div class="a-checkbox-row"><input type="checkbox" class="a-checkbox" id="msNew"><label class="a-checkbox-label" for="msNew">NEW バッジを表示</label></div>
+      <div class="a-checkbox-row"><input type="checkbox" class="a-checkbox" id="msActive" checked><label class="a-checkbox-label" for="msActive">表示する（チェックを外すと非表示）</label></div>
+      <input type="hidden" id="msIdx" value="-1">
+    </div>
+    <div class="a-modal-footer"><button class="a-btn-sm" onclick="closeModal('modalStaff')">キャンセル</button><button class="a-btn-sm primary" onclick="saveStaff()">保存</button></div>
+  </div>
+</div>
+
+<div class="a-modal-overlay" id="modalSched">
+  <div class="a-modal">
+    <div class="a-modal-head"><span class="a-modal-title">出勤追加</span><button class="a-modal-close" onclick="closeModal('modalSched')">✕</button></div>
+    <div class="a-modal-body">
+      <div class="a-form-row">
+        <div><label class="a-label">セラピスト</label><select class="a-select" id="scStaff"></select></div>
+        <div><label class="a-label">時間帯</label><input class="a-input" id="scTime" placeholder="例: 12:00〜22:00"></div>
+      </div>
+      <input type="hidden" id="scIdx" value="-1">
+    </div>
+    <div class="a-modal-footer"><button class="a-btn-sm" onclick="closeModal('modalSched')">キャンセル</button><button class="a-btn-sm primary" onclick="saveSched()">追加</button></div>
+  </div>
+</div>
+
+<div class="a-modal-overlay" id="modalLinks">
+  <div class="a-modal">
+    <div class="a-modal-head"><span class="a-modal-title">リンク編集</span><button class="a-modal-close" onclick="closeModal('modalLinks')">✕</button></div>
+    <div class="a-modal-body">
+      <div class="a-form-row full"><div><label class="a-label">サイト名</label><input class="a-input" id="mlName" placeholder="例: 茨城メンズエステランキング"></div></div>
+      <div class="a-form-row full"><div><label class="a-label">URL</label><input class="a-input" id="mlUrl" placeholder="https://..."></div></div>
+      <div class="a-form-row full"><div><label class="a-label">バナー画像URL（空欄可）</label><input class="a-input" id="mlBanner" placeholder="https://..."></div></div>
+      <input type="hidden" id="mlIdx" value="-1">
+    </div>
+    <div class="a-modal-footer"><button class="a-btn-sm" onclick="closeModal('modalLinks')">キャンセル</button><button class="a-btn-sm primary" onclick="saveLink()">保存</button></div>
+  </div>
+</div>
+
+<!-- TOAST -->
+<div class="a-toast" id="toast"></div>
+
+<script>
+// ===== DATA =====
+const STAR_SVG = '<svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 2l2.4 7.4H22l-6.2 4.5 2.4 7.4L12 17l-6.2 4.3 2.4-7.4L2 9.4h7.6z"/></svg>';
+const DEFAULT = {
+  password: 'admin1234',
+  shop: {phone:'070-9094-9709', hours:'12:00 — 26:00', area:'茨城県 神栖市', off:'なし'},
+  news: [{date:'2025.01.01',cat:'お知らせ',body:'現在お知らせはございません。最新情報はお電話にてご確認くださいませ。'}],
+  pickup: {idx:0, nameEn:'Rui', quote:'100年に1人の美女', comment:'誰もが認める、いい女。\n整った顔立ちに峰不二子ばりのスタイル —\nまさに理想の女性です。\n\n長い手足からくる圧倒的な密着感。\n海よりも深い、ディープリンパ。\nドキドキそして完璧な時間を、堪能ください。', photo:''},
+  therapists: [
+    {name:'るい',nameEn:'Rui',age:27,special:true,isNew:false,active:true,photo:'',url:'https://www.mens-premium.com/profile/_uid/2402/'},
+    {name:'ゆき',nameEn:'Yuki',age:23,special:true,isNew:true,active:true,photo:'',url:'https://www.mens-premium.com/profile/_uid/1247/'},
+    {name:'るな',nameEn:'Luna',age:21,special:false,isNew:true,active:true,photo:'',url:'https://www.mens-premium.com/profile/_uid/1805/'},
+    {name:'ばんび',nameEn:'Bambi',age:28,special:false,isNew:true,active:true,photo:'',url:'https://www.mens-premium.com/profile/_uid/2802/'},
+    {name:'このみ',nameEn:'Konomi',age:25,special:false,isNew:true,active:true,photo:'',url:'https://www.mens-premium.com/profile/_uid/2908/'}
+  ],
+  schedule: {status:'調整中', entries:[]},
+  links: [
+    {name:'茨城央北（水戸・神栖）エリア',url:'https://www.esthe-ranking.jp/esthe-ranking/c2e72f42-7f5b-4733-b58e-896a8b9c5124/',banner:'https://www.esthe-ranking.jp/assets/img/banner/in/area93.gif'},
+    {name:'茨城央北エリア 高収入求人 メンズエステワークス',url:'https://www.esthe-works.jp/esthe-works/c2e72f42-7f5b-4733-b58e-896a8b9c5124/',banner:'https://www.esthe-works.jp/assets/img/banner/in-works/area93.gif'}
+  ]
+};
+
+let D = JSON.parse(localStorage.getItem('platinum_data') || 'null') || JSON.parse(JSON.stringify(DEFAULT));
+
+// ===== RENDER FRONT-END =====
+function renderAll(){
+  renderShop();renderNews();renderPickup();renderStaff();renderSchedule();renderLinks();
+}
+function renderShop(){
+  const s = D.shop;
+  const phone = 'tel:'+s.phone;
+  document.getElementById('navHours').textContent = s.hours;
+  document.getElementById('navPhone').textContent = s.phone;
+  document.getElementById('navPhone').href = phone;
+  document.getElementById('tickerHours').textContent = s.hours;
+  document.getElementById('tickerHours2').textContent = s.hours;
+  document.getElementById('tickerPhone').textContent = 'TEL '+s.phone;
+  document.getElementById('tickerPhone2').textContent = 'TEL '+s.phone;
+  document.getElementById('accessArea').textContent = s.area;
+  document.getElementById('accessHours').textContent = s.hours;
+  document.getElementById('accessOff').textContent = s.off || 'なし';
+  document.getElementById('accessPhone').textContent = s.phone;
+  document.getElementById('accessPhone').href = phone;
+  document.getElementById('accessHours2').textContent = s.hours;
+  document.getElementById('accessPhoneBtn').href = phone;
+  document.getElementById('footerPhone').textContent = s.phone;
+  document.getElementById('footerPhone').href = phone;
+  document.getElementById('footerHours').textContent = s.hours;
+  document.getElementById('heroPhone').href = phone;
+  document.getElementById('floatPhone').href = phone;
+}
+function renderNews(){
+  const c = document.getElementById('newsContainer');
+  c.innerHTML = D.news.map(n=>`
+    <div class="info-item fade-in">
+      <span class="info-date">${n.date}</span>
+      <span class="info-cat">${n.cat}</span>
+      <p class="info-body">${n.body}</p>
+    </div>`).join('');
+  reObserve();
+}
+function renderPickup(){
+  const p = D.pickup;
+  const th = D.therapists[p.idx] || D.therapists[0];
+  if(!th) return;
+  const imgHtml = p.photo
+    ? `<img src="${p.photo}" alt="${th.name}">`
+    : `<div class="pickup-placeholder"><svg viewBox="0 0 80 80" fill="none" width="72" height="72"><circle cx="40" cy="28" r="18" stroke="rgba(26,21,16,.5)" stroke-width="1.2"/><path d="M8 72c0-17.7 14.3-32 32-32s32 14.3 32 32" stroke="rgba(26,21,16,.5)" stroke-width="1.2"/></svg></div>`;
+  const specialBadge = th.special
+    ? `<div class="pickup-special">${STAR_SVG}SPECIAL THERAPIST</div>` : '';
+  const commentHtml = p.comment.replace(/\n/g,'<br>');
+  document.getElementById('pickupContainer').innerHTML = `
+    <div class="pickup-wrap">
+      <div class="pickup-img-wrap">${imgHtml}
+        <div class="pickup-img-label">
+          <div class="pickup-img-name">${p.nameEn}</div>
+          <div class="pickup-img-age">${th.name} · ${th.age} 歳</div>
+        </div>
+      </div>
+      <div class="pickup-detail">
+        ${specialBadge}
+        <span class="pickup-em">✦ PICK UP THERAPIST</span>
+        <div class="pickup-quote">"${p.quote}"</div>
+        <p class="pickup-body">${commentHtml}</p>
+        <a href="${th.url||'#'}" class="pickup-action">詳しくはこちら<span class="arr"></span></a>
+      </div>
+    </div>`;
+  reObserve();
+}
+function renderStaff(){
+  const active = D.therapists.filter(t=>t.active && t.isNew);
+  document.getElementById('staffGrid').innerHTML = active.map((t,i)=>{
+    const badge = t.special
+      ? `<div class="special-badge">${STAR_SVG}SPECIAL</div>`
+      : `<span class="staff-new">NEW</span>`;
+    const imgHtml = t.photo
+      ? `<img src="${t.photo}" alt="${t.name}" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover">`
+      : `<div class="staff-ph"><svg viewBox="0 0 60 60" fill="none" width="52" height="52"><circle cx="30" cy="22" r="13" stroke="rgba(26,21,16,.6)" stroke-width="1.2"/><path d="M6 54c0-13.3 10.7-24 24-24s24 10.7 24 24" stroke="rgba(26,21,16,.6)" stroke-width="1.2"/></svg></div>`;
+    return `
+      <div class="staff-card fade-in" style="transition-delay:${i*0.08}s">
+        <div class="staff-inner">
+          <div class="staff-overlay"></div>
+          ${imgHtml}${badge}
+          <div class="staff-bottom">
+            <div class="staff-name">${t.name}</div>
+            <div class="staff-age">${t.age} 歳</div>
+          </div>
+        </div>
+        <a href="${t.url||'#'}" class="staff-detail">プロフィールを見る</a>
+      </div>`;
+  }).join('');
+  reObserve();
+}
+function renderSchedule(){
+  const sc = D.schedule;
+  const ph = D.shop.phone;
+  let inner = '';
+  if(sc.status==='出勤あり' && sc.entries.length>0){
+    const rows = sc.entries.map(e=>`
+      <div class="sched-entry">
+        <span class="sched-entry-name">${e.name}</span>
+        <span class="sched-entry-time">${e.time}</span>
+      </div>`).join('');
+    inner = `<div class="sched-entries">${rows}</div>`;
+  } else {
+    const msg = sc.status==='本日休業' ? '本日は休業日です' : 'スケジュール調整中です';
+    inner = `<div class="sched-status">${msg}</div>
+      <div class="sched-note">最新のスケジュールはお電話にてご確認ください</div>`;
+  }
+  document.getElementById('scheduleBox').innerHTML = `
+    <div class="sched-icon"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="var(--gold2)" stroke-width="1.2"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg></div>
+    ${inner}
+    <div class="sched-orn"><div class="orn-line"></div><div class="orn-gem"></div><div class="orn-line"></div></div>
+    <a href="tel:${ph}" class="sched-phone">${ph}</a>
+    <a href="#" class="sched-link">スケジュール詳細はこちら</a>`;
+}
+function renderLinks(){
+  const sec = document.getElementById('linksSection');
+  if(!D.links||!D.links.length){sec.style.display='none';return;}
+  sec.style.display='block';
+  document.getElementById('linksGrid').innerHTML = D.links.map(l=>`
+    <a href="${l.url}" class="link-card" target="_blank" rel="noopener">
+      ${l.banner
+        ? `<div class="link-card-img"><img src="${l.banner}" alt="${l.name}"></div>`
+        : `<div class="link-card-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101"/><path d="M10.172 13.828a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1"/></svg></div>`}
+      <div><div class="link-card-name">${l.name}</div><div class="link-card-url">${l.url.replace(/^https?:\/\//,'').substring(0,40)}…</div></div>
+    </a>`).join('');
+}
+
+// ===== ADMIN HELPERS =====
+function showToast(msg){
+  const t=document.getElementById('toast');
+  t.textContent=msg;t.classList.add('show');
+  setTimeout(()=>t.classList.remove('show'),2800);
+}
+function openModal(id){document.getElementById(id).classList.add('open')}
+function closeModal(id){document.getElementById(id).classList.remove('open')}
+function switchPanel(id,el){
+  document.querySelectorAll('.admin-panel').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.admin-nav-item').forEach(i=>i.classList.remove('active'));
+  document.getElementById('panel-'+id).classList.add('active');
+  el.classList.add('active');
+  const titles={info:'お知らせ管理',pickup:'ピックアップ設定',staff:'セラピスト管理',schedule:'スケジュール管理',links:'相互リンク管理',shop:'店舗設定',password:'パスワード変更'};
+  document.getElementById('adminPageTitle').textContent=titles[id]||'';
+  if(id==='pickup')loadPickupPanel();
+  if(id==='staff')loadStaffList();
+  if(id==='schedule')loadSchedPanel();
+  if(id==='shop')loadShopPanel();
+  if(id==='links')loadLinksList();
+  if(id==='info')loadNewsList();
+}
+function saveAll(){
+  // collect shop
+  const sp=D.shop;
+  sp.phone=document.getElementById('shopPhone').value||sp.phone;
+  sp.hours=document.getElementById('shopHours').value||sp.hours;
+  sp.area=document.getElementById('shopArea').value||sp.area;
+  sp.off=document.getElementById('shopOff').value||sp.off;
+  // collect pickup text fields
+  D.pickup.nameEn=document.getElementById('pickupNameEn').value||D.pickup.nameEn;
+  D.pickup.quote=document.getElementById('pickupQuote').value||D.pickup.quote;
+  D.pickup.comment=document.getElementById('pickupComment').value||D.pickup.comment;
+  D.pickup.photo=document.getElementById('pickupPhoto').value;
+  D.pickup.idx=parseInt(document.getElementById('pickupSelect').value)||0;
+  // schedule
+  D.schedule.status=document.getElementById('schedStatus').value;
+  localStorage.setItem('platinum_data',JSON.stringify(D));
+  renderAll();showToast('✓ 保存して反映しました');
+}
+
+// ===== NEWS =====
+function loadNewsList(){
+  document.getElementById('newsList').innerHTML=D.news.map((n,i)=>`
+    <div class="a-card">
+      <div class="a-card-info">
+        <div class="a-card-title">${n.body.substring(0,40)}${n.body.length>40?'…':''}</div>
+        <div class="a-card-sub">${n.date} · ${n.cat}</div>
+      </div>
+      <div class="a-card-actions">
+        <button class="a-btn-sm" onclick="openNewsModal(${i})">編集</button>
+        <button class="a-btn-sm danger" onclick="deleteNews(${i})">削除</button>
+      </div>
+    </div>`).join('')||'<p style="color:rgba(196,152,72,.3);font-size:11px;letter-spacing:.3em">お知らせがありません</p>';
+}
+function openNewsModal(idx=-1){
+  document.getElementById('mnIdx').value=idx;
+  if(idx>=0){const n=D.news[idx];document.getElementById('mnDate').value=n.date;document.getElementById('mnCat').value=n.cat;document.getElementById('mnBody').value=n.body;}
+  else{document.getElementById('mnDate').value='';document.getElementById('mnCat').value='お知らせ';document.getElementById('mnBody').value='';}
+  openModal('modalNews');
+}
+function saveNews(){
+  const idx=parseInt(document.getElementById('mnIdx').value);
+  const n={date:document.getElementById('mnDate').value,cat:document.getElementById('mnCat').value,body:document.getElementById('mnBody').value};
+  if(!n.body){showToast('本文を入力してください');return;}
+  if(idx>=0)D.news[idx]=n;else D.news.unshift(n);
+  closeModal('modalNews');loadNewsList();showToast('保存しました');
+}
+function deleteNews(i){if(confirm('削除しますか？')){D.news.splice(i,1);loadNewsList();}}
+
+// ===== PICKUP =====
+function loadPickupPanel(){
+  const sel=document.getElementById('pickupSelect');
+  sel.innerHTML=D.therapists.map((t,i)=>`<option value="${i}" ${D.pickup.idx===i?'selected':''}>${t.name}（${t.age}歳）</option>`).join('');
+  document.getElementById('pickupNameEn').value=D.pickup.nameEn;
+  document.getElementById('pickupQuote').value=D.pickup.quote;
+  document.getElementById('pickupComment').value=D.pickup.comment;
+  document.getElementById('pickupPhoto').value=D.pickup.photo||'';
+}
+
+// ===== STAFF =====
+function loadStaffList(){
+  document.getElementById('staffList').innerHTML=D.therapists.map((t,i)=>`
+    <div class="a-card">
+      <div class="a-card-info">
+        <div class="a-card-title">${t.name}（${t.nameEn}）<span class="status-pill ${t.active?'status-active':'status-off'}" style="margin-left:8px">${t.active?'表示中':'非表示'}</span></div>
+        <div class="a-card-sub">${t.age}歳</div>
+        <div class="a-card-tags">
+          ${t.special?`<span class="a-tag special">${STAR_SVG} SPECIAL</span>`:''}
+          ${t.isNew?'<span class="a-tag new">NEW</span>':''}
+        </div>
+      </div>
+      <div class="a-card-actions">
+        <button class="a-btn-sm" onclick="openStaffModal(${i})">編集</button>
+        <button class="a-btn-sm danger" onclick="deleteStaff(${i})">削除</button>
+      </div>
+    </div>`).join('')||'<p style="color:rgba(196,152,72,.3);font-size:11px">セラピストがいません</p>';
+}
+function openStaffModal(idx=-1){
+  document.getElementById('msIdx').value=idx;
+  if(idx>=0){
+    const t=D.therapists[idx];
+    document.getElementById('msName').value=t.name;document.getElementById('msNameEn').value=t.nameEn;
+    document.getElementById('msAge').value=t.age;document.getElementById('msUrl').value=t.url||'';
+    document.getElementById('msPhoto').value=t.photo||'';
+    document.getElementById('msSpecial').checked=t.special;document.getElementById('msNew').checked=t.isNew;document.getElementById('msActive').checked=t.active;
+  }else{
+    ['msName','msNameEn','msUrl','msPhoto'].forEach(id=>document.getElementById(id).value='');
+    document.getElementById('msAge').value='';
+    document.getElementById('msSpecial').checked=false;document.getElementById('msNew').checked=true;document.getElementById('msActive').checked=true;
+  }
+  openModal('modalStaff');
+}
+function saveStaff(){
+  const idx=parseInt(document.getElementById('msIdx').value);
+  const t={name:document.getElementById('msName').value,nameEn:document.getElementById('msNameEn').value,age:parseInt(document.getElementById('msAge').value)||0,url:document.getElementById('msUrl').value,photo:document.getElementById('msPhoto').value,special:document.getElementById('msSpecial').checked,isNew:document.getElementById('msNew').checked,active:document.getElementById('msActive').checked};
+  if(!t.name){showToast('名前を入力してください');return;}
+  if(idx>=0)D.therapists[idx]=t;else D.therapists.push(t);
+  closeModal('modalStaff');loadStaffList();showToast('保存しました');
+}
+function deleteStaff(i){if(confirm('削除しますか？')){D.therapists.splice(i,1);loadStaffList();}}
+
+// ===== SCHEDULE =====
+function loadSchedPanel(){
+  document.getElementById('schedStatus').value=D.schedule.status;
+  const sel=document.getElementById('scStaff');
+  sel.innerHTML=D.therapists.filter(t=>t.active).map(t=>`<option value="${t.name}">${t.name}</option>`).join('');
+  document.getElementById('schedList').innerHTML=D.schedule.entries.map((e,i)=>`
+    <div class="a-card">
+      <div class="a-card-info"><div class="a-card-title">${e.name}</div><div class="a-card-sub">${e.time}</div></div>
+      <div class="a-card-actions"><button class="a-btn-sm danger" onclick="deleteSchedEntry(${i})">削除</button></div>
+    </div>`).join('')||'<p style="color:rgba(196,152,72,.3);font-size:11px;letter-spacing:.3em">出勤者がいません</p>';
+}
+function openSchedModal(){
+  document.getElementById('scIdx').value=-1;
+  document.getElementById('scTime').value='';
+  openModal('modalSched');
+}
+function saveSched(){
+  const name=document.getElementById('scStaff').value;
+  const time=document.getElementById('scTime').value;
+  if(!name||!time){showToast('全項目を入力してください');return;}
+  D.schedule.entries.push({name,time});
+  closeModal('modalSched');loadSchedPanel();showToast('追加しました');
+}
+function deleteSchedEntry(i){D.schedule.entries.splice(i,1);loadSchedPanel();}
+
+// ===== LINKS =====
+function loadLinksList(){
+  document.getElementById('linksList').innerHTML=D.links.map((l,i)=>`
+    <div class="a-card">
+      <div class="a-card-info">
+        <div class="a-card-title">${l.name}</div>
+        <div class="a-card-sub">${l.url.substring(0,50)}</div>
+      </div>
+      <div class="a-card-actions">
+        <button class="a-btn-sm" onclick="openLinksModal(${i})">編集</button>
+        <button class="a-btn-sm danger" onclick="deleteLink(${i})">削除</button>
+      </div>
+    </div>`).join('')||'<p style="color:rgba(196,152,72,.3);font-size:11px">リンクがありません</p>';
+}
+function openLinksModal(idx=-1){
+  document.getElementById('mlIdx').value=idx;
+  if(idx>=0){const l=D.links[idx];document.getElementById('mlName').value=l.name;document.getElementById('mlUrl').value=l.url;document.getElementById('mlBanner').value=l.banner||'';}
+  else{['mlName','mlUrl','mlBanner'].forEach(id=>document.getElementById(id).value='');}
+  openModal('modalLinks');
+}
+function saveLink(){
+  const idx=parseInt(document.getElementById('mlIdx').value);
+  const l={name:document.getElementById('mlName').value,url:document.getElementById('mlUrl').value,banner:document.getElementById('mlBanner').value};
+  if(!l.name||!l.url){showToast('名前とURLを入力してください');return;}
+  if(idx>=0)D.links[idx]=l;else D.links.push(l);
+  closeModal('modalLinks');loadLinksList();showToast('保存しました');
+}
+function deleteLink(i){if(confirm('削除しますか？')){D.links.splice(i,1);loadLinksList();}}
+
+// ===== SHOP =====
+function loadShopPanel(){
+  document.getElementById('shopPhone').value=D.shop.phone;
+  document.getElementById('shopHours').value=D.shop.hours;
+  document.getElementById('shopArea').value=D.shop.area;
+  document.getElementById('shopOff').value=D.shop.off;
+}
+
+// ===== PASSWORD =====
+function changePassword(){
+  const cur=document.getElementById('pwCurrent').value;
+  const nw=document.getElementById('pwNew').value;
+  const cf=document.getElementById('pwConfirm').value;
+  if(cur!==D.password){showToast('現在のパスワードが違います');return;}
+  if(nw.length<4){showToast('4文字以上で設定してください');return;}
+  if(nw!==cf){showToast('新しいパスワードが一致しません');return;}
+  D.password=nw;localStorage.setItem('platinum_data',JSON.stringify(D));
+  showToast('パスワードを変更しました');
+  document.getElementById('pwCurrent').value='';document.getElementById('pwNew').value='';document.getElementById('pwConfirm').value='';
+}
+
+// ===== ADMIN OPEN/CLOSE =====
+let copyrightClicks=0,ccTimer;
+function openAdmin(){document.getElementById('adminOverlay').classList.add('open');document.getElementById('adminPwInput').value='';document.getElementById('adminPwErr').textContent='';}
+function closeAdmin(){document.getElementById('adminOverlay').classList.remove('open');document.getElementById('adminShell').style.display='none';document.getElementById('adminPwScreen').classList.remove('hidden');}
+function checkPw(){
+  const v=document.getElementById('adminPwInput').value;
+  if(v===D.password){
+    document.getElementById('adminPwScreen').classList.add('hidden');
+    document.getElementById('adminShell').style.display='flex';
+    switchPanel('info',document.querySelector('[data-panel="info"]'));
+    loadShopPanel();
+  }else{document.getElementById('adminPwErr').textContent='パスワードが違います';}
+}
+document.getElementById('adminPwBtn').addEventListener('click',checkPw);
+document.getElementById('adminPwInput').addEventListener('keydown',e=>{if(e.key==='Enter')checkPw();});
+document.getElementById('footerCopy').addEventListener('click',()=>{
+  copyrightClicks++;clearTimeout(ccTimer);
+  ccTimer=setTimeout(()=>copyrightClicks=0,2000);
+  if(copyrightClicks>=3){copyrightClicks=0;openAdmin();}
+});
+// URL param
+if(location.search.includes('admin'))openAdmin();
+
+// ===== CURSOR =====
+const cursor=document.getElementById('cursor');
+const ring=document.getElementById('cursorRing');
+let mx=0,my=0,rx=0,ry=0;
+document.addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY;cursor.style.left=mx+'px';cursor.style.top=my+'px'});
+(function animR(){rx+=(mx-rx)*.11;ry+=(my-ry)*.11;ring.style.left=rx+'px';ring.style.top=ry+'px';requestAnimationFrame(animR)})();
+document.querySelectorAll('a,button,.staff-card,.course-card').forEach(el=>{
+  el.addEventListener('mouseenter',()=>ring.classList.add('expand'));
+  el.addEventListener('mouseleave',()=>ring.classList.remove('expand'));
+});
+// NAV
+document.getElementById('mainNav').addEventListener('scroll',()=>{},false);
+window.addEventListener('scroll',()=>document.getElementById('mainNav').classList.toggle('scrolled',scrollY>60));
+// DRAWER
+document.getElementById('hamburger').addEventListener('click',()=>document.getElementById('drawer').classList.add('open'));
+document.getElementById('drawerClose').addEventListener('click',()=>document.getElementById('drawer').classList.remove('open'));
+document.querySelectorAll('.drawer a').forEach(a=>a.addEventListener('click',()=>document.getElementById('drawer').classList.remove('open')));
+// FADE IN
+function reObserve(){
+  const obs=new IntersectionObserver(en=>en.forEach(e=>{if(e.isIntersecting)e.target.classList.add('visible')}),{threshold:.1});
+  document.querySelectorAll('.fade-in:not(.visible)').forEach(el=>obs.observe(el));
+}
+reObserve();
+
+// INIT
+renderAll();
+</script>
+</body>
+</html>

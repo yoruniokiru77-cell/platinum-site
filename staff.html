@@ -279,8 +279,9 @@ document.getElementById('staffGrid').innerHTML = active.map((t,i)=>{
   const badge = t.special
     ? `<div class="special-badge">${STAR_SVG}SPECIAL</div>`
     : t.isNew ? `<span class="staff-new">NEW</span>` : '';
-  const imgHtml = t.photo
-    ? `<img src="${t.photo}" alt="${t.name}">`
+  const mainPhoto = t.photo || (t.photos && t.photos[0]) || '';
+  const imgHtml = mainPhoto
+    ? `<img src="${mainPhoto}" alt="${t.name}" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover">`
     : `<div class="staff-ph"><svg viewBox="0 0 60 60" fill="none" width="52" height="52"><circle cx="30" cy="22" r="13" stroke="rgba(26,21,16,.6)" stroke-width="1.2"/><path d="M6 54c0-13.3 10.7-24 24-24s24 10.7 24 24" stroke="rgba(26,21,16,.6)" stroke-width="1.2"/></svg></div>`;
   return `
     <div class="staff-card fade-in" style="transition-delay:${(i%5)*0.05}s">

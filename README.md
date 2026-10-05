@@ -21,7 +21,7 @@ Node.js 24系で `npm run dev`。公開ページは `http://127.0.0.1:4173/`、�
 
 ## 本番接続（初回のみ）
 
-現時点では `assets/config.js` の `cmsEnabled` は false です。既存の出勤システムを読み取り、店舗のその他の内容は `assets/default-data.json` を表示します。
+`assets/config.js` の `cmsEnabled` は true です。2026-10-05にHP用テーブル・関数と指定管理者の店舗権限を本番Supabaseへ適用しました。初回の下書き保存・公開が完了するまでは、公開ページに読み込みエラーが表示されます。
 
 1. 接続先Supabaseプロジェクトを確認します。URL、公開anon key、店舗IDは `assets/config.js`。service-roleキーを置かないでください。
 2. Supabase SQL Editorで `supabase/migrations/20261004_platinum_cms.sql` を実行します。既存 `shifts` とその権限は変更しません。
@@ -83,7 +83,7 @@ Vercelでは `api/refresh-shifts.js` をCronから5分ごとに実行し、公�
 
 ## 本番移行の手順・現在の状態（2026-10-05確認）
 
-Supabaseを読み取り確認した結果、`platinum_public` は未作成（PGRST205）、`platinum_public_shifts` RPCも未作成（PGRST202）です。公開先はGitHub → Vercel、管理者は新規作成する方針です。本番プロジェクト・管理者アカウントは未作成で、本番への反映はまだ行っていません。ローカル `.env` には既存プロジェクトの公開anonキーと確認済みの `calendar` 設定を反映済みです。`.env` はGit・Dockerイメージへ含めません。
+2026-10-05に3つの移行SQLを本番Supabaseへ適用済みです。新規管理者アカウントを確認し、神栖／PremiumのHP管理権限を登録しました。公開APIは実データ14件を取得でき、匿名ユーザーの下書き／管理者テーブル参照は拒否されました。公開先はGitHub → Vercel。Vercelへのデプロイ、初回コンテンツ公開、永続キャッシュ更新は未完了です。ローカル `.env` には既存プロジェクトの公開anonキーと確認済みの `calendar` 設定を反映済みです。`.env` はGit・Dockerイメージへ含めません。
 
 1. 既存SupabaseのSQL Editorで `20261004_platinum_cms.sql` → `20261005_public_shifts.sql` の順に適用します。対象は `rzfprialypdoyklfwpyg`。新規HP用テーブル／関数のみを追加します。
 2. 管理者として利用するAuthユーザーを確定します。最初のSQL末尾の登録例に実際のUUIDを指定し、対象店舗の `platinum_admins` に追加します。メールアドレスやパスワードはコードに書きません。
@@ -122,4 +122,4 @@ GitHubの接続済みリポジトリは `yoruniokiru77-cell/platinum-site` で�
 
 本番Cronは今日から31営業日分を先読みします。キャッシュ範囲外の指定も最大31日間までHPサーバーから直接取得できますが、その場合は定期先読み対象ではありません。上流APIが失敗すると失敗状態を永続保存します。キャッシュ保存先自体が停止した場合は503、更新が途絶えた場合も10分で503となり、古い結果を無期限に成功表示しません。再デプロイや別インスタンスでも取得結果は維持されます。
 
-GitHubへのPush・Vercelの作成／デプロイ・SupabaseへのSQL適用・管理者作成は、実行結果を確認するまで完了扱いにしません。SQLはこの環境で未適用、Vercel上でのCron・ログイン・権限テストも未実施です。
+GitHubへのPush・Vercelの作成／デプロイ・SupabaseへのSQL適用・管理者作成は、実行結果を確認するまで完了扱いにしません。SQL適用と公開API／匿名アクセス制限は確認済みです。Vercel上でのCron・HP管理画面ログイン・公開操作の検証は未完了です。

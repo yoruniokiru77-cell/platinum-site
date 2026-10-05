@@ -1,0 +1,29 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="robots" content="noindex,nofollow"><title>店舗管理 | Platinum</title>
+  <link rel="stylesheet" href="assets/admin.css">
+  <script src="assets/config.js" defer></script><script src="assets/cms.js" defer></script>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2" defer></script>
+  <script src="assets/admin.js" defer></script>
+</head>
+<body>
+  <div id="login" class="login-wrap">
+    <section class="login-card"><div class="brand">P<span>PLATINUM<small>STORE MANAGEMENT</small></span></div>
+      <h1>店舗管理へようこそ</h1><p>セラピスト・出勤・お知らせを、ひとつの場所で。</p>
+      <form id="loginForm"><label>メールアドレス<input name="email" type="email" autocomplete="username" required></label><label>パスワード<input name="password" type="password" autocomplete="current-password" required></label><button class="primary" type="submit">ログイン</button></form>
+      <p id="loginNote" role="status"></p><button id="demo" class="secondary">画面を試す（デモ）</button><a class="back-link" href="index.html">公開サイトへ戻る ↗</a>
+    </section>
+  </div>
+  <div id="app" class="app" hidden>
+    <aside class="sidebar"><a class="brand" href="admin.html">P<span>PLATINUM<small>STORE MANAGEMENT</small></span></a><div class="side-label">店舗管理</div><nav id="adminNav" aria-label="管理メニュー"></nav><div class="side-bottom"><a href="index.html" target="_blank" rel="noopener">公開サイトを見る ↗</a><button id="logout">ログアウト</button></div></aside>
+    <div class="workspace"><header class="topbar"><div><span class="eyebrow">PLATINUM / MANAGEMENT</span><div id="modeLabel"></div></div><div class="top-actions"><button id="preview" class="secondary">プレビュー ↗</button><button id="save" class="secondary">下書き保存</button><button id="publish" class="primary">公開する</button></div></header>
+      <div id="connectionNote" class="connection-note"></div><main id="main"></main>
+    </div>
+  </div>
+  <div id="toast" class="toast" role="status" aria-live="polite"></div>
+  <dialog id="editor"><form id="editorForm"><div class="dialog-head"><h2 id="editorTitle"></h2><button type="button" id="closeEditor" aria-label="閉じる">×</button></div><div id="editorFields" class="fields"></div><p id="editorError" class="error" role="alert"></p><div class="dialog-actions"><button type="button" id="cancelEditor" class="secondary">キャンセル</button><button class="primary" type="submit">下書きに追加・更新</button></div></form></dialog>
+  <dialog id="publishDialog"><h2>変更内容を公開しますか？</h2><p>下書き保存済みの内容を公開サイトに反映します。</p><div id="publishSummary"></div><div class="dialog-actions"><button id="cancelPublish" class="secondary">戻る</button><button id="confirmPublish" class="primary">この内容で公開</button></div></dialog>
+  <dialog id="actionDialog"><h2>操作の確認</h2><p id="actionMessage"></p><div class="dialog-actions"><button id="actionCancel" class="secondary">戻る</button><button id="actionConfirm" class="primary">実行する</button></div></dialog>
+</body></html>

@@ -1,0 +1,26 @@
+// One-time migration of the existing site's public content. No credentials are exported.
+const fs = require('node:fs');
+const vm = require('node:vm');
+const source = fs.readFileSync('index.html', 'utf8');
+const block = source.match(/const DEFAULT = ([\s\S]*?);\s*let D =/);
+if (!block) throw new Error('Existing defaults not found');
+const data = vm.runInNewContext('(' + block[1] + ')', {}, { timeout: 1000 });
+delete data.password;
+data.therapists.forEach((t, i) => { t.id = 'therapist-' + i; });
+data.shop.name = "プラチナ（Platinum Men's Esthetic）";
+data.shop.webUrl = 'https://estama.jp/shop/35702/reserve/';
+data.shop.reception = '10:00〜24:00';
+data.shop.access = '鹿島パークホテルから徒歩3〜5分ほどの場所に複数の施術ルームをご用意しております。詳細はご予約時にショートメールでご案内します。';
+data.shop.parking = '';
+data.shop.payment = '現金のみ';
+data.reception = 'auto';
+data.courses = [90,120,150,180].map((minutes,i)=>({id:'course-'+i,minutes,price:20000+i*5000,popular:i===1}));
+data.pricing = {taxNote:'',extension:'15分 / 4,000円',nomination:'1,000円',special:'2,000円',costume:'ASK',cancel:'施術開始1時間前以降はコース料金の50%、ルームご入店後は全額。ご予約時間より10分以上ご連絡がない場合はキャンセル扱いとなります。'};
+data.banner = {active:false,type:'text',textMain:'',textSub:'',imgUrl:'',link:''};
+data.shiftSource = 'existing';
+data.shifts = [];
+data.version = 1;
+fs.mkdirSync('assets', {recursive:true});
+fs.writeFileSync('assets/default-data.json', JSON.stringify(data,null,2)+'\n');
+const config = {url:source.match(/const SUPABASE_URL\s*=\s*'([^']+)'/)[1],anonKey:source.match(/const SUPABASE_KEY\s*=\s*'([^']+)'/)[1],storeId:source.match(/const STORE_ID\s*=\s*'([^']+)'/)[1],cmsEnabled:false};
+fs.writeFileSync('assets/config.js', 'window.PLATINUM_CONFIG = '+JSON.stringify(config,null,2)+';\n');

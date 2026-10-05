@@ -1,0 +1,14 @@
+{
+  "name": "platinum-site",
+  "private": true,
+  "version": "1.0.0",
+  "engines": {"node": ">=24 <25"},
+  "scripts": {
+    "build:vercel": "node scripts/build-vercel.cjs",
+    "start": "node --env-file-if-exists=.env scripts/serve.cjs",
+    "preflight": "node --env-file-if-exists=.env scripts/preflight.cjs",
+    "dev": "node scripts/serve.cjs",
+    "test": "node --test tests/*.test.cjs",
+    "check": "node --check assets/cms.js && node --check assets/admin.js && node --check assets/site.js"
+  }
+}

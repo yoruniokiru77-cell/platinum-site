@@ -45,7 +45,7 @@ async function limitedText(response,max){
   try{for(;;){const {done,value}=await reader.read();if(done)break;size+=value.length;if(size>max)throw new Error('DIARY_TOO_LARGE');chunks.push(Buffer.from(value));}}finally{await reader.cancel();}
   return Buffer.concat(chunks).toString('utf8');
 }
-function createDiaryService({env=process.env,fetcher=fetch,now=Date.now,config=publicConfig()}={}){
+function createDiaryService({env=process.env,fetcher=fetch,now=Date.now,config=env.VERCEL?{url:'https://rzfprialypdoyklfwpyg.supabase.co',anonKey:env.SHIFT_PUBLIC_API_KEY}:publicConfig()}={}){
   let memory,inflight;
   async function db(path,options={}){
     const key=env.SUPABASE_SERVICE_ROLE_KEY||config.anonKey;

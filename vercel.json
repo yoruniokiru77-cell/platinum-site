@@ -3,7 +3,7 @@
   "buildCommand": "npm run build:vercel",
   "outputDirectory": "public",
   "functions": {"api/*.js": {"maxDuration": 60}},
-  "crons": [{"path": "/api/refresh-shifts", "schedule": "*/5 * * * *"}],
+  "crons": [{"path": "/api/refresh-shifts", "schedule": "*/5 * * * *"}, {"path": "/api/refresh-diary", "schedule": "*/15 * * * *"}],
   "routes": [
     {"src": "/(?:server|scripts|supabase|tests)/.*", "status": 404},
     {"handle": "filesystem"}

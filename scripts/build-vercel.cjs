@@ -4,9 +4,9 @@ const {publicConfig}=require('../server/config.cjs');
 const root=path.resolve(__dirname,'..'),out=path.join(root,'public');
 // Only allowlisted public assets are copied; server source, SQL and .env never become static files.
 fs.mkdirSync(out,{recursive:true});
-for(const name of ['index','admin','staff','schedule','profile','price','access','flow','news'])fs.copyFileSync(path.join(root,name+'.html'),path.join(out,name+'.html'));
+for(const name of ['index','admin','staff','schedule','profile','price','access','flow','news','diary'])fs.copyFileSync(path.join(root,name+'.html'),path.join(out,name+'.html'));
 fs.mkdirSync(path.join(out,'assets'),{recursive:true});
-for(const name of ['admin.js','admin.css','cms.js','site.js','site.css','default-data.json'])fs.copyFileSync(path.join(root,'assets',name),path.join(out,'assets',name));
+for(const name of ['admin.js','admin.css','cms.js','site.js','site.css','default-data.json','estama-map.json'])fs.copyFileSync(path.join(root,'assets',name),path.join(out,'assets',name));
 const config=publicConfig();
 // Enable cloud CMS on Vercel only; local demos keep their existing configuration.
 config.cmsEnabled=true;

@@ -1,7 +1,8 @@
 FROM node:24-alpine
 WORKDIR /app
 ENV NODE_ENV=production HOST=0.0.0.0 PORT=4173
-COPY --chown=node:node package.json ./
+COPY --chown=node:node package.json package-lock.json ./
+RUN npm ci --omit=dev && npm cache clean --force
 COPY --chown=node:node server ./server
 COPY --chown=node:node scripts/serve.cjs ./scripts/serve.cjs
 COPY --chown=node:node assets ./assets

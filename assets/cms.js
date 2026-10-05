@@ -31,6 +31,7 @@
       if (!String(t.name||'').trim()) errors.push('セラピスト名を入力してください。');
       if (ids.has(t.id)) errors.push('セラピストIDが重複しています。');
       ids.add(t.id);
+      if(t.estamaId&&!/^\d{1,20}$/.test(t.estamaId))errors.push('エステ魂のセラピストIDは数字で入力してください。');
       if(t.supabaseId){if(!/^[0-9a-f]{8}(?:-[0-9a-f]{4}){3}-[0-9a-f]{12}$/i.test(t.supabaseId)||externalIds.has(t.supabaseId.toLowerCase()))errors.push('連携用セラピストIDの形式・重複を確認してください。');externalIds.add(t.supabaseId.toLowerCase());}
       if (t.active && names.has(t.name)) errors.push('公開中のセラピスト名が重複しています。');
       if(t.active) names.add(t.name);

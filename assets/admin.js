@@ -3,6 +3,8 @@
 const C=window.Platinum, E=C.escape;
 const $=id=>document.getElementById(id);
 const menus=[['dashboard','◫','ダッシュボード'],['therapists','♙','セラピスト'],['shifts','▦','出勤・ご案内状況'],['news','≡','お知らせ'],['display','◇','バナー・ランキング'],['pricing','¥','料金システム'],['links','↗','関連リンク'],['shop','⚙','店舗設定']];
+menus.splice(3,0,['diary','▧','写メ日記']);
+let diaryMap={};
 let data, revision=0, dirty=false, formDirty=false, demo=false, section='dashboard', client, activeFilter='all', search='', shiftDate=C.today(), busy=false;
 const draftKey='platinum_admin_demo_v1';
 const field=(name,label,value='',type='text',extra='')=>`<label ${type==='textarea'?'class="full"':''}>${E(label)}${type==='textarea'?`<textarea name="${name}" ${extra}>${E(value)}</textarea>`:`<input name="${name}" type="${type}" value="${E(value)}" ${extra}>`}</label>`;
@@ -26,6 +28,7 @@ function ensure(d){
 }
 async function token(){const {data:s,error}=await client.auth.getSession();if(error||!s.session)throw new Error('再度ログインしてください。');return s.session.access_token;}
 async function enter(isDemo){
+  const mapResponse=await fetch('assets/estama-map.json');if(!mapResponse.ok)throw new Error('日記の連携設定を読み込めませんでした。');diaryMap=await mapResponse.json();
   demo=isDemo;
   if(demo){let saved;try{saved=JSON.parse(localStorage.getItem(draftKey));}catch{}data=ensure(saved||await C.defaults());revision=0;}
   else {
@@ -47,9 +50,10 @@ async function save(){
 async function run(task){if(busy)return;busy=true;['save','publish','confirmPublish'].forEach(id=>$(id).disabled=true);try{await task();}catch(e){toast(e.message,true);}finally{busy=false;['save','confirmPublish'].forEach(id=>$(id).disabled=false);$('publish').disabled=demo;}}
 function render(){
   $('adminNav').innerHTML=menus.map(([id,icon,label])=>`<button data-section="${id}" class="${id===section?'active':''}" ${id===section?'aria-current="page"':''}><span class="nav-icon">${icon}</span>${label}</button>`).join('');
-  const renders={dashboard,therapists,shifts,news,display,pricing,links,shop};
+  const renders={dashboard,therapists,shifts,news,display,pricing,links,shop,diary};
   $('main').innerHTML=renders[section]();
   if(section==='dashboard')loadDashboardShifts();
+  if(section==='diary')loadDiaryStatus();
   if(section==='shifts'&&data.shiftSource==='existing')loadExistingShifts();
   if(section==='pricing'&&data.notices?.length){const panel=document.createElement('section');panel.className='panel';panel.innerHTML='<div class="panel-head"><h2>注意事項</h2></div><div class="panel-body fields">'+data.notices.map((n,i)=>field('notice_'+i,n.title,n.body,'textarea')).join('')+'</div>';$('pricingForm').insertBefore(panel,$('pricingForm').lastElementChild);}
 }
@@ -74,6 +78,8 @@ function display(){const b=data.banner;return head('バナー・ランキング'
 function pricing(){return head('料金システム','コース・追加料金・キャンセル案内をまとめて管理します。',action('＋ コースを追加','new:courses','primary'))+`<section class="panel"><div class="table-wrap"><table><thead><tr><th>コース</th><th>料金</th><th>おすすめ</th><th></th></tr></thead><tbody>${data.courses.map(c=>`<tr><td>${c.minutes}分</td><td>${c.price.toLocaleString()}円</td><td>${c.popular?pill('おすすめ','gold'):'—'}</td><td>${action('編集','edit:courses:'+c.id,'')}${action('削除','remove:courses:'+c.id,'danger')}</td></tr>`).join('')}</tbody></table></div></section><form id="pricingForm"><section class="panel"><div class="panel-body fields">${field('taxNote','税表記（確認後に入力）',data.pricing.taxNote)}${field('extension','延長料金',data.pricing.extension)}${field('nomination','通常指名料',data.pricing.nomination)}${field('special','SPECIAL本指名料',data.pricing.special)}${field('costume','衣装チェンジ',data.pricing.costume)}${field('cancel','キャンセル条件',data.pricing.cancel,'textarea')}</div></section><button class="primary" type="submit">変更を下書きに反映</button></form>`;}
 function shop(){return head('店舗設定','連絡先・営業時間・アクセス・予約導線を管理します。')+`<form id="shopForm"><section class="panel"><div class="panel-head"><h2>基本情報</h2></div><div class="panel-body fields">${field('name','店舗名',data.shop.name,'text','required')}${field('phone','電話番号',data.shop.phone,'tel','required')}${field('hours','営業時間',data.shop.hours)}${field('reception','電話受付時間の案内',data.shop.reception)}${field('area','エリア',data.shop.area)}${field('off','定休日',data.shop.off)}${field('payment','お支払い方法',data.shop.payment)}${field('parking','駐車場の案内',data.shop.parking)}${field('access','アクセスの説明',data.shop.access,'textarea')}${select('receptionMode','電話受付の状態',data.reception,[['auto','自動（10:00〜24:00）'],['open','受付中'],['closed','受付終了']])}</div></section><section class="panel"><div class="panel-head"><h2>予約・外部リンク</h2></div><div class="panel-body fields">${field('webUrl','Web予約URL',data.shop.webUrl,'url','required')}${field('lineUrl','LINE予約URL（任意）',data.shop.lineUrl,'url')}${field('recruitUrl','求人ページURL（任意）',data.shop.recruitUrl,'url')}${field('snsUrl','店舗SNS URL（任意）',data.shop.snsUrl,'url')}</div></section><section class="panel"><div class="panel-head"><h2>トップページ</h2></div><div class="panel-body fields">${field('heroTitle','キャッチコピー',data.shop.heroTitle)}${field('heroText','紹介文',data.shop.heroText,'textarea')}</div></section><button class="primary" type="submit">変更を下書きに反映</button></form>`;}
 let editing;
+function diary(){return head('写メ日記','エステ魂の神栖／プレミアムから15分ごとに自動取得します。')+`<section class="panel"><div class="panel-body"><p>投稿・修正はエステ魂で行ってください。トップは最新5件、各プロフィールには本人の日記を表示します。HPで非公開のセラピストは日記も表示されません。</p><p><a href="https://estama.jp/shop/35702/bloglist/" target="_blank" rel="noopener">エステ魂の写メNoteを見る ↗</a> ／ <a href="diary.html" target="_blank" rel="noopener">HPの日記一覧を見る ↗</a></p><p id="diaryStatus" role="status">同期状況を確認しています…</p></div></section><section class="panel"><div class="panel-head"><h2>セラピストとの連携</h2></div>${data.therapists.map(t=>{const id=Object.hasOwn(t,'estamaId')?t.estamaId:diaryMap[t.id]?.id;return `<div class="row"><div class="row-info"><strong>${E(t.name)}</strong><small>${t.diaryDisabled?'日記を非表示':id?'エステ魂ID：'+E(id):'未連携（セラピスト編集でIDを設定）'}</small></div>${action('設定','edit:therapists:'+t.id)}</div>`;}).join('')}</section>`;}
+async function loadDiaryStatus(){try{const r=await fetch('/api/diary?limit=1',{cache:'no-store'}),value=await r.json();if(!r.ok||!value.ok)throw new Error();if($('diaryStatus'))$('diaryStatus').textContent='最終取得：'+new Date(value.updated_at).toLocaleString('ja-JP',{timeZone:'Asia/Tokyo'})+' ／ 公開対象 '+value.total+'件'+(value.stale?'（更新が遅れています）':'');}catch{if($('diaryStatus'))$('diaryStatus').textContent='日記の同期状況を取得できませんでした。';}}
 function flushForm(){
   if(!formDirty)return true;
   const form=document.querySelector('#shopForm,#pricingForm,#displayForm');
@@ -86,6 +92,7 @@ function edit(type,id){
   const item=id?data[type].find(x=>x.id===id):{id:crypto.randomUUID()};if(!item)return;
   editing={type,id,item:C.clone(item)};
   const t=editing.item;
+  if(type==='therapists'&&!Object.hasOwn(t,'estamaId'))t.estamaId=diaryMap[t.id]?.id||'';
   const labels={therapists:'セラピスト',shifts:'出勤',news:'お知らせ',courses:'コース',links:'関連リンク'};
   $('editorTitle').textContent=labels[type]+(id?'を編集':'を追加');$('editorError').textContent='';
   if(type==='therapists') $('editorFields').innerHTML=field('name','名前',t.name,'text','required maxlength="50"')+field('supabaseId','連携用セラピストID（任意）',t.supabaseId||'')+field('nameEn','ローマ字',t.nameEn)+field('age','年齢',t.age||'','number','min="18" max="100"')+field('height','身長（cm・任意）',t.height||'','number','min="100" max="220"')+field('comment','紹介文',t.comment,'textarea')+field('photo','メイン写真URL',t.photo)+field('photos','追加写真URL（1行1枚・最大5枚）',(t.photos||[]).filter(p=>p!==t.photo).join('\n'),'textarea')+'<label class="full">メイン写真を選択<input type="file" id="photoFile" accept="image/jpeg,image/png,image/webp"></label>'+check('active','公開する',t.active!==false)+check('isNew','新人（NEW）',t.isNew)+check('special','SPECIAL',t.special)+check('pickup','ピックアップ',t.pickup);
@@ -93,12 +100,13 @@ function edit(type,id){
   if(type==='news') $('editorFields').innerHTML=field('date','掲載日',(t.date||C.today()).replaceAll('.','-'),'date','required')+select('cat','カテゴリ',t.cat||'お知らせ',[['お知らせ','お知らせ'],['イベント','イベント'],['新人情報','新人情報']])+field('title','タイトル',t.title||'','text','required maxlength="120"')+field('body','本文',t.body||'','textarea','required')+check('published','公開対象にする',t.published!==false);
   if(type==='courses') $('editorFields').innerHTML=field('minutes','コース時間（分）',t.minutes||90,'number','min="1" max="600" required')+field('price','料金（円）',t.price??20000,'number','min="0" max="1000000" required')+check('popular','おすすめコース',t.popular);
   if(type==='links') $('editorFields').innerHTML=field('name','サイト名',t.name,'text','required')+field('url','URL',t.url,'url','required')+field('banner','バナー画像URL（任意）',t.banner,'url');
+  if(type==='therapists')$('editorFields').insertAdjacentHTML('beforeend',field('estamaId','エステ魂のセラピストID（写メ日記連携）',t.estamaId||'','text','inputmode="numeric" pattern="[0-9]{1,20}"')+check('diaryDisabled','このセラピストの写メ日記を非表示にする',t.diaryDisabled)+'<p class="help full">神栖／プレミアムのセラピストページURLの末尾の数字を入力します。例：/cast/630410/ → 630410。空欄は未連携です。</p>');
   $('editor').showModal();
 }
 function applyEdit(event){event.preventDefault();const f=new FormData(event.target), {type,id,item}=editing;const next={...item};
   for(const [k,v] of f)if(typeof v==='string')next[k]=v.trim();
   const checks={therapists:['active','isNew','special','pickup'],shifts:['published'],news:['published'],courses:['popular'],links:[]}[type];checks.forEach(k=>next[k]=f.has(k));
-  if(type==='therapists'){next.age=Number(next.age)||0;next.height=Number(next.height)||0;next.photos=[next.photo,...next.photos.split('\n').map(v=>v.trim())].filter(Boolean);next.photos=[...new Set(next.photos)].slice(0,6);}
+  if(type==='therapists'){next.diaryDisabled=f.has('diaryDisabled');next.age=Number(next.age)||0;next.height=Number(next.height)||0;next.photos=[next.photo,...next.photos.split('\n').map(v=>v.trim())].filter(Boolean);next.photos=[...new Set(next.photos)].slice(0,6);const id=next.estamaId;if(id&&data.therapists.some(t=>t.id!==next.id&&(Object.hasOwn(t,'estamaId')?t.estamaId:diaryMap[t.id]?.id)===id)){$('editorError').textContent='このエステ魂IDは他のセラピストに設定されています。';return;}}
   if(type==='courses'){next.minutes=Number(next.minutes);next.price=Number(next.price);}
   const proposed=C.clone(data);if(id)proposed[type][proposed[type].findIndex(x=>x.id===id)]=next;else proposed[type].push(next);
   const errors=C.validate(proposed);if(errors.length){$('editorError').textContent=errors.join('\n');return;}

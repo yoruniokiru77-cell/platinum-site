@@ -10,6 +10,7 @@
     const phone='tel:'+s.phone.replace(/[^0-9+]/g,'');
     const web=C.url(s.webUrl);
     const menus=[['index.html','TOP','トップ'],['staff.html','THERAPIST','セラピスト'],['schedule.html','SCHEDULE','出勤情報'],['price.html','SYSTEM','料金システム'],['flow.html','RESERVATION','予約方法'],['access.html','ACCESS','アクセス']];
+    menus.splice(3,0,['diary.html','PHOTO DIARY','写メ日記']);
     const section=(en,ja,body,cls='')=>`<section class="section ${cls}"><div class="wrap">${en||ja?`<div class="section-head"><div class="en">${en}</div><h2>${ja}</h2></div>`:''}${body}</div></section>`;
     const button=(url,text,cls='')=>`<a class="button ${cls}" href="${E(url)}">${text}</a>`;
     const more=(path,text)=>`<div class="section-more">${button(link(path),text+'　→')}</div>`;
@@ -34,6 +35,7 @@
       const ranks=(d.ranking||[]).map((id,i)=>({t:d.therapists.find(t=>t.id===id),rank:i+1})).filter(r=>r.t);
       body=`<section class="hero"><div class="wrap hero-content"><div class="eyebrow">PLATINUM MEN'S ESTHETIC · KAMISU</div><h1>${E(s.heroTitle||'心ほどける、特別なひととき。')}</h1><p>${E(s.heroText||'神栖のプライベート空間で、あなたのためのリラクゼーションを。')}</p><div class="hero-actions">${button(link('schedule.html'),'本日の出勤を見る','dark')}${button(web,'Webで予約する')}</div><div class="hero-foot"><span>${E(s.area)}</span><span>OPEN ${E(s.hours)}</span></div></div></section>${banner()}`;
       body+=section('INFORMATION','最新情報',news(d.news.slice(0,3))+more('news.html','お知らせ一覧'));
+      body+=section('PHOTO DIARY','写メ日記',`<div id="diaryEntries" aria-live="polite">${empty('日記を読み込んでいます…')}</div>${more('diary.html','写メ日記をもっと見る')}`);
       body+=section("TODAY'S SCHEDULE",'本日の出勤',`<div id="todaySchedule">${empty('出勤情報を読み込んでいます…')}</div>${more('schedule.html','出勤スケジュールを見る')}`,'alt');
       body+=`<div class="wrap">${reserveStrip()}</div>`;
       if(ranks.length)body+=section('RANKING','ランキング',grid(ranks.map(r=>card(r.t,null,r.rank))));
@@ -46,6 +48,7 @@
     if(page==='staff'){const filter=new URLSearchParams(location.search).get('filter')||'all';body=title('THERAPIST','セラピスト一覧')+section('','',`<div class="filters">${[['all','すべて'],['new','新人'],['special','SPECIAL']].map(([v,label])=>`<button data-filter="${v}" class="${v===filter?'active':''}">${label}</button>`).join('')}</div><div id="staffCards"></div>`);}
     if(page==='schedule')body=title('SCHEDULE','出勤スケジュール')+section('','',`<div class="date-tabs">${C.dates().map((date,i)=>`<button data-date="${date}" class="${i===0?'active':''}">${i===0?'本日<br>':''}${fmtDate(date)}</button>`).join('')}</div><div id="scheduleCards"></div><p class="muted">出勤予定は変更になる場合があります。予約の空き状況はお問い合わせください。</p>`);
     if(page==='news')body=title('INFORMATION','お知らせ')+section('','',news(d.news));
+    if(page==='diary')body=title('PHOTO DIARY','写メ日記')+section('','',`<div class="diary-toolbar"><label for="diaryTherapist">セラピスト</label><select id="diaryTherapist"><option value="">すべて</option>${d.therapists.map(t=>`<option value="${E(t.id)}">${E(t.name)}</option>`).join('')}</select></div><div id="diaryEntries" aria-live="polite">${empty('日記を読み込んでいます…')}</div>`);
     if(page==='price')body=title('SYSTEM','料金システム')+section('PLATINUM COURSE','コース料金',courses()+`<div class="options">${[['延長',d.pricing.extension],['通常指名料',d.pricing.nomination],['SPECIAL本指名料',d.pricing.special],['衣装チェンジ',d.pricing.costume]].map(([k,v])=>`<div class="option"><span>${E(k)}</span><span>${E(v)}</span></div>`).join('')}</div><p class="price-notes">2回目以降は自動的に本指名扱いになります。<br>出張サービスは行っておりません。</p>`,'dark')+section('GUIDANCE','ご利用にあたって',`<div class="terms"><h3>キャンセルについて</h3><p>${E(d.pricing.cancel)}</p><h3>サービスについて</h3><p>当サロンは風俗店ではございません。性風俗的サービスは一切行っておりません。<br>コース時間はご予約時間から退室までで、シャワーもお時間に含まれます。</p></div>`);
     if(page==='price'&&d.notices?.length)body+=section('NOTICE','注意事項',`<div class="terms">${d.notices.map(n=>`<h3>${E(n.title)}</h3><p>${E(n.body)}</p>`).join('')}</div>`);
     if(page==='access')body=title('ACCESS','アクセス')+section('SHOP INFORMATION','店舗のご案内',`<div class="shop-grid"><dl class="shop-dl">${[['店舗名',s.name],['エリア',s.area],['営業時間',s.hours],['電話受付',s.reception],['定休日',s.off],['お支払い',s.payment],...(s.parking?[['駐車場',s.parking]]:[])].map(([k,v])=>`<div><dt>${k}</dt><dd>${E(v)}</dd></div>`).join('')}</dl><div><iframe class="access-map" title="神栖市大野原の周辺地図" src="https://maps.google.com/maps?q=${encodeURIComponent('茨城県神栖市大野原')}&output=embed&hl=ja&z=15" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe><p class="muted">地図は周辺エリアです。施術ルームの場所は個別にご案内します。</p><p class="access-note">${E(s.access)}</p></div></div>`);
@@ -71,6 +74,37 @@
     async function showSchedule(date,target){const seq=++scheduleRequest;target.innerHTML=empty('出勤情報を読み込んでいます…');try{const rows=await C.shifts(d,date);if(seq!==scheduleRequest)return;const known=rows.filter(s=>d.therapists.some(t=>t.id===s.therapistId));target.innerHTML=known.length?grid(known.map(s=>card(d.therapists.find(t=>t.id===s.therapistId),s))):empty(rows.length?'出勤情報はお電話でご確認ください。':`${E(fmtDate(date))}の出勤はまだ登録されていません。最新情報はお電話でご確認ください。`);}catch{if(seq===scheduleRequest)target.innerHTML=empty('出勤情報を取得できませんでした。お電話でご確認ください。');}}
     if(page==='home')showSchedule(C.today(),$('todaySchedule'));
     if(page==='schedule'){showSchedule(C.today(),$('scheduleCards'));document.querySelectorAll('[data-date]').forEach(b=>b.onclick=()=>{document.querySelectorAll('[data-date]').forEach(x=>x.classList.toggle('active',x===b));showSchedule(b.dataset.date,$('scheduleCards'));});}
+    if(profile){$('main').insertAdjacentHTML('beforeend',section('PHOTO DIARY',E(profile.name)+'の写メ日記','<div id="diaryEntries" aria-live="polite"></div>'+more('diary.html?therapist='+encodeURIComponent(profile.id),'日記をすべて見る')));}
+    if($('diaryEntries')){
+      let sequence=0;
+      const params=new URLSearchParams(location.search);
+      let selected=profile?.id||params.get('therapist')||'';
+      if(selected&&!d.therapists.some(t=>t.id===selected))selected='';
+      if($('diaryTherapist'))$('diaryTherapist').value=selected;
+      const dateTime=value=>new Intl.DateTimeFormat('ja-JP',{dateStyle:'medium',timeStyle:'short',timeZone:'Asia/Tokyo'}).format(new Date(value));
+      async function showDiaries(p=1,id=''){
+        const current=++sequence,target=$('diaryEntries');target.innerHTML=empty('日記を読み込んでいます…');
+        try{
+          const q=new URLSearchParams({page:String(p),limit:page==='home'?'5':profile?'6':'12'});
+          if(selected)q.set('therapist',selected);if(id)q.set('id',id);
+          const response=await fetch('/api/diary?'+q,{cache:'no-store',signal:AbortSignal.timeout(20000)}),result=await response.json();
+          if(!response.ok||!result.ok||!Array.isArray(result.entries))throw new Error('DIARY_FETCH_FAILED');
+          if(current!==sequence)return;
+          const cards=result.entries.filter(r=>d.therapists.some(t=>t.id===r.therapist_id)).map(r=>{
+            const detail=link('diary.html?id='+encodeURIComponent(r.id)),pics=r.photos.filter(x=>C.url(x));
+            if(id)return `<article class="diary-article"><div class="diary-byline"><a href="${E(link('profile.html?id='+encodeURIComponent(r.therapist_id)))}">${E(r.therapist_name)}</a><time datetime="${E(r.posted_at)}">${E(dateTime(r.posted_at))}</time></div><h2>${E(r.title)}</h2><div class="diary-photos">${pics.map(src=>`<img src="${E(src)}" alt="${E(r.title)}" loading="lazy" referrerpolicy="no-referrer">`).join('')}</div><p class="diary-body">${E(r.body)}</p><a class="diary-source" href="${E(r.source_url)}" target="_blank" rel="noopener noreferrer">エステ魂で元の日記を見る ↗</a></article>`;
+            return `<article class="diary-card"><a href="${E(detail)}" class="diary-cover">${pics[0]?`<img src="${E(pics[0])}" alt="${E(r.title)}" loading="lazy" referrerpolicy="no-referrer">`:'<span>Platinum<small>PHOTO DIARY</small></span>'}</a><div class="diary-card-content"><time datetime="${E(r.posted_at)}">${E(dateTime(r.posted_at))}</time><h3><a href="${E(detail)}">${E(r.title)}</a></h3><p>${E(r.body.slice(0,85))}${r.body.length>85?'…':''}</p><a class="diary-author" href="${E(link('profile.html?id='+encodeURIComponent(r.therapist_id)))}">${E(r.therapist_name)}　→</a></div></article>`;
+          });
+          target.innerHTML=(result.stale?'<p class="muted">更新が遅れています。前回取得した日記を表示しています。</p>':'')+(cards.length?(id?cards.join(''):`<div class="diary-grid ${page==='home'?'diary-latest':''}">${cards.join('')}</div>`):empty(id?'この日記は現在公開されていません。':'公開中の写メ日記はまだありません。'));
+          if(page==='diary'){
+            if(id)target.insertAdjacentHTML('beforeend',more('diary.html','日記一覧へ'));
+            else {const pages=Math.ceil(result.total/result.limit);target.insertAdjacentHTML('beforeend',`<div class="diary-pagination">${p>1?'<button class="button" data-diary-page="'+(p-1)+'">前へ</button>':''}<span>${result.total}件${pages?' ／ '+p+' / '+pages+'ページ':''}</span>${p<pages?'<button class="button" data-diary-page="'+(p+1)+'">次へ</button>':''}</div>`);target.querySelectorAll('[data-diary-page]').forEach(b=>b.onclick=()=>{showDiaries(Number(b.dataset.diaryPage));target.scrollIntoView({block:'start'});});}
+          }
+        }catch{if(current===sequence)target.innerHTML=empty('日記を取得できませんでした。時間をおいて再読み込みしてください。')+'<div class="section-more"><button class="button" id="retryDiary">再読み込み</button></div>';if($('retryDiary'))$('retryDiary').onclick=()=>showDiaries(p,id);}
+      }
+      showDiaries(1,page==='diary'?params.get('id')||'':'');
+      if($('diaryTherapist'))$('diaryTherapist').onchange=()=>{selected=$('diaryTherapist').value;const query=selected?'?therapist='+encodeURIComponent(selected):'';history.replaceState(null,'','diary.html'+query);showDiaries();};
+    }
     if(profile){const dates=C.dates();try{const rows=await C.shifts(d,dates[0],dates[6]);$('profileWeek').innerHTML='<h3>今週の出勤</h3><div class="week-list">'+dates.map(date=>{const rowsForDay=rows.filter(s=>s.therapistId===profile.id&&s.date===date);return `<div class="week-day">${fmtDate(date)}<strong>${rowsForDay.map(s=>E(s.start_time.slice(0,5))+'<br>〜'+E(s.end_time.slice(0,5))).join('<br>')||'未定'}</strong></div>`;}).join('')+'</div>';}catch{$('profileWeek').innerHTML=empty('出勤情報を取得できませんでした。');}}
   }catch(error){root.innerHTML='<div class="no-script"><h1>読み込みに失敗しました</h1><p>時間をおいて再読み込みしてください。</p><a href="tel:07090949709">電話でお問い合わせ</a></div>';console.error(error);}
 })();

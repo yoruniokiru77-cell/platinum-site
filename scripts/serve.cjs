@@ -8,6 +8,7 @@ if(process.env.NODE_ENV==='production'){
   if(errors.length){console.error('Production configuration incomplete: '+errors.join(', '));process.exit(1);}
 }
 const shifts=createService();
+const diary=require('../server/diary.cjs').createDiaryService();
 shifts.start();
 const root=path.resolve(__dirname,'..');
 const types={'.html':'text/html; charset=utf-8','.js':'text/javascript; charset=utf-8','.css':'text/css; charset=utf-8','.json':'application/json; charset=utf-8','.svg':'image/svg+xml'};
@@ -20,6 +21,7 @@ const server=http.createServer((req,res)=>{
   if(relative==='/healthz'){res.writeHead(200,{'Content-Type':'application/json','Cache-Control':'no-store'}).end('{"ok":true}');return;}
   if(relative==='/admin.html')res.setHeader('X-Robots-Tag','noindex, nofollow');
   if(relative==='/api/shifts'){void shifts.handle(req,res);return;}
+  if(relative==='/api/diary'){void diary.handle(req,res);return;}
   if(!/^\/(?:[^/]+\.html|assets\/[^/]+|tests\/responsive\.html)?$/.test(relative)||process.env.NODE_ENV==='production'&&relative.startsWith('/tests/')){res.writeHead(404).end();return;}
   const file=path.resolve(root,'.'+(relative==='/'?'/index.html':relative));
   if(!file.startsWith(root+path.sep)||relative.split('/').some(x=>x.startsWith('.'))||!allowed.has(path.extname(file))){res.writeHead(403).end();return;}

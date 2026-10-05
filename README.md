@@ -21,7 +21,7 @@ Node.js 24系で `npm run dev`。公開ページは `http://127.0.0.1:4173/`、�
 
 ## 本番接続（初回のみ）
 
-`assets/config.js` の `cmsEnabled` は true です。2026-10-05にHP用テーブル・関数と指定管理者の店舗権限を本番Supabaseへ適用しました。初回の下書き保存・公開が完了するまでは、公開ページに読み込みエラーが表示されます。
+`assets/config.js` の `cmsEnabled` は true です。2026-10-05にHP用テーブル・関数と指定管理者の店舗権限を本番Supabaseへ適用しました。指定管理者のログイン・下書き保存・初回公開も確認済みです。公開設定の21名とお知らせ1件が公開され、非公開設定の19名は在籍ページに表示されません。
 
 1. 接続先Supabaseプロジェクトを確認します。URL、公開anon key、店舗IDは `assets/config.js`。service-roleキーを置かないでください。
 2. Supabase SQL Editorで `supabase/migrations/20261004_platinum_cms.sql` を実行します。既存 `shifts` とその権限は変更しません。
@@ -83,7 +83,7 @@ Vercelでは `api/refresh-shifts.js` をCronから5分ごとに実行し、公�
 
 ## 本番移行の手順・現在の状態（2026-10-05確認）
 
-2026-10-05に3つの移行SQLを本番Supabaseへ適用済みです。新規管理者アカウントを確認し、神栖／PremiumのHP管理権限を登録しました。公開APIは実データ14件を取得でき、匿名ユーザーの下書き／管理者テーブル参照は拒否されました。公開先はGitHub → Vercel。Vercelへのデプロイ、初回コンテンツ公開、永続キャッシュ更新は未完了です。ローカル `.env` には既存プロジェクトの公開anonキーと確認済みの `calendar` 設定を反映済みです。`.env` はGit・Dockerイメージへ含めません。
+2026-10-05に3つの移行SQLを本番Supabaseへ適用済みです。新規管理者アカウントを確認し、神栖／PremiumのHP管理権限を登録しました。公開APIは実データ14件を取得でき、匿名ユーザーの下書き／管理者テーブル参照は拒否されました。公開先はGitHub → Vercel。初回コンテンツ公開は完了しています。Vercelの移行用Previewはビルド成功。公開先は既存の `platinum-site`（`platinum-site-theta.vercel.app`）を使用し、必要な環境変数5項目をProduction限定で登録しました。本番反映と永続キャッシュ更新は未完了です。ローカル `.env` には既存プロジェクトの公開anonキーと確認済みの `calendar` 設定を反映済みです。`.env` はGit・Dockerイメージへ含めません。
 
 1. 既存SupabaseのSQL Editorで `20261004_platinum_cms.sql` → `20261005_public_shifts.sql` の順に適用します。対象は `rzfprialypdoyklfwpyg`。新規HP用テーブル／関数のみを追加します。
 2. 管理者として利用するAuthユーザーを確定します。最初のSQL末尾の登録例に実際のUUIDを指定し、対象店舗の `platinum_admins` に追加します。メールアドレスやパスワードはコードに書きません。
@@ -101,7 +101,7 @@ Docker対応ホストでは `docker build -t platinum-site .` で作成し、環
 
 ## 採用する公開構成：GitHub → Vercel
 
-GitHubの接続済みリポジトリは `yoruniokiru77-cell/platinum-site` です。Vercelは新規プロジェクトとしてインポートします。店舗HPは商用用途のためProプランが必要です（[Hobbyの利用条件](https://vercel.com/docs/plans/hobby)）。5分ごとのCronもPro対象です（[Cron制限](https://vercel.com/docs/cron-jobs/usage-and-pricing)）。この作業では有料プランの契約は行っていません。
+GitHubの接続済みリポジトリは `yoruniokiru77-cell/platinum-site` です。Vercelの既存プロジェクト `sakabas-projects/platinum-site` を使用します（ユーザー選択済み）。同じリポジトリの `platinum-site-wny4` は今回の公開先ではありません。店舗HPは商用用途のためProプランが必要です（[Hobbyの利用条件](https://vercel.com/docs/plans/hobby)）。5分ごとのCronもPro対象です（[Cron制限](https://vercel.com/docs/cron-jobs/usage-and-pricing)）。この作業では有料プランの契約は行っていません。
 
 1. Supabaseへ上記2つのSQLに加えて `supabase/migrations/20261006_shift_cache.sql` を適用します。永続キャッシュは匿名・管理画面ユーザーから読めず、Vercelサーバーのみ読み書きします。
 2. SupabaseのAuthentication画面で新しい管理者ユーザーを作成します。メールアドレスとパスワードは所有者が指定し、パスワードはGit・チャットに記載しません。作成後のユーザーUUIDを最初のSQL末尾の登録例に指定して店舗管理者を登録します。
@@ -123,3 +123,5 @@ GitHubの接続済みリポジトリは `yoruniokiru77-cell/platinum-site` で�
 本番Cronは今日から31営業日分を先読みします。キャッシュ範囲外の指定も最大31日間までHPサーバーから直接取得できますが、その場合は定期先読み対象ではありません。上流APIが失敗すると失敗状態を永続保存します。キャッシュ保存先自体が停止した場合は503、更新が途絶えた場合も10分で503となり、古い結果を無期限に成功表示しません。再デプロイや別インスタンスでも取得結果は維持されます。
 
 GitHubへのPush・Vercelの作成／デプロイ・SupabaseへのSQL適用・管理者作成は、実行結果を確認するまで完了扱いにしません。SQL適用と公開API／匿名アクセス制限は確認済みです。Vercel上でのCron・HP管理画面ログイン・公開操作の検証は未完了です。
+
+本番追跡ブランチは、ユーザー承認により codex/vercel-launch を使用します。このブランチへのPushが platinum-site の本番デプロイを実行します。

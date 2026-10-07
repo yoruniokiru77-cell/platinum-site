@@ -10,6 +10,15 @@
   }
   const today = () => new Date(Date.now() + 6 * 3600000).toISOString().slice(0, 10);
   const dates = (count = 7) => Array.from({length:count}, (_,i) => new Date(Date.now()+6*3600000+i*86400000).toISOString().slice(0,10));
+  function bannerSlides(d){
+    const b=d.banner||{};
+    if(Array.isArray(b.slides))return b.slides.filter(s=>s&&typeof s==='object').slice(0,5);
+    const slides=[{active:true,title:d.shop.heroTitle||'心ほどける、特別なひととき。',text:d.shop.heroText||'神栖のプライベート空間で、あなたのためのリラクゼーションを。',image:'',link:'',destination:'schedule',label:'本日の出勤を見る'},
+      {active:true,title:'あなたに合うセラピストを。',text:'プロフィールを見ながら、次のひとときをお選びください。',image:'',link:'',destination:'staff',label:'セラピストを見る'},
+      {active:true,title:'セラピストの日常を、少しだけ。',text:'写真と言葉でお届けする、プラチナの写メ日記。',image:'',link:'',destination:'diary',label:'写メ日記を読む'}];
+    if(b.active)slides.unshift({active:true,title:b.textMain||'店舗からのお知らせ',text:b.textSub||'',image:b.type==='image'?b.imgUrl||'':'',link:b.link||'',destination:'',label:'詳しく見る'});
+    return slides;
+  }
   function publicData(input) {
     const d = clone(input);
     delete d.password;
@@ -50,6 +59,10 @@
     });
     if(d.banner.active && d.banner.type==='image' && !url(d.banner.imgUrl,true)) errors.push('バナー画像を設定してください。');
     if(d.banner.link && !url(d.banner.link)) errors.push('バナーのリンクURLを確認してください。');
+    if(d.banner.slides){
+      if(!Array.isArray(d.banner.slides)||d.banner.slides.length>5)errors.push('スライダーは最大5枚です。');
+      else d.banner.slides.forEach(b=>{if(!b||typeof b!=='object'){errors.push('バナーのデータ形式が正しくありません。');return;}if(b.active&&!String(b.title||'').trim())errors.push('バナーのタイトルを入力してください。');if(b.image&&!url(b.image,true))errors.push('バナー画像URLを確認してください。');if(b.link&&!url(b.link))errors.push('バナーのリンクURLを確認してください。');if(b.destination&&!['schedule','staff','diary','price','flow','access'].includes(b.destination))errors.push('バナーのリンク先を確認してください。');});
+    }
     (d.links||[]).forEach(l=>{if(!url(l.url)||l.banner&&!url(l.banner,true))errors.push('関連リンクのURLを確認してください。');});
     if (JSON.stringify(d).length > 6000000) errors.push('画像を含むデータが大きすぎます。画像枚数を減らしてください。');
     return [...new Set(errors)];
@@ -90,5 +103,5 @@
       return {...s,therapistId:exact?.id||(byName.length===1?byName[0].id:undefined)};
     });
   }
-  root.Platinum={config,clone,escape,url,today,dates,publicData,validate,request,defaults,loadPublic,shifts};
+  root.Platinum={config,clone,escape,url,today,dates,publicData,validate,request,defaults,loadPublic,shifts,bannerSlides};
 })(typeof window === 'undefined' ? globalThis : window);

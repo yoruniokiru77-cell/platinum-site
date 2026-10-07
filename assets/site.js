@@ -5,6 +5,14 @@
     const loaded=await C.loadPublic(),d=loaded.data,s=d.shop;
     d.news.sort((a,b)=>b.date.replaceAll('.','-').localeCompare(a.date.replaceAll('.','-')));
     const page=document.body.dataset.page||'home';
+    const canonical=document.querySelector('link[rel="canonical"]');
+    const seoOrigin=C.config.siteUrl||(canonical?new URL(canonical.href).origin:location.origin);
+    function updateSEO(title,description,path){
+      document.title=title;const desc=document.querySelector('meta[name="description"]');if(desc)desc.content=description;
+      if(canonical)canonical.href=seoOrigin+path;
+      for(const [key,value]of [['og:title',title],['og:description',description],['og:url',seoOrigin+path]]){const el=document.querySelector('meta[property="'+key+'"]');if(el)el.content=value;}
+    }
+    if(loaded.preview){const robots=document.createElement('meta');robots.name='robots';robots.content='noindex,nofollow';document.head.append(robots);}
     const suffix=loaded.preview?'preview=1':'';
     const link=(path)=>path+(suffix?(path.includes('?')?'&':'?')+suffix:'');
     const phone='tel:'+s.phone.replace(/[^0-9+]/g,'');
@@ -30,19 +38,26 @@
     const steps=()=>`<div class="flow-grid"><article class="flow-card"><span>01</span><h3>セラピスト・コースを選ぶ</h3><p>プロフィールと出勤情報をご覧になり、ご希望の日時・コースをお選びください。</p></article><article class="flow-card"><span>02</span><h3>電話・Webから予約</h3><p>ご希望の内容をお伝えください。予約の確定状況は店舗または予約サービスの案内をご確認ください。</p></article><article class="flow-card"><span>03</span><h3>ご案内のルームへ</h3><p>詳細なアクセスはショートメールにてご案内します。お支払いは${E(s.payment)}です。</p></article></div>`;
     function banner(){const b=d.banner;if(!b?.active)return '';const content=b.type==='image'?`<img src="${E(C.url(b.imgUrl,true))}" alt="${E(b.textMain||'イベントのお知らせ')}">`:`<strong>${E(b.textMain)}</strong><p>${E(b.textSub)}</p>`;return b.link&&C.url(b.link)?`<a class="event-banner ${b.type==='image'?'has-image':''}" href="${E(C.url(b.link))}">${content}</a>`:`<div class="event-banner ${b.type==='image'?'has-image':''}">${content}</div>`;}
     let body='';
+    function bannerSlider(){
+      if(d.banner?.sliderActive===false)return '';
+      const slides=C.bannerSlides(d).filter(b=>b.active!==false);
+      if(!slides.length)return '';
+      return `<section class="banner-slider" id="bannerSlider" aria-roledescription="カルーセル" aria-label="店舗のご案内" tabindex="0"><div class="banner-slides">${slides.map((b,i)=>{const image=C.url(b.image,true),href=C.url(b.link)||(['schedule','staff','diary','price','flow','access'].includes(b.destination)?link(b.destination+'.html'):'');return `<article class="banner-slide banner-theme-${i%3} ${image?'banner-image-slide':''}" ${i?'hidden':''} role="group" aria-roledescription="スライド" aria-label="${i+1} / ${slides.length}">${image?`<${href?'a':'div'} ${href?`href="${E(href)}"`:''} class="banner-image-link"><img src="${E(image)}" alt="${E(b.title)}" ${i?'loading="lazy"':'fetchpriority="high"'} width="1440" height="560"></${href?'a':'div'}>`:`<div class="wrap banner-copy"><p class="eyebrow">PLATINUM · KAMISU</p><h2>${E(b.title)}</h2><p>${E(b.text)}</p>${href?button(href,E(b.label||'詳しく見る'),'dark'):''}</div>`}</article>`;}).join('')}</div>${slides.length>1?`<div class="banner-controls"><button type="button" id="bannerPrev" aria-label="前のバナー">←</button><div class="banner-dots">${slides.map((b,i)=>`<button type="button" data-banner-index="${i}" aria-label="バナー${i+1}：${E(b.title)}" aria-current="${i===0?'true':'false'}"></button>`).join('')}</div><button type="button" id="bannerNext" aria-label="次のバナー">→</button><button type="button" id="bannerPause" aria-label="バナーの自動切替を停止">一時停止</button></div>`:''}</section>`;
+    }
     if(page==='home'){
       const picks=d.therapists.filter(t=>t.pickup??d.pickup?.idxList?.includes(t.legacyIndex));
       const ranks=(d.ranking||[]).map((id,i)=>({t:d.therapists.find(t=>t.id===id),rank:i+1})).filter(r=>r.t);
-      body=`<section class="hero"><div class="wrap hero-content"><div class="eyebrow">PLATINUM MEN'S ESTHETIC · KAMISU</div><h1>${E(s.heroTitle||'心ほどける、特別なひととき。')}</h1><p>${E(s.heroText||'神栖のプライベート空間で、あなたのためのリラクゼーションを。')}</p><div class="hero-actions">${button(link('schedule.html'),'本日の出勤を見る','dark')}${button(web,'Webで予約する')}</div><div class="hero-foot"><span>${E(s.area)}</span><span>OPEN ${E(s.hours)}</span></div></div></section>${banner()}`;
-      body+=section('INFORMATION','最新情報',news(d.news.slice(0,3))+more('news.html','お知らせ一覧'));
-      body+=section('PHOTO DIARY','写メ日記',`<div id="diaryEntries" aria-live="polite">${empty('日記を読み込んでいます…')}</div>${more('diary.html','写メ日記をもっと見る')}`);
+      body=`<div class="home-heading wrap"><h1>神栖のメンズエステ｜プラチナ</h1><p>茨城県神栖市のプライベートリラクゼーション</p></div>`+bannerSlider();
       body+=section("TODAY'S SCHEDULE",'本日の出勤',`<div id="todaySchedule">${empty('出勤情報を読み込んでいます…')}</div>${more('schedule.html','出勤スケジュールを見る')}`,'alt');
+      body+=section('PICK UP','ピックアップ',picks.length?grid(picks.slice(0,8).map(t=>card(t))):empty('ピックアップはただいま準備中です。'));
+      body+=section('PHOTO DIARY','写メ日記',`<div id="diaryEntries" aria-live="polite">${empty('日記を読み込んでいます…')}</div>${more('diary.html','写メ日記をもっと見る')}`,'alt');
+      body+=section('INFORMATION','最新情報',news(d.news.slice(0,3))+more('news.html','お知らせ一覧'));
       body+=`<div class="wrap">${reserveStrip()}</div>`;
       if(ranks.length)body+=section('RANKING','ランキング',grid(ranks.map(r=>card(r.t,null,r.rank))));
       if(d.therapists.some(t=>t.isNew))body+=section('NEW FACE','新人セラピスト',grid(d.therapists.filter(t=>t.isNew).slice(-4).reverse().map(t=>card(t)))+more('staff.html?filter=new','新人一覧を見る'));
-      if(picks.length)body+=section('PICK UP','注目のセラピスト',grid(picks.slice(0,8).map(t=>card(t))),'alt');
       body+=section('SYSTEM','料金システム',courses()+more('price.html','料金・ご利用案内'),'dark');
       body+=section('RESERVATION','ご利用の流れ',steps()+more('flow.html','予約方法を見る'));
+      body+=section('ABOUT PLATINUM','神栖・千葉方面でメンエスをお探しの方へ',`<div class="terms"><p>プラチナは、茨城県神栖市のメンズエステ（メンエス）です。個室のプライベート空間で、オイルを使ったリラクゼーションをご案内しています。</p><p>神栖でメンエスをお探しの方はもちろん、千葉県方面からご来店を検討されている方も、セラピストのプロフィール・本日の出勤・料金をご覧のうえご予約ください。店舗の所在地は茨城県神栖市です。</p><p>詳しいアクセスはご予約時にご案内します。</p></div>`+more('access.html','店舗情報・アクセスを見る'));
       if(s.recruitUrl&&C.url(s.recruitUrl))body+=section('RECRUIT','セラピスト募集',`<div class="section-more">${button(C.url(s.recruitUrl),'求人情報を見る　→')}</div>`,'alt');
     }
     if(page==='staff'){const filter=new URLSearchParams(location.search).get('filter')||'all';body=title('THERAPIST','セラピスト一覧')+section('','',`<div class="filters">${[['all','すべて'],['new','新人'],['special','SPECIAL']].map(([v,label])=>`<button data-filter="${v}" class="${v===filter?'active':''}">${label}</button>`).join('')}</div><div id="staffCards"></div>`);}
@@ -62,6 +77,19 @@
     root.innerHTML=`${loaded.preview?'<div class="preview-bar">下書きプレビュー — この画面の変更は公開されていません</div>':''}${loaded.warning?`<div class="site-warning">${E(loaded.warning)}</div>`:''}<a class="skip-link" href="#main">本文へ移動</a><header class="site-header"><div class="wrap header-top"><a class="brand" href="${link('index.html')}"><span class="crest">P</span><span>PLATINUM<small>神栖 メンズエステ プラチナ</small></span></a><div class="header-contact">営業時間 ${E(s.hours)}<a href="${E(phone)}">${E(s.phone)}</a>電話受付 ${E(s.reception)}</div><button class="mobile-toggle" id="menuToggle" aria-expanded="false" aria-controls="siteNav">メニュー</button></div><nav class="site-nav" id="siteNav" aria-label="メインメニュー">${menus.map(([p,en,ja])=>`<a href="${link(p)}" class="${(page==='home'?'index':page)===p.replace('.html','')?'active':''}"><span>${en}</span>${ja}</a>`).join('')}</nav></header><main id="main">${body}</main>${page!=='home'?`<div class="wrap">${reserveStrip()}</div>`:''}${page==='home'&&d.links?.length?section('LINKS','関連リンク',`<div class="link-grid">${d.links.filter(l=>C.url(l.url)).map(l=>`<a href="${E(C.url(l.url))}" target="_blank" rel="noopener">${l.banner&&C.url(l.banner,true)?`<img src="${E(C.url(l.banner,true))}" alt="" loading="lazy">`:''}${E(l.name)}</a>`).join('')}</div>`):''}<footer class="site-footer"><a class="brand" href="${link('index.html')}">PLATINUM</a><div class="footer-links">${menus.map(([p,en,ja])=>`<a href="${link(p)}">${ja}</a>`).join('')}${C.url(s.snsUrl)?`<a href="${E(C.url(s.snsUrl))}" target="_blank" rel="noopener">店舗SNS</a>`:''}${C.url(s.recruitUrl)?`<a href="${E(C.url(s.recruitUrl))}">求人情報</a>`:''}</div><small>© ${new Date().getFullYear()} Platinum Men's Esthetic</small></footer><div class="bottom-bar"><a href="${E(phone)}">電話で予約<small id="receptionLabel">受付 ${E(s.reception)}</small></a><a class="reserve" href="${E(web)}">Web予約<small>RESERVATION</small></a><a href="${link('schedule.html')}">出勤情報<small>SCHEDULE</small></a><a href="${link('price.html')}">料金<small>SYSTEM</small></a></div><dialog id="receptionDialog"><button class="alert-close" aria-label="閉じる">×</button><h2>電話受付時間外です</h2><p>電話受付は${E(s.reception)}です。Webからのご予約もご利用ください。</p>${button(web,'Webから予約する','dark')}</dialog>`;
     $('menuToggle').onclick=()=>{const open=$('siteNav').classList.toggle('open');$('menuToggle').setAttribute('aria-expanded',String(open));};
     function $(id){return document.getElementById(id);}
+    if($('bannerSlider')&&$('bannerNext')){
+      const slider=$('bannerSlider'),slides=[...slider.querySelectorAll('.banner-slide')],dots=[...slider.querySelectorAll('[data-banner-index]')],reduce=matchMedia('(prefers-reduced-motion: reduce)');
+      let current=0,paused=reduce.matches,timer,touchX;
+      const show=index=>{current=(index+slides.length)%slides.length;slides.forEach((el,i)=>el.hidden=i!==current);dots.forEach((el,i)=>el.setAttribute('aria-current',String(i===current)));};
+      const stop=()=>clearInterval(timer);
+      const play=()=>{stop();if(!paused&&!document.hidden&&!slider.matches(':hover')&&!slider.contains(document.activeElement))timer=setInterval(()=>show(current+1),6000);};
+      const label=()=>{$('bannerPause').textContent=paused?'再生':'一時停止';$('bannerPause').setAttribute('aria-label',paused?'バナーの自動切替を再開':'バナーの自動切替を停止');};
+      $('bannerPrev').onclick=()=>{show(current-1);play();};$('bannerNext').onclick=()=>{show(current+1);play();};dots.forEach(el=>el.onclick=()=>{show(Number(el.dataset.bannerIndex));play();});
+      $('bannerPause').onclick=()=>{paused=!paused;label();play();};slider.onmouseenter=stop;slider.onmouseleave=play;slider.onfocusin=stop;slider.onfocusout=()=>setTimeout(play,0);document.addEventListener('visibilitychange',play);
+      slider.addEventListener('keydown',event=>{if(['ArrowLeft','ArrowRight'].includes(event.key)){event.preventDefault();show(current+(event.key==='ArrowRight'?1:-1));}});
+      slider.addEventListener('touchstart',e=>{touchX=e.touches[0]?.clientX;stop();},{passive:true});slider.addEventListener('touchend',e=>{const dx=e.changedTouches[0]?.clientX-touchX;if(Math.abs(dx)>50)show(current+(dx<0?1:-1));play();},{passive:true});
+      reduce.addEventListener('change',()=>{paused=reduce.matches;label();play();});label();play();
+    }
     function receptionOpen(){if(d.reception==='open')return true;if(d.reception==='closed')return false;return new Date(Date.now()+9*3600000).getUTCHours()>=10;}
     const updateReception=()=>$('receptionLabel').textContent=receptionOpen()?'電話受付中':'電話受付時間外';updateReception();setInterval(updateReception,60000);
     document.addEventListener('click',event=>{const a=event.target.closest('a[href^="tel:"]');if(a&&!receptionOpen()){event.preventDefault();$('receptionDialog').showModal();}const p=event.target.closest('[data-photo]');if(p)$('mainPhoto').src=p.dataset.photo;});
@@ -74,7 +102,8 @@
     async function showSchedule(date,target){const seq=++scheduleRequest;target.innerHTML=empty('出勤情報を読み込んでいます…');try{const rows=await C.shifts(d,date);if(seq!==scheduleRequest)return;const known=rows.filter(s=>d.therapists.some(t=>t.id===s.therapistId));target.innerHTML=known.length?grid(known.map(s=>card(d.therapists.find(t=>t.id===s.therapistId),s))):empty(rows.length?'出勤情報はお電話でご確認ください。':`${E(fmtDate(date))}の出勤はまだ登録されていません。最新情報はお電話でご確認ください。`);}catch{if(seq===scheduleRequest)target.innerHTML=empty('出勤情報を取得できませんでした。お電話でご確認ください。');}}
     if(page==='home')showSchedule(C.today(),$('todaySchedule'));
     if(page==='schedule'){showSchedule(C.today(),$('scheduleCards'));document.querySelectorAll('[data-date]').forEach(b=>b.onclick=()=>{document.querySelectorAll('[data-date]').forEach(x=>x.classList.toggle('active',x===b));showSchedule(b.dataset.date,$('scheduleCards'));});}
-    if(profile){$('main').insertAdjacentHTML('beforeend',section('PHOTO DIARY',E(profile.name)+'の写メ日記','<div id="diaryEntries" aria-live="polite"></div>'+more('diary.html?therapist='+encodeURIComponent(profile.id),'日記をすべて見る')));}
+    if(profile){updateSEO(profile.name+'｜神栖のメンズエステ プラチナ',profile.name+'のプロフィール・出勤情報・写メ日記。神栖プラチナのセラピストをご紹介します。','/profile.html?id='+encodeURIComponent(profile.id));$('main').insertAdjacentHTML('beforeend',section('PHOTO DIARY',E(profile.name)+'の写メ日記','<div id="diaryEntries" aria-live="polite"></div>'+more('diary.html?therapist='+encodeURIComponent(profile.id),'日記をすべて見る')));}
+    if(page==='profile'&&!profile){const robots=document.createElement('meta');robots.name='robots';robots.content='noindex';document.head.append(robots);}
     if($('diaryEntries')){
       let sequence=0;
       const params=new URLSearchParams(location.search);
@@ -90,6 +119,8 @@
           const response=await fetch('/api/diary?'+q,{cache:'no-store',signal:AbortSignal.timeout(20000)}),result=await response.json();
           if(!response.ok||!result.ok||!Array.isArray(result.entries))throw new Error('DIARY_FETCH_FAILED');
           if(current!==sequence)return;
+          if(page==='diary'&&!id)updateSEO('写メ日記｜神栖のメンズエステ プラチナ','神栖プラチナのセラピスト写メ日記。写真とともに日々の出来事や出勤のお知らせをお届けします。','/diary.html'+(selected?'?therapist='+encodeURIComponent(selected):''));
+          if(id&&result.entries[0]){const r=result.entries[0];updateSEO(r.title+'｜'+r.therapist_name+'の写メ日記｜神栖プラチナ',r.body.replace(/\s+/g,' ').slice(0,120),'/diary.html?id='+encodeURIComponent(r.id));}
           const cards=result.entries.filter(r=>d.therapists.some(t=>t.id===r.therapist_id)).map(r=>{
             const detail=link('diary.html?id='+encodeURIComponent(r.id)),pics=r.photos.filter(x=>C.url(x));
             if(id)return `<article class="diary-article"><div class="diary-byline"><a href="${E(link('profile.html?id='+encodeURIComponent(r.therapist_id)))}">${E(r.therapist_name)}</a><time datetime="${E(r.posted_at)}">${E(dateTime(r.posted_at))}</time></div><h2>${E(r.title)}</h2><div class="diary-photos">${pics.map(src=>`<img src="${E(src)}" alt="${E(r.title)}" loading="lazy" referrerpolicy="no-referrer">`).join('')}</div><p class="diary-body">${E(r.body)}</p><a class="diary-source" href="${E(r.source_url)}" target="_blank" rel="noopener noreferrer">エステ魂で元の日記を見る ↗</a></article>`;

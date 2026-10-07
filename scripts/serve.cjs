@@ -3,6 +3,7 @@ const fs=require('node:fs');
 const path=require('node:path');
 const {createService}=require('../server/shifts.cjs');
 const {configurationErrors}=require('../server/config.cjs');
+const {decorate,robots}=require('../server/seo.cjs');
 if(process.env.NODE_ENV==='production'){
   const errors=configurationErrors();
   if(errors.length){console.error('Production configuration incomplete: '+errors.join(', '));process.exit(1);}
@@ -22,9 +23,11 @@ const server=http.createServer((req,res)=>{
   if(relative==='/admin.html')res.setHeader('X-Robots-Tag','noindex, nofollow');
   if(relative==='/api/shifts'){void shifts.handle(req,res);return;}
   if(relative==='/api/diary'){void diary.handle(req,res);return;}
+  if(relative==='/robots.txt'){res.writeHead(200,{'Content-Type':'text/plain; charset=utf-8'}).end(robots());return;}
+  if(relative==='/sitemap.xml'){void require('../api/sitemap.js')(req,res);return;}
   if(!/^\/(?:[^/]+\.html|assets\/[^/]+|tests\/responsive\.html)?$/.test(relative)||process.env.NODE_ENV==='production'&&relative.startsWith('/tests/')){res.writeHead(404).end();return;}
   const file=path.resolve(root,'.'+(relative==='/'?'/index.html':relative));
   if(!file.startsWith(root+path.sep)||relative.split('/').some(x=>x.startsWith('.'))||!allowed.has(path.extname(file))){res.writeHead(403).end();return;}
-  fs.readFile(file,(error,data)=>{if(error){res.writeHead(404).end('Not found');return;}res.writeHead(200,{'Content-Type':types[path.extname(file)]||'application/octet-stream','Cache-Control':'no-store','X-Content-Type-Options':'nosniff'});res.end(data);});
+  fs.readFile(file,(error,data)=>{if(error){res.writeHead(404).end('Not found');return;}res.writeHead(200,{'Content-Type':types[path.extname(file)]||'application/octet-stream','Cache-Control':'no-store','X-Content-Type-Options':'nosniff'});res.end(path.extname(file)==='.html'?decorate(data.toString('utf8'),path.basename(file,'.html')):data);});
 }).listen(Number(process.env.PORT)||4173,process.env.HOST||'127.0.0.1',()=>console.log('Platinum server started'));
 for(const signal of ['SIGINT','SIGTERM'])process.on(signal,()=>{server.close(()=>process.exit(0));setTimeout(()=>process.exit(1),10000).unref();});

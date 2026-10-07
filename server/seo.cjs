@@ -1,5 +1,5 @@
 'use strict';
-const DEFAULT_ORIGIN='https://platinum-site-theta.vercel.app';
+const DEFAULT_ORIGIN='https://kamisuplatinum.com';
 const pages={
  index:['神栖のメンズエステ・メンエス｜プラチナ【公式】','神栖市のメンズエステ（メンエス）プラチナ。セラピスト・本日の出勤・写メ日記・料金をご案内。千葉県方面からご来店を検討される方も、店舗情報とアクセスをご確認ください。'],
  staff:['セラピスト一覧｜神栖のメンズエステ プラチナ','神栖プラチナの公開中のセラピストをご紹介。プロフィールや写真、出勤予定をご確認いただけます。'],

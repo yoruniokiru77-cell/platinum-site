@@ -160,4 +160,16 @@ $('logout').onclick=()=>{const exit=async()=>{if(!demo&&client)await client.auth
 $('loginForm').onsubmit=async event=>{event.preventDefault();if(!client||!C.config.cmsEnabled){$('loginNote').textContent='本番接続の初期設定が必要です。先にデモで画面をご確認いただけます。';return;}const f=new FormData(event.target);try{const {error}=await client.auth.signInWithPassword({email:f.get('email'),password:f.get('password')});if(error)throw error;const user=(await client.auth.getUser()).data.user;const members=await C.request('platinum_admins?store_id=eq.'+C.config.storeId+'&user_id=eq.'+user.id+'&select=user_id',{},await token());if(!members.length)throw new Error('この店舗の管理権限がありません。');await enter(false);}catch(e){$('loginNote').textContent=e.message;}};
 window.addEventListener('beforeunload',event=>{if(dirty){event.preventDefault();event.returnValue='';}});
 if(window.supabase)client=window.supabase.createClient(C.config.url,C.config.anonKey,{auth:{storage:sessionStorage,persistSession:true,autoRefreshToken:true,detectSessionInUrl:false}});
+if(client&&C.config.cmsEnabled)(async()=>{
+  try{
+    const {data:s,error}=await client.auth.getSession();
+    if(error)throw error;
+    if(!s.session)return;
+    const {data:u,error:userError}=await client.auth.getUser();
+    if(userError)throw userError;
+    const members=await C.request('platinum_admins?store_id=eq.'+C.config.storeId+'&user_id=eq.'+u.user.id+'&select=user_id',{},await token());
+    if(!members.length)throw new Error('この店舗の管理権限がありません。');
+    await enter(false);
+  }catch(e){$('loginNote').textContent=e.message;}
+})();
 if(!C.config.cmsEnabled)$('loginNote').textContent='本番接続は未設定です。デモでは編集・保存・プレビューをお試しいただけます。';
